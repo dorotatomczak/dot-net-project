@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 namespace WebClinic
 {
@@ -38,6 +39,21 @@ namespace WebClinic
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
+
+            services.AddSwaggerGen(conf =>
+            {
+                conf.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API documentation",
+                    Contact = new OpenApiContact
+                    {
+                        Email = "s165283@student.pg.edu.pl",
+                        Name = "Anna Malizjusz"
+                    }
+                });
+            });
+
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[]{
@@ -68,8 +84,16 @@ namespace WebClinic
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+               c.SwaggerEndpoint("/swagger/v1/swagger.json", "API documentation");
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
