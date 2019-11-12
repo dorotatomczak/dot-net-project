@@ -1,0 +1,7 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Http;
+
+@inject IViewLocalizer Localizer
+
+@await Html.PartialAsync("Calendar/_SelectViewTypePartial")
+@await Html.PartialAsync("Calendar/_PrepForCalendarPartial")
