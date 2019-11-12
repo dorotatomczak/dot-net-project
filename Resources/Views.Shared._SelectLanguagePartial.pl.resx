@@ -126,4 +126,7 @@
   <data name="Polish" xml:space="preserve">
     <value>Polski</value>
   </data>
+  <data name="Request culture provider" xml:space="preserve">
+    <value>Wybierz język</value>
+  </data>
 </root>
