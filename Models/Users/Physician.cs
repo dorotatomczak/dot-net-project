@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebClinic.Models
 {
-    enum PhysicianSpecialization
+    public enum PhysicianSpecialization
     {
         Internist,
         Laryngologist,
@@ -20,7 +20,7 @@ namespace WebClinic.Models
 
     public class Physician : Person
     {
-        PhysicianSpecialization specialization { get; set; }
+        public PhysicianSpecialization Specialization { get; set; }
         //working hours?
     }
 }

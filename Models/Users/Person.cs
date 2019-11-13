@@ -1,13 +1,7 @@
 ﻿namespace WebClinic.Models
 {
-    enum Gender
-    {
-        AsOriginSex,
-        AsCurrentSex,
-        NotRelatedToSex
-    }
 
-    enum Sex
+    public enum Sex
     {
         Male,
         Female,
@@ -16,9 +10,9 @@
 
     public class Person
     {
-        string fullname { get; set; }
-        int age { get; set; }
-        Sex sex { get; set; }
-        Gender gender { get; set; }
+        public int Id { get; set; }
+        public string Fullname { get; set; }
+        public int Age { get; set; }
+        public Sex Sex { get; set; }
     }
 }
