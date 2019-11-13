@@ -2,7 +2,7 @@
 
 namespace WebClinic.Models
 {
-    enum VisitType
+    public enum VisitType
     {
         Consultation,
         Cure,
@@ -11,9 +11,10 @@ namespace WebClinic.Models
 
     public class Visit
     {
-        Patient patient { get; set; }
-        Physician physician { get; set; }
-        VisitType type { get; set; }
-        DateTime time { get; set; }
+        public int Id { get; set; }
+        public Patient Patient { get; set; }
+        public Physician Physician { get; set; }
+        public VisitType Type { get; set; }
+        public DateTime Time { get; set; }
     }
 }

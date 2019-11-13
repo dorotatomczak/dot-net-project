@@ -2,7 +2,7 @@
 {
     public class Patient : Person
     {
-        string illnessHistory { get; set; }
-        string recommendedDrugs { get; set; }
+        public string IllnessHistory { get; set; }
+        public string RecommendedDrugs { get; set; }
     }
 }
