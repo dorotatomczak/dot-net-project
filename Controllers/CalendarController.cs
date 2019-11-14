@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 
 namespace WebClinic.Controllers
 {
+    [ApiController]
+    [Route("[controller]/[action]")]
     public class CalendarController : Controller
     {
         private readonly IStringLocalizer<CalendarController> _localizer;
@@ -20,6 +22,7 @@ namespace WebClinic.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             string cookieViewType = Request.Cookies["ViewType"];
@@ -32,32 +35,34 @@ namespace WebClinic.Controllers
             {
                 return RedirectToAction("Week");
             }
-            else if (cookieViewType == "Month")
+            else
             {
                 return RedirectToAction("Month");
             }
-
-            return View();
         }
 
+        [HttpGet]
         public IActionResult Day()
         {
             SetViewType("Day");
             return View();
         }
 
+        [HttpGet]
         public IActionResult Week()
         {
             SetViewType("Week");
             return View();
         }
 
+        [HttpGet]
         public IActionResult Month()
         {
             SetViewType("Month");
             return View();
         }
 
+        [HttpGet]
         public void SetViewType(string viewType)
         {
             Response.Cookies.Append("ViewType", viewType,
