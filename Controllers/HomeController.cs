@@ -9,6 +9,8 @@ using Microsoft.Extensions.Localization;
 
 namespace WebClinic.Controllers
 {
+    [ApiController]
+    [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
 
@@ -21,24 +23,29 @@ namespace WebClinic.Controllers
             _logger = logger;
         }
 
+        [HttpGet("/")]
+        [HttpGet("[controller]/[action]")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult Privacy()
         {
             return View();
         }
 
+        [HttpGet]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+
         [HttpPost]
-        public IActionResult SetLanguage(string culture, string returnUrl)
+        public IActionResult SetLanguage([FromForm] string culture, [FromQuery]string returnUrl)
         {
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,

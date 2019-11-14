@@ -117,14 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="English" xml:space="preserve">
-    <value>English</value>
-  </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
-  </data>
-  <data name="Polish" xml:space="preserve">
-    <value>Polish</value>
   </data>
   <data name="Request culture provider" xml:space="preserve">
     <value>Request culture provider</value>
