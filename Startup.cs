@@ -29,6 +29,8 @@ namespace WebClinic
             services.AddDbContext<ApplicationDbContext>(options =>
               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IAccountManagement, AccountManagement>();
+
             services.AddControllersWithViews();
             services.AddLocalization(options =>
             {
