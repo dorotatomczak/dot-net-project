@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebClinic.Models
+namespace WebClinic.Models.Users
 {
     public enum PhysicianSpecialization
     {
@@ -18,7 +18,7 @@ namespace WebClinic.Models
         Psychiatrist
     }
 
-    public class Physician : Person
+    public class Physician : AppUser
     {
         public PhysicianSpecialization Specialization { get; set; }
         //working hours?

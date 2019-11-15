@@ -1,4 +1,5 @@
 ﻿using System;
+using WebClinic.Models.Users;
 
 namespace WebClinic.Models
 {
