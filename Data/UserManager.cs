@@ -25,10 +25,13 @@ namespace WebClinic.Data
             var dbUserData = context.AppUsers.Where(u => u.Email == email && u.Password == Hash(password))
                 .SingleOrDefault();
 
-            ClaimsIdentity identity = new ClaimsIdentity(this.GetUserClaims(dbUserData), CookieAuthenticationDefaults.AuthenticationScheme);
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+            if (dbUserData != null)
+            {
+                ClaimsIdentity identity = new ClaimsIdentity(this.GetUserClaims(dbUserData), CookieAuthenticationDefaults.AuthenticationScheme);
+                ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
-            await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            }
         }
 
         public async void SignOut(HttpContext httpContext)
