@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebClinic.Models.Users
 {
@@ -14,6 +15,7 @@ namespace WebClinic.Models.Users
     public class AppUser
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
@@ -21,7 +23,5 @@ namespace WebClinic.Models.Users
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public Sex Sex { get; set; }
-
-
     }
 }

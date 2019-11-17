@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WebClinic.Models.Users
@@ -22,5 +23,7 @@ namespace WebClinic.Models.Users
     {
         public PhysicianSpecialization Specialization { get; set; }
         //working hours?
+        [JsonIgnore]
+        public ICollection<Appointment> Appointments { get; set; }
     }
 }
