@@ -10,8 +10,8 @@ using WebClinic.Data;
 namespace WebClinic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191113195425_UpdatedModel")]
-    partial class UpdatedModel
+    [Migration("20191116135425_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,55 +21,40 @@ namespace WebClinic.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WebClinic.Models.Patient", b =>
+            modelBuilder.Entity("WebClinic.Models.Users.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Fullname")
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Sex")
                         .HasColumnType("int");
 
-                    b.Property<string>("illnessHistory")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("recommendedDrugs")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("patients");
-                });
+                    b.ToTable("AppUsers");
 
-            modelBuilder.Entity("WebClinic.Models.Physician", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Fullname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Sex")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Specialization")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("physicians");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("AppUser");
                 });
 
             modelBuilder.Entity("WebClinic.Models.Visit", b =>
@@ -97,16 +82,46 @@ namespace WebClinic.Migrations
 
                     b.HasIndex("PhysicianId");
 
-                    b.ToTable("visits");
+                    b.ToTable("Visits");
+                });
+
+            modelBuilder.Entity("WebClinic.Models.Users.Patient", b =>
+                {
+                    b.HasBaseType("WebClinic.Models.Users.AppUser");
+
+                    b.Property<string>("IllnessHistory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecommendedDrugs")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Patient");
+                });
+
+            modelBuilder.Entity("WebClinic.Models.Users.Physician", b =>
+                {
+                    b.HasBaseType("WebClinic.Models.Users.AppUser");
+
+                    b.Property<int>("Specialization")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("Physician");
+                });
+
+            modelBuilder.Entity("WebClinic.Models.Users.Receptionist", b =>
+                {
+                    b.HasBaseType("WebClinic.Models.Users.AppUser");
+
+                    b.HasDiscriminator().HasValue("Receptionist");
                 });
 
             modelBuilder.Entity("WebClinic.Models.Visit", b =>
                 {
-                    b.HasOne("WebClinic.Models.Patient", "Patient")
+                    b.HasOne("WebClinic.Models.Users.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId");
 
-                    b.HasOne("WebClinic.Models.Physician", "Physician")
+                    b.HasOne("WebClinic.Models.Users.Physician", "Physician")
                         .WithMany()
                         .HasForeignKey("PhysicianId");
                 });
