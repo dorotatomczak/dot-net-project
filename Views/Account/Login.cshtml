@@ -1,21 +1,21 @@
-﻿@model WebClinic.Models.LoginViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model WebClinic.Models.LoginViewModel
+@inject IViewLocalizer Localizer
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = @Localizer["Login"];
 }
-<h2>Login</h2>
+
+<h2>@Localizer["Login"]</h2>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
+    @Html.ValidationMessage("WrongCredentials", new { @class = "text-danger" })
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        @if (ViewBag.Message != "")
-        {
-            <div class="text-danger">*@ViewBag.Message</div>
-        }
 
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -35,7 +35,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Login" class="btn btn-default" />
+                <input type="submit" value= @Localizer["Login"] class="btn btn-default" />
             </div>
         </div>
     </div>
