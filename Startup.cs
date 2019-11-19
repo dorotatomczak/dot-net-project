@@ -78,8 +78,8 @@ namespace WebClinic
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[]{
-                new CultureInfo("en"),
-                new CultureInfo("pl"),
+                new CultureInfo("en-us"),
+                new CultureInfo("pl-pl"),
                 };
 
                 options.DefaultRequestCulture = new RequestCulture(culture: "en", uiCulture: "en");

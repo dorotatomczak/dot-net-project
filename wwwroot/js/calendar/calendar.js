@@ -80,3 +80,15 @@ function _modifyStartDate(forward) {
         console.error("Calendar object does not have proper type.");
     }
 }
+
+function setLocale(locale) {
+    if ((locale.localeCompare("pl-pl", undefined, { sensitivity: 'base' }) === 0) ||
+        (locale.localeCompare("en-us", undefined, { sensitivity: 'base' }) === 0) ) {
+        dp.locale = locale;
+    }
+    else {
+        console.error("Unknown locale. Setting to en-us.");
+        dp.locale = "en-us";
+    }
+    dp.update();
+}
