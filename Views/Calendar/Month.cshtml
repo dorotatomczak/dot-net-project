@@ -1,6 +1,14 @@
-﻿@await Html.PartialAsync("Calendar/_CalendarPartial")
+﻿@using Microsoft.AspNetCore.Localization
+
+@{
+    var requestCultureFeature = Context.Features.Get<IRequestCultureFeature>();
+    var cultureName = requestCultureFeature.RequestCulture.Culture.Name;
+}
+
+@await Html.PartialAsync("Calendar/_CalendarPartial")
 
 <script type="text/javascript">
     createCalendarMonth();
+    setLocale("@cultureName");
     loadEvents();
 </script>
