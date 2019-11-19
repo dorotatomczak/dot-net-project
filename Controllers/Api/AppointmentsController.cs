@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using WebClinic.Data;
 using WebClinic.Models;
+using WebClinic.Models.Calendar;
 
 namespace WebClinic.Controllers.Api
 {
@@ -14,10 +15,12 @@ namespace WebClinic.Controllers.Api
     [ApiController]
     public class AppointmentsController : ControllerBase
     {
+        private readonly IStringLocalizer<CalendarController> _localizer;
         private readonly ApplicationDbContext _context;
 
-        public AppointmentsController(ApplicationDbContext context)
+        public AppointmentsController(ApplicationDbContext context, IStringLocalizer<CalendarController> localizer)
         {
+            _localizer = localizer;
             _context = context;
         }
 
@@ -29,6 +32,33 @@ namespace WebClinic.Controllers.Api
                 .Include(a => a.Patient)
                 .Include(a => a.Physician)
                 .ToListAsync();
+        }
+
+
+        // GET: api/Events
+        // Get Appointments as CalendarEvents
+        [HttpGet]
+        [Route("events")]
+        public ICollection<CalendarEvent> GetEvents([FromQuery] DateTime start, [FromQuery] DateTime end)
+        {
+            var appointments = _context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Physician)
+                .Where(a => a.Time >= start && a.Time <= end)
+                .ToList();
+            ICollection<CalendarEvent> events = new HashSet<CalendarEvent>();
+            foreach (var appointment in appointments)
+            {
+                events.Add(new CalendarEvent
+                {
+                    Start = appointment.Time,
+                    End = appointment.Time + CalendarEvent.DefaultEventTimeSpan,
+                    Text = "Doctor: " + appointment.Physician.ToString() + ", " +
+                           "Patient: " + appointment.Patient.ToString() + ", " +
+                           "Time: " + appointment.Time.ToString()
+                });
+            }
+            return events;
         }
 
         // GET: api/Appointments/5

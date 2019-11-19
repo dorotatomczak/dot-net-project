@@ -1,12 +1,6 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+﻿@await Html.PartialAsync("Calendar/_CalendarPartial")
 
-@inject IViewLocalizer Localizer
-
-@await Html.PartialAsync("Calendar/_SelectViewTypePartial")
-@await Html.PartialAsync("Calendar/_PrepForCalendarPartial")
-
-<script>
-    var dp = new DayPilot.Calendar("dp");
-    dp.viewType = "Week";
-    dp.init();
+<script type="text/javascript">
+    createCalendarWeek();
+    loadEvents();
 </script>

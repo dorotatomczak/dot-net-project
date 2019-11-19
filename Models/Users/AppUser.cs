@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebClinic.Models.Users
 {
-
     public enum Sex
     {
         Male,
@@ -23,5 +22,10 @@ namespace WebClinic.Models.Users
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public Sex Sex { get; set; }
+
+        public override string ToString()
+        {
+            return FirstName + " " + LastName;
+        }
     }
 }
