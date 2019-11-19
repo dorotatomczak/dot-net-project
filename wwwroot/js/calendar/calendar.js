@@ -9,17 +9,20 @@ function createUrl() {
 function createCalendarWeek() {
     dp = new DayPilot.Calendar("dp");
     dp.viewType = "Week";
+    dp.eventMoveHandling = "Disabled";
     dp.init();
 }
 
 function createCalendarDay() {
     dp = new DayPilot.Calendar("dp");
     dp.viewType = "Day";
+    dp.eventMoveHandling = "Disabled";
     dp.init();
 }
 
 function createCalendarMonth() {
     dp = new DayPilot.Month("dp");
+    dp.eventMoveHandling = "Disabled";
     dp.init();
 }
 
@@ -27,17 +30,17 @@ function loadEvents() {
     if (url == "") {
         console.error("Url not valid.");
     }
-
     if (dp instanceof DayPilot.Calendar) {
         dp.events.load(url);
     }
     else if (dp instanceof DayPilot.Month) {
+        dp.events.list = [];
         var date = new Date();
-        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-        firstDay.setUTCHours(0, 0, 0, 0);
-        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        lastDay.setUTCHours(23, 59, 59, 999);
-        var urlWithTimeRange = url + "?start=" + firstDay.toISOString() + "&end=" + lastDay.toISOString();
+        var start = new Date(date.getFullYear(), date.getMonth(), 1);
+        start = start.setUTCHours(0, 0, 0, 0).toISOString();
+        var end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        end = end.setUTCHours(23, 59, 59, 999).toISOString();
+        var urlWithTimeRange = url + "?start=" + start + "&end=" + end;
         $.get(urlWithTimeRange,
             function (data) {
                 for (var i = 0; i < data.length; i++) {
@@ -55,11 +58,13 @@ function loadEvents() {
 function previous() {
     _modifyStartDate(-1);
     dp.update();
+    loadEvents();
 }
 
 function next() {
     _modifyStartDate(1);
     dp.update();
+    loadEvents();
 }
 
 function _modifyStartDate(forward) {
