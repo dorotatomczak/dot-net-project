@@ -28,7 +28,7 @@ function createCalendarMonth() {
 
 function loadEvents() {
     if (url == "") {
-        console.error("Url not valid.");
+        throw new Error("Url not valid.");
     }
     if (dp instanceof DayPilot.Calendar) {
         dp.events.load(url);
@@ -37,10 +37,10 @@ function loadEvents() {
         dp.events.list = [];
         var date = new Date();
         var start = new Date(date.getFullYear(), date.getMonth(), 1);
-        start = start.setUTCHours(0, 0, 0, 0).toISOString();
+        start.setUTCHours(0, 0, 0, 0)
         var end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        end = end.setUTCHours(23, 59, 59, 999).toISOString();
-        var urlWithTimeRange = url + "?start=" + start + "&end=" + end;
+        end.setUTCHours(23, 59, 59, 999);
+        var urlWithTimeRange = url + "?start=" + start.toISOString() + "&end=" + end.toISOString();
         $.get(urlWithTimeRange,
             function (data) {
                 for (var i = 0; i < data.length; i++) {
@@ -51,20 +51,30 @@ function loadEvents() {
         );
     }
     else {
-        console.error("Calendar object does not have proper type.");
+        throw new Error("Calendar object does not have proper type.");
     }
 }
 
 function previous() {
     _modifyStartDate(-1);
     dp.update();
-    loadEvents();
+    try {
+        loadEvents();
+    }
+    catch (err) {
+        console.log(err.message);
+    }
 }
 
 function next() {
     _modifyStartDate(1);
     dp.update();
-    loadEvents();
+    try {
+        loadEvents();
+    }
+    catch (err) {
+        console.log(err.message);
+    }
 }
 
 function _modifyStartDate(forward) {
@@ -82,6 +92,6 @@ function _modifyStartDate(forward) {
         dp.startDate = dp.startDate.addMonths(sign);
     }
     else {
-        console.error("Calendar object does not have proper type.");
+        throw new Error("Calendar object does not have proper type.");
     }
 }

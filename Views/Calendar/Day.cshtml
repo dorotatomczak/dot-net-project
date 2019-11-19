@@ -2,5 +2,10 @@
 
 <script type="text/javascript">
     createCalendarDay();
-    loadEvents();
+    try {
+        loadEvents();
+    }
+    catch (err) {
+        console.log(err.message);
+    }
 </script>
