@@ -116,7 +116,7 @@ namespace WebClinic
             app.UseSwaggerUI(c =>
             {
                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API documentation");
-                c.RoutePrefix = "swagger";
+               c.RoutePrefix = "swagger";
             });
 
             app.UseHttpsRedirection();
@@ -124,6 +124,7 @@ namespace WebClinic
             app.UseRouting();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

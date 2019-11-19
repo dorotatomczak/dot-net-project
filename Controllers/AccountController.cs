@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using WebClinic.Data;
 using WebClinic.Models;
 using WebClinic.Models.Users;
@@ -9,10 +10,12 @@ namespace WebClinic.Controllers
     public class AccountController : Controller
     {
         private readonly IUserManager userManager;
+        private readonly IStringLocalizer<AccountController> localizer;
 
-        public AccountController(IUserManager userManager)
+        public AccountController(IUserManager userManager, IStringLocalizer<AccountController> localizer)
         {
             this.userManager = userManager;
+            this.localizer = localizer;
         }
 
         [HttpGet]
@@ -34,13 +37,17 @@ namespace WebClinic.Controllers
                     FirstName = model.FirstName,
                     LastName =  model.LastName,
                     Email = model.Email,
-                    DateOfBirth = model.DateOfBirth
+                    Sex = model.Sex.GetValueOrDefault(),
+                    DateOfBirth = model.DateOfBirth.GetValueOrDefault()
                 };
                 var result = userManager.CreatePatient(patient, model.Password);
                 if (result != null)
                 {
                     userManager.SignIn(HttpContext, result.Email, model.Password);
                     return RedirectToAction(nameof(HomeController.Index), "Home");
+                } else
+                {
+                    ModelState.AddModelError("EmailExist", localizer["EmailExists"]);
                 }
             }
             return View(model);
@@ -59,10 +66,19 @@ namespace WebClinic.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                userManager.SignIn(HttpContext, model.Email, model.Password);
+                if (userManager.SignIn(HttpContext, model.Email, model.Password)) {
+                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                } else
+                {
+                    ModelState.AddModelError("WrongCredentials", localizer["WrongCredentials"]);
+                }
             }
             return View(model);
         }

@@ -8,6 +8,7 @@ namespace WebClinic.Models.Users
     {
         Male,
         Female,
+        [Display(Name = "It's complicated")]
         ItsComplicated
     }
 
