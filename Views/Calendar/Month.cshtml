@@ -9,6 +9,11 @@
 
 <script type="text/javascript">
     createCalendarMonth();
-    setLocale("@cultureName");
-    loadEvents();
+    try {
+        setLocale("@cultureName");
+        loadEvents();
+    }
+    catch (err) {
+        console.log(err.message);
+    }
 </script>

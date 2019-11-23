@@ -9,6 +9,11 @@
 
 <script type="text/javascript">
     createCalendarWeek();
-    setLocale("@cultureName");
-    loadEvents();
+    try {
+        setLocale("@cultureName");
+        loadEvents();
+    }
+    catch (err) {
+        console.log(err.message);
+    }
 </script>
