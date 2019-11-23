@@ -21,6 +21,7 @@ namespace WebClinic.Models.Users
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
         public Sex Sex { get; set; }
 
