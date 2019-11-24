@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using WebClinic.Models.Users;
+using WebClinic.Utils;
 
 namespace WebClinic.Data
 {
@@ -22,7 +23,7 @@ namespace WebClinic.Data
 
         public bool SignIn(HttpContext httpContext, string email, string password)
         {
-            var dbUserData = context.AppUsers.Where(u => u.Email == email && u.Password == Hash(password))
+            var dbUserData = context.AppUsers.Where(u => u.Email == email && u.Password == HashUtils.Hash(password))
                 .SingleOrDefault();
 
             if (dbUserData != null)
@@ -57,7 +58,7 @@ namespace WebClinic.Data
         {
             if (IsEmailAvailable(patient.Email))
             {
-                patient.Password = Hash(password);
+                patient.Password = HashUtils.Hash(password);
                 context.AppUsers.Add(patient);
                 context.SaveChanges();
                 return context.Patients.Where(u => u.Email == patient.Email && u.Password == patient.Password)
@@ -69,13 +70,6 @@ namespace WebClinic.Data
         private bool IsEmailAvailable(string email)
         {
             return context.AppUsers.SingleOrDefault(user => user.Email == email) == null;
-        }
-        private string Hash(string value)
-        {
-            return Convert.ToBase64String(
-                System.Security.Cryptography.SHA256.Create()
-                .ComputeHash(Encoding.UTF8.GetBytes(value))
-                );
         }
     }
 }

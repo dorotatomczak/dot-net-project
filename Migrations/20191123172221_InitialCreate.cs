@@ -30,7 +30,7 @@ namespace WebClinic.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Visits",
+                name: "Appointments",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -42,36 +42,60 @@ namespace WebClinic.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Visits", x => x.Id);
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Visits_AppUsers_PatientId",
+                        name: "FK_Appointments_AppUsers_PatientId",
                         column: x => x.PatientId,
                         principalTable: "AppUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Visits_AppUsers_PhysicianId",
+                        name: "FK_Appointments_AppUsers_PhysicianId",
                         column: x => x.PhysicianId,
                         principalTable: "AppUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AppUsers",
+                columns: new[] { "Id", "DateOfBirth", "Discriminator", "Email", "FirstName", "LastName", "Password", "Sex", "IllnessHistory", "RecommendedDrugs" },
+                values: new object[] { 6, new DateTime(1979, 10, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Patient", "patient1@gmail.com", "Geralt", "Z Rivii", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 0, null, null });
+
+            migrationBuilder.InsertData(
+                table: "AppUsers",
+                columns: new[] { "Id", "DateOfBirth", "Discriminator", "Email", "FirstName", "LastName", "Password", "Sex", "Specialization" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(1970, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Physician", "physician1@gmail.com", "Nathan", "Drake", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 0, 5 },
+                    { 2, new DateTime(1975, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Physician", "physician2@gmail.com", "Elena", "Fisher", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 1, 4 },
+                    { 3, new DateTime(1967, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Physician", "physician3@gmail.com", "Victor", "Sullivan", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 0, 8 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AppUsers",
+                columns: new[] { "Id", "DateOfBirth", "Discriminator", "Email", "FirstName", "LastName", "Password", "Sex" },
+                values: new object[,]
+                {
+                    { 4, new DateTime(1990, 4, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "Receptionist", "receptionist1@gmail.com", "Rajesh", "Koothrappali", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 0 },
+                    { 5, new DateTime(1986, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Receptionist", "receptionist2@gmail.com", "Penny", "Hofstadter", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 1 }
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Visits_PatientId",
-                table: "Visits",
+                name: "IX_Appointments_PatientId",
+                table: "Appointments",
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Visits_PhysicianId",
-                table: "Visits",
+                name: "IX_Appointments_PhysicianId",
+                table: "Appointments",
                 column: "PhysicianId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Visits");
+                name: "Appointments");
 
             migrationBuilder.DropTable(
                 name: "AppUsers");
