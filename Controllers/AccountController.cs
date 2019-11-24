@@ -35,10 +35,11 @@ namespace WebClinic.Controllers
                 var patient = new Patient
                 {
                     FirstName = model.FirstName,
-                    LastName =  model.LastName,
+                    LastName = model.LastName,
                     Email = model.Email,
                     Sex = model.Sex.GetValueOrDefault(),
-                    DateOfBirth = model.DateOfBirth.GetValueOrDefault()
+                    DateOfBirth = model.DateOfBirth.GetValueOrDefault(),
+                    Role = Role.Patient
                 };
                 var result = userManager.CreatePatient(patient, model.Password);
                 if (result != null)

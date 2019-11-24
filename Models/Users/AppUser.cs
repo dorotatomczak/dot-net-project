@@ -23,6 +23,7 @@ namespace WebClinic.Models.Users
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public Sex Sex { get; set; }
+        public string Role { get; set; }
 
         public override string ToString()
         {
