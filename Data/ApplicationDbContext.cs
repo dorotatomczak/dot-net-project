@@ -32,7 +32,8 @@ namespace WebClinic.Data
                     DateOfBirth = DateTime.Parse("19/11/1970"),
                     Sex = Sex.Male,
                     Specialization = PhysicianSpecialization.Cardiologist,
-                    Password = HashUtils.Hash("pass")
+                    Password = HashUtils.Hash("pass"),
+                    Role = Role.Physician
                 },
                 new Physician
                 {
@@ -43,7 +44,8 @@ namespace WebClinic.Data
                     DateOfBirth = DateTime.Parse("1/05/1975"),
                     Sex = Sex.Female,
                     Specialization = PhysicianSpecialization.Surgeon,
-                    Password = HashUtils.Hash("pass")
+                    Password = HashUtils.Hash("pass"),
+                    Role = Role.Physician
                 },
                 new Physician
                 {
@@ -54,7 +56,8 @@ namespace WebClinic.Data
                     DateOfBirth = DateTime.Parse("30/06/1967"),
                     Sex = Sex.Male,
                     Specialization = PhysicianSpecialization.Psychiatrist,
-                    Password = HashUtils.Hash("pass")
+                    Password = HashUtils.Hash("pass"),
+                    Role = Role.Physician
                 });
             #endregion
 
@@ -68,7 +71,8 @@ namespace WebClinic.Data
                     LastName = "Koothrappali",
                     DateOfBirth = DateTime.Parse("3/04/1990"),
                     Sex = Sex.Male,
-                    Password = HashUtils.Hash("pass")
+                    Password = HashUtils.Hash("pass"),
+                    Role = Role.Receptionist
                 },
                 new Receptionist
                 {
@@ -78,7 +82,8 @@ namespace WebClinic.Data
                     LastName = "Hofstadter",
                     DateOfBirth = DateTime.Parse("19/07/1986"),
                     Sex = Sex.Female,
-                    Password = HashUtils.Hash("pass")
+                    Password = HashUtils.Hash("pass"),
+                    Role = Role.Receptionist
                 });
             #endregion
 
@@ -92,7 +97,8 @@ namespace WebClinic.Data
                     LastName = "Z Rivii",
                     DateOfBirth = DateTime.Parse("22/10/1979"),
                     Sex = Sex.Male,
-                    Password = HashUtils.Hash("pass")
+                    Password = HashUtils.Hash("pass"),
+                    Role = Role.Patient
                 });
             #endregion
         }
