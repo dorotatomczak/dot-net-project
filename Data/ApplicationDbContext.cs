@@ -29,7 +29,7 @@ namespace WebClinic.Data
                     Email = "physician1@gmail.com",
                     FirstName = "Nathan",
                     LastName = "Drake",
-                    DateOfBirth = DateTime.Parse("19/11/1970"),
+                    DateOfBirth = new DateTime(1970, 11, 19),
                     Sex = Sex.Male,
                     Specialization = PhysicianSpecialization.Cardiologist,
                     Password = HashUtils.Hash("pass")
@@ -40,7 +40,7 @@ namespace WebClinic.Data
                     Email = "physician2@gmail.com",
                     FirstName = "Elena",
                     LastName = "Fisher",
-                    DateOfBirth = DateTime.Parse("1/05/1975"),
+                    DateOfBirth = new DateTime(1975, 5, 1),
                     Sex = Sex.Female,
                     Specialization = PhysicianSpecialization.Surgeon,
                     Password = HashUtils.Hash("pass")
@@ -51,7 +51,7 @@ namespace WebClinic.Data
                     Email = "physician3@gmail.com",
                     FirstName = "Victor",
                     LastName = "Sullivan",
-                    DateOfBirth = DateTime.Parse("30/06/1967"),
+                    DateOfBirth = new DateTime(1967, 6, 30),
                     Sex = Sex.Male,
                     Specialization = PhysicianSpecialization.Psychiatrist,
                     Password = HashUtils.Hash("pass")
@@ -66,7 +66,7 @@ namespace WebClinic.Data
                     Email = "receptionist1@gmail.com",
                     FirstName = "Rajesh",
                     LastName = "Koothrappali",
-                    DateOfBirth = DateTime.Parse("3/04/1990"),
+                    DateOfBirth = new DateTime(1990, 4, 3),
                     Sex = Sex.Male,
                     Password = HashUtils.Hash("pass")
                 },
@@ -76,7 +76,7 @@ namespace WebClinic.Data
                     Email = "receptionist2@gmail.com",
                     FirstName = "Penny",
                     LastName = "Hofstadter",
-                    DateOfBirth = DateTime.Parse("19/07/1986"),
+                    DateOfBirth = new DateTime(1986, 7, 19),
                     Sex = Sex.Female,
                     Password = HashUtils.Hash("pass")
                 });
@@ -90,7 +90,7 @@ namespace WebClinic.Data
                     Email = "patient1@gmail.com",
                     FirstName = "Geralt",
                     LastName = "Z Rivii",
-                    DateOfBirth = DateTime.Parse("22/10/1979"),
+                    DateOfBirth = new DateTime(1979, 10, 22),
                     Sex = Sex.Male,
                     Password = HashUtils.Hash("pass")
                 });
