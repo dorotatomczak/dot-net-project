@@ -13,7 +13,7 @@ namespace WebClinic.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppointmentsController : ControllerBase
+    public class AppointmentsController : Controller
     {
         private readonly IStringLocalizer<CalendarController> _localizer;
         private readonly ApplicationDbContext _context;
@@ -23,6 +23,7 @@ namespace WebClinic.Controllers.Api
             _localizer = localizer;
             _context = context;
         }
+
 
         // GET: api/Appointments
         [HttpGet]

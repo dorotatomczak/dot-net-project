@@ -9,6 +9,7 @@ namespace WebClinic.Models
     {
         Consultation,
         Cure,
+        [Display(Name = "Control check")]
         ControlCheck
     }
 

@@ -24,6 +24,11 @@ namespace WebClinic.Models.Users
         public DateTime DateOfBirth { get; set; }
         public Sex Sex { get; set; }
 
+        [NotMapped]
+        public string FullName {
+            get { return ToString(); }
+         }
+
         public override string ToString()
         {
             return FirstName + " " + LastName;

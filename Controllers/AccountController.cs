@@ -9,13 +9,13 @@ namespace WebClinic.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUserManager userManager;
-        private readonly IStringLocalizer<AccountController> localizer;
+        private readonly IUserManager _userManager;
+        private readonly IStringLocalizer<AccountController> _localizer;
 
         public AccountController(IUserManager userManager, IStringLocalizer<AccountController> localizer)
         {
-            this.userManager = userManager;
-            this.localizer = localizer;
+            this._userManager = userManager;
+            this._localizer = localizer;
         }
 
         [HttpGet]
@@ -40,14 +40,14 @@ namespace WebClinic.Controllers
                     Sex = model.Sex.GetValueOrDefault(),
                     DateOfBirth = model.DateOfBirth.GetValueOrDefault()
                 };
-                var result = userManager.CreatePatient(patient, model.Password);
+                var result = _userManager.CreatePatient(patient, model.Password);
                 if (result != null)
                 {
-                    userManager.SignIn(HttpContext, result.Email, model.Password);
+                    _userManager.SignIn(HttpContext, result.Email, model.Password);
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 } else
                 {
-                    ModelState.AddModelError("EmailExist", localizer["EmailExists"]);
+                    ModelState.AddModelError("EmailExist", _localizer["EmailExists"]);
                 }
             }
             return View(model);
@@ -68,7 +68,7 @@ namespace WebClinic.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (userManager.SignIn(HttpContext, model.Email, model.Password)) {
+                if (_userManager.SignIn(HttpContext, model.Email, model.Password)) {
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
@@ -77,7 +77,7 @@ namespace WebClinic.Controllers
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 } else
                 {
-                    ModelState.AddModelError("WrongCredentials", localizer["WrongCredentials"]);
+                    ModelState.AddModelError("WrongCredentials", _localizer["WrongCredentials"]);
                 }
             }
             return View(model);
@@ -87,7 +87,7 @@ namespace WebClinic.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
         {
-            userManager.SignOut(HttpContext);
+            _userManager.SignOut(HttpContext);
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
