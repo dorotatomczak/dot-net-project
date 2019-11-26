@@ -44,7 +44,8 @@ namespace WebClinic.Models.Users
         [EnumDataType(typeof(Sex))]
         [Display(Name = "Sex")]
         public Sex Sex { get; set; }
-        
+        public string Role { get; set; }
+
         [NotMapped]
         public string FullName {
             get { return ToString(); }
