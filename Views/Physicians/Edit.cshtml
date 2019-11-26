@@ -3,11 +3,12 @@
 
 @inject IViewLocalizer Localizer
 
-@model WebClinic.Models.PatientViewModel
+@model WebClinic.Models.PhysicianViewModel
 @{
-    ViewBag.Title = @Localizer["Edit patient"];
+    ViewBag.Title = @Localizer["Edit physician"];
 }
-<h4>@Localizer["Patient"]</h4>
+<h4>@Localizer["Physician"]</h4>
+<hr />
 @if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
 {
     if (ViewBag.Message != null)
@@ -63,25 +64,20 @@ else
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.IllnessHistory, htmlAttributes: new { @class = "control-label col-md-10" })
+                @Html.LabelFor(model => model.Specialization, htmlAttributes: new { @class = "control-label col-md-10" })
                 <div class="col-md-15">
-                    @Html.EditorFor(model => model.IllnessHistory, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.RecommendedDrugs, htmlAttributes: new { @class = "control-label col-md-10" })
-                <div class="col-md-15">
-                    @Html.EditorFor(model => model.RecommendedDrugs, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("Specialization", Html.GetEnumSelectList<PhysicianSpecialization>(), @Localizer["Select specialization"].Value, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Specialization, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                <input type="submit" value=@Localizer["Save"]>
+                <input type="submit" value=@Localizer["Save"] class="btn btn-default" />
             </div>
         </div>
         <div>
             <div class="col-md-offset-2 col-md-10">
-                <a asp-action="AllPatients">@Localizer["Back"]</a>
+                <a asp-action="AllPhysicians">@Localizer["Back"]</a>
             </div>
         </div>
         if (ViewBag.Message != null)

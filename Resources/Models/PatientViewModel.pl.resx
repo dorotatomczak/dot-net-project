@@ -144,4 +144,7 @@
   <data name="Sex" xml:space="preserve">
     <value>Płeć</value>
   </data>
+  <data name="The '{0}' field is required." xml:space="preserve">
+    <value>Pole '{0}' jest wymagane.</value>
+  </data>
 </root>

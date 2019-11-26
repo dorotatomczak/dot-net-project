@@ -46,7 +46,8 @@ namespace WebClinic.Controllers
                 {
                     _userManager.SignIn(HttpContext, result.Email, model.Password);
                     return RedirectToAction(nameof(HomeController.Index), "Home");
-                } else
+                }
+                else
                 {
                     ModelState.AddModelError("EmailExist", _localizer["EmailExists"]);
                 }
@@ -69,14 +70,16 @@ namespace WebClinic.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_userManager.SignIn(HttpContext, model.Email, model.Password)) {
+                if (_userManager.SignIn(HttpContext, model.Email, model.Password))
+                {
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
                         return Redirect(returnUrl);
                     }
                     return RedirectToAction(nameof(HomeController.Index), "Home");
-                } else
+                }
+                else
                 {
                     ModelState.AddModelError("WrongCredentials", _localizer["WrongCredentials"]);
                 }

@@ -16,7 +16,5 @@ namespace WebClinic
             {
                 webBuilder.UseStartup<Startup>();
             });
-
-
     }
 }
