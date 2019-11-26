@@ -4,27 +4,47 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebClinic.Models.Users
 {
+
     public enum Sex
     {
+        [Display(Name = "Male")]
         Male,
+        [Display(Name = "Female")]
         Female,
         [Display(Name = "It's complicated")]
-        ItsComplicated
+        ItsComplicatedpublic
     }
+
+
 
     public class AppUser
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Display(Name = "Id")]
         public int Id { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
-        public DateTime DateOfBirth { get; set; }
-        public Sex Sex { get; set; }
 
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [Display(Name = "FirstName")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "LastName")]
+        public string LastName { get; set; }
+
+        [Display(Name = "DateOfBirth")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = false)]
+        public DateTime DateOfBirth { get; set; }
+
+        [EnumDataType(typeof(Sex))]
+        [Display(Name = "Sex")]
+        public Sex Sex { get; set; }
+        
         [NotMapped]
         public string FullName {
             get { return ToString(); }
