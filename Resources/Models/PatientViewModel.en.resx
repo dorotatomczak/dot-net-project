@@ -129,6 +129,9 @@
   <data name="IllnessHistory" xml:space="preserve">
     <value>Illness history</value>
   </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last name</value>
+  </data>
   <data name="It's complicated" xml:space="preserve">
     <value>It's complicated</value>
   </data>

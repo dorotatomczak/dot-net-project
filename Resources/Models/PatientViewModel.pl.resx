@@ -129,6 +129,9 @@
   <data name="IllnessHistory" xml:space="preserve">
     <value>Historia choroby</value>
   </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Nazwisko</value>
+  </data>
   <data name="It's complicated" xml:space="preserve">
     <value>To skomplikowane</value>
   </data>
@@ -138,6 +141,7 @@
   <data name="Male" xml:space="preserve">
     <value>Mężczyzna</value>
   </data>
+>>>>>>> patients-list
   <data name="RecommendedDrugs" xml:space="preserve">
     <value>Zalecone leki</value>
   </data>

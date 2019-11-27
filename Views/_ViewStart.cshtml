@@ -1,4 +1,24 @@
-﻿@{
-    // TODO [Ania] Change to login layout
-    Layout = "_ReceptionistLayout";
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+    {
+        if (HttpContextAccessor.HttpContext.User.IsInRole("Patient"))
+        {
+            Layout = "_PatientLayout";
+        }
+        else if (HttpContextAccessor.HttpContext.User.IsInRole("Physician"))
+        {
+            Layout = "_PhysicianLayout";
+        }
+        else if (HttpContextAccessor.HttpContext.User.IsInRole("Receptionist"))
+        {
+            Layout = "_ReceptionistLayout";
+        }
+    }
+    else
+    {
+        // TODO [Ania] Change to login layout
+        Layout = "_ReceptionistLayout";
+    }
 }

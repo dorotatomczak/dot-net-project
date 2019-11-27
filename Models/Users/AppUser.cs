@@ -11,7 +11,7 @@ namespace WebClinic.Models.Users
         [Display(Name = "Female")]
         Female,
         [Display(Name = "It's complicated")]
-        ItsComplicatedpublic
+        ItsComplicated
     }
 
     public class AppUser
@@ -28,7 +28,6 @@ namespace WebClinic.Models.Users
         public DateTime DateOfBirth { get; set; }
         public Sex Sex { get; set; }
         public string Role { get; set; }
-
         [NotMapped]
         public string FullName
         {
