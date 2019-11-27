@@ -3,6 +3,7 @@
 @{
     var requestCultureFeature = Context.Features.Get<IRequestCultureFeature>();
     var cultureName = requestCultureFeature.RequestCulture.Culture.Name;
+    var user = Context.User;
 }
 
 @await Html.PartialAsync("Calendar/_CalendarPartial")

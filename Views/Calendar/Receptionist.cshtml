@@ -1,0 +1,50 @@
+﻿@using WebClinic.Models.Users;
+
+@{
+    var availablePatients = ViewBag.Patients as List<Patient>;
+    var selectListPatients = availablePatients
+        .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.FullName })
+        .ToList();
+
+    var availablePhysicians = ViewBag.Physicians as List<Physician>;
+    var selectListPhysicians = availablePhysicians
+        .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.FullName })
+        .ToList();
+
+    int selectedPatient = -1;
+    int selectedPhysician = -1;
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Filters</div>
+    <div class="panel-body">
+        <div class="row m-2">
+            <select data-live-search="true" class="selectpicker m-1" name="physicians"
+                    asp-for="@selectedPhysician" asp-items="@selectListPhysicians">
+                <option value="" disabled selected>Choose physician</option>
+                <option class="text-primary">None</option>
+            </select>
+            <select data-live-search="true" class="selectpicker m-1" name="patients"
+                    asp-for="@selectedPatient" asp-items="@selectListPatients">
+                <option value="" disabled selected>Choose patient</option>
+                <option class="text-primary">None</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+@{
+    if (Context.Request.Cookies["ViewType"] == "Day")
+    {
+        @await Html.PartialAsync("Calendar/_DayPartial")
+    }
+    else if (Context.Request.Cookies["ViewType"] == "Week")
+    {
+        @await Html.PartialAsync("Calendar/_WeekPartial")
+    }
+    else if (Context.Request.Cookies["ViewType"] == "Month")
+    {
+        @await Html.PartialAsync("Calendar/_MonthPartial")
+    }
+    // TODO: else Error page
+}

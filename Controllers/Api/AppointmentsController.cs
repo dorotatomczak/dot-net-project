@@ -36,7 +36,7 @@ namespace WebClinic.Controllers.Api
         }
 
 
-        // GET: api/Events
+        // GET: api/Appointments/Events
         // Get Appointments as CalendarEvents
         [HttpGet]
         [Route("events")]

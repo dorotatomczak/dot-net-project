@@ -12,10 +12,8 @@ namespace WebClinic.Models.Users
         [Display(Name = "Female")]
         Female,
         [Display(Name = "It's complicated")]
-        ItsComplicatedpublic
+        ItsComplicated
     }
-
-
 
     public class AppUser
     {
