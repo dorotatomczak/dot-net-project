@@ -9,68 +9,69 @@ using WebClinic.Data;
 using WebClinic.Models;
 using WebClinic.Models.Users;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebClinic.Controllers
 {
     [Route("[controller]/[action]")]
     //[Authorize(Roles = "Receptionist,Physician")]
-    public class PatientsController : Controller
+    public class PhysiciansController : Controller
     {
         private ApplicationDbContext _context;
 
-        public PatientsController(ApplicationDbContext _context)
+        public PhysiciansController(ApplicationDbContext _context)
         {
             this._context = _context;
         }
 
         [HttpGet]
-        public IActionResult AllPatients()
+        public IActionResult AllPhysicians()
         {
-            var model = new PatientsViewModel();
-            model.Patients = _context.Patients.ToList();
+            var model = new PhysiciansViewModel();
+            model.Physicians = _context.Physicians.ToList();
             return View(model);
         }
 
         [HttpGet("{id}")]
         public IActionResult Details(int id)
         {
-            var patient = _context.Patients.Find(id);
-            if (patient == null)
+            var physician = _context.Physicians.Find(id);
+
+            if (physician == null)
             {
                 return NotFound();
             }
-            var model = PatientViewModel.GetModel(patient);
+
+            var model = PhysicianViewModel.GetModel(physician);
             return View(model);
         }
 
         [HttpGet("{id}")]
         public IActionResult Edit(int id)
         {
-            var patient = _context.Patients.Find(id);
-            if (patient == null)
+            var physician = _context.Physicians.Find(id);
+
+            if (physician == null)
             {
                 return NotFound();
             }
 
-            var model = PatientViewModel.GetModel(patient);
+            var model = PhysicianViewModel.GetModel(physician);
             return View(model);
         }
 
         [HttpPost("{id}")]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [FromForm] PatientViewModel model)
+        public IActionResult Edit(int id, [FromForm] PhysicianViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var patient = _context.Patients.Find(id);
+                var physician = _context.Physicians.Find(id);
                 if (id != model.Id)
                 {
                     return BadRequest();
                 }
-                model.UpdatePatient(ref patient);
+                model.UpdatePhysician(ref physician);
 
-                _context.Entry(patient).State = EntityState.Modified;
+                _context.Entry(physician).State = EntityState.Modified;
 
                 try
                 {
@@ -78,7 +79,7 @@ namespace WebClinic.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PatientExists(id))
+                    if (!PhysicianExists(id))
                     {
                         return NotFound();
                     }
@@ -87,7 +88,8 @@ namespace WebClinic.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(PatientsController.Details), new { id });
+
+                return RedirectToAction(nameof(PhysiciansController.Details), new { id });
             }
             else
             {
@@ -98,21 +100,21 @@ namespace WebClinic.Controllers
         [HttpGet("{id}")]
         public IActionResult Delete(int id)
         {
-            var patient = _context.Patients.Find(id);
-            if (patient == null)
+            var Physician = _context.Physicians.Find(id);
+            if (Physician == null)
             {
                 return NotFound();
             }
 
-            _context.Patients.Remove(patient);
+            _context.Physicians.Remove(Physician);
             _context.SaveChanges();
 
-            return RedirectToAction(nameof(PatientsController.AllPatients));
+            return RedirectToAction(nameof(PhysiciansController.AllPhysicians));
         }
 
-        private bool PatientExists(int id)
+        private bool PhysicianExists(int id)
         {
-            return _context.Patients.Any(e => e.Id == id);
+            return _context.Physicians.Any(e => e.Id == id);
         }
     }
 }

@@ -129,4 +129,7 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="Select sex" xml:space="preserve">
+    <value>Select sex</value>
+  </data>
 </root>

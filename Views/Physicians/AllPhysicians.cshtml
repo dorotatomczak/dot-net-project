@@ -1,0 +1,56 @@
+﻿@model WebClinic.Models.PhysiciansViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Physicians"];
+}
+
+<h1>@Localizer["Physicians"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Localizer["ID"]
+            </th>
+            <th>
+                @Localizer["First name"]
+            </th>
+            <th>
+                @Localizer["Last name"]
+            </th>
+            <th>
+                @Localizer["PhysicianSpecialization"]
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Physicians)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Specialization)
+            </td>
+            <td>
+                <!-- not working yet [Ania] -->
+                @Html.ActionLink(@Localizer["Appointments"].Value, "Appointments", new { id = item.Id }) |
+                @Html.ActionLink(@Localizer["Details"].Value, "Details", new { id = item.Id }) |
+                @Html.ActionLink(@Localizer["Edit"].Value, "Edit", new { id = item.Id }) |
+                @Html.ActionLink(@Localizer["Delete"].Value, "Delete", new { id = item.Id })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

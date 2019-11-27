@@ -1,10 +1,10 @@
-﻿@model WebClinic.Models.PatientViewModel
+﻿@model WebClinic.Models.PhysicianViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 
 @inject IViewLocalizer Localizer
 
 <div>
-    <h4>@Localizer["Patient"]</h4>
+    <h4>@Localizer["Physician"]</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -42,21 +42,15 @@
         </dd>
 
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IllnessHistory)
+            @Html.DisplayNameFor(model => model.Specialization)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IllnessHistory)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RecommendedDrugs)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RecommendedDrugs)
+            @Html.DisplayFor(model => model.Specialization)
         </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">@Localizer["Edit"]</a> |
     <a asp-action="Delete" asp-route-id="@Model.Id">@Localizer["Delete"]</a> |
-    <a asp-action="AllPatients">@Localizer["Back"]</a>
+    <a asp-action="AllPhysicians">@Localizer["Back"]</a>
 </div>
