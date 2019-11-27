@@ -23,7 +23,6 @@ namespace WebClinic.Models.Users
     {
         public PhysicianSpecialization Specialization { get; set; }
         //working hours?
-        [JsonIgnore]
         public ICollection<Appointment> Appointments { get; set; }
     }
 }

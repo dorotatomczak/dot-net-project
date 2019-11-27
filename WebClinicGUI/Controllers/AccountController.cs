@@ -9,12 +9,12 @@ namespace WebClinic.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUserManager _userManager;
+        //private readonly IUserManager _userManager;
         private readonly IStringLocalizer<AccountController> _localizer;
 
-        public AccountController(IUserManager userManager, IStringLocalizer<AccountController> localizer)
+        public AccountController(IStringLocalizer<AccountController> localizer) //IUserManager userManager)
         {
-            this._userManager = userManager;
+            //this._userManager = userManager;
             this._localizer = localizer;
         }
 
@@ -41,15 +41,15 @@ namespace WebClinic.Controllers
                     DateOfBirth = model.DateOfBirth.GetValueOrDefault(),
                     Role = Role.Patient
                 };
-                var result = _userManager.CreatePatient(patient, model.Password);
-                if (result != null)
-                {
-                    _userManager.SignIn(HttpContext, result.Email, model.Password);
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
-                } else
-                {
-                    ModelState.AddModelError("EmailExist", _localizer["EmailExists"]);
-                }
+                //var result = _userManager.CreatePatient(patient, model.Password);
+                //if (result != null)
+                //{
+                //    _userManager.SignIn(HttpContext, result.Email, model.Password);
+                //    return RedirectToAction(nameof(HomeController.Index), "Home");
+                //} else
+                //{
+                //    ModelState.AddModelError("EmailExist", _localizer["EmailExists"]);
+                //}
             }
             return View(model);
         }
@@ -69,17 +69,17 @@ namespace WebClinic.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_userManager.SignIn(HttpContext, model.Email, model.Password)) {
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
-                } else
-                {
-                    ModelState.AddModelError("WrongCredentials", _localizer["WrongCredentials"]);
-                }
+                //if (_userManager.SignIn(HttpContext, model.Email, model.Password)) {
+                //    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                //        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                //    {
+                //        return Redirect(returnUrl);
+                //    }
+                //    return RedirectToAction(nameof(HomeController.Index), "Home");
+                //} else
+                //{
+                //    ModelState.AddModelError("WrongCredentials", _localizer["WrongCredentials"]);
+                //}
             }
             return View(model);
         }
@@ -88,7 +88,7 @@ namespace WebClinic.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
         {
-            _userManager.SignOut(HttpContext);
+            //_userManager.SignOut(HttpContext);
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }

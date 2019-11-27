@@ -6,12 +6,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using WebClinic.Data;
 
 namespace WebClinic
@@ -37,8 +35,8 @@ namespace WebClinic
                     options.LogoutPath = "/Account/Logout";
                 });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<IUserManager, UserManager>();
 
@@ -61,19 +59,19 @@ namespace WebClinic
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddSwaggerGen(conf =>
-            {
-                conf.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "API documentation",
-                    Contact = new OpenApiContact
-                    {
-                        Email = "s165283@student.pg.edu.pl",
-                        Name = "Anna Malizjusz"
-                    }
-                });
-            });
+            //services.AddSwaggerGen(conf =>
+            //{
+            //    conf.SwaggerDoc("v1", new OpenApiInfo
+            //    {
+            //        Version = "v1",
+            //        Title = "API documentation",
+            //        Contact = new OpenApiContact
+            //        {
+            //            Email = "s165283@student.pg.edu.pl",
+            //            Name = "Anna Malizjusz"
+            //        }
+            //    });
+            //});
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -112,12 +110,12 @@ namespace WebClinic
 
             app.UseStaticFiles();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-               c.SwaggerEndpoint("/swagger/v1/swagger.json", "API documentation");
-               c.RoutePrefix = "swagger";
-            });
+            //app.UseSwagger();
+            //app.UseSwaggerUI(c =>
+            //{
+            //   c.SwaggerEndpoint("/swagger/v1/swagger.json", "API documentation");
+            //   c.RoutePrefix = "swagger";
+            //});
 
             app.UseHttpsRedirection();
 

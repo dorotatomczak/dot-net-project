@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace WebClinic.Migrations
+namespace WebClinicAPI.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,6 +19,7 @@ namespace WebClinic.Migrations
                     LastName = table.Column<string>(nullable: true),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
                     Sex = table.Column<int>(nullable: false),
+                    Role = table.Column<string>(nullable: true),
                     Discriminator = table.Column<string>(nullable: false),
                     IllnessHistory = table.Column<string>(nullable: true),
                     RecommendedDrugs = table.Column<string>(nullable: true),
@@ -59,26 +60,26 @@ namespace WebClinic.Migrations
 
             migrationBuilder.InsertData(
                 table: "AppUsers",
-                columns: new[] { "Id", "DateOfBirth", "Discriminator", "Email", "FirstName", "LastName", "Password", "Sex", "IllnessHistory", "RecommendedDrugs" },
-                values: new object[] { 6, new DateTime(1979, 10, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Patient", "patient1@gmail.com", "Geralt", "Z Rivii", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 0, null, null });
+                columns: new[] { "Id", "DateOfBirth", "Discriminator", "Email", "FirstName", "LastName", "Password", "Role", "Sex", "IllnessHistory", "RecommendedDrugs" },
+                values: new object[] { 6, new DateTime(1979, 10, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Patient", "patient1@gmail.com", "Geralt", "Z Rivii", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", "Patient", 0, null, null });
 
             migrationBuilder.InsertData(
                 table: "AppUsers",
-                columns: new[] { "Id", "DateOfBirth", "Discriminator", "Email", "FirstName", "LastName", "Password", "Sex", "Specialization" },
+                columns: new[] { "Id", "DateOfBirth", "Discriminator", "Email", "FirstName", "LastName", "Password", "Role", "Sex", "Specialization" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1970, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Physician", "physician1@gmail.com", "Nathan", "Drake", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 0, 5 },
-                    { 2, new DateTime(1975, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Physician", "physician2@gmail.com", "Elena", "Fisher", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 1, 4 },
-                    { 3, new DateTime(1967, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Physician", "physician3@gmail.com", "Victor", "Sullivan", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 0, 8 }
+                    { 1, new DateTime(1970, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Physician", "physician1@gmail.com", "Nathan", "Drake", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", "Physician", 0, 5 },
+                    { 2, new DateTime(1975, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Physician", "physician2@gmail.com", "Elena", "Fisher", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", "Physician", 1, 4 },
+                    { 3, new DateTime(1967, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Physician", "physician3@gmail.com", "Victor", "Sullivan", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", "Physician", 0, 8 }
                 });
 
             migrationBuilder.InsertData(
                 table: "AppUsers",
-                columns: new[] { "Id", "DateOfBirth", "Discriminator", "Email", "FirstName", "LastName", "Password", "Sex" },
+                columns: new[] { "Id", "DateOfBirth", "Discriminator", "Email", "FirstName", "LastName", "Password", "Role", "Sex" },
                 values: new object[,]
                 {
-                    { 4, new DateTime(1990, 4, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "Receptionist", "receptionist1@gmail.com", "Rajesh", "Koothrappali", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 0 },
-                    { 5, new DateTime(1986, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Receptionist", "receptionist2@gmail.com", "Penny", "Hofstadter", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", 1 }
+                    { 4, new DateTime(1990, 4, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "Receptionist", "receptionist1@gmail.com", "Rajesh", "Koothrappali", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", "Receptionist", 0 },
+                    { 5, new DateTime(1986, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Receptionist", "receptionist2@gmail.com", "Penny", "Hofstadter", "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=", "Receptionist", 1 }
                 });
 
             migrationBuilder.CreateIndex(

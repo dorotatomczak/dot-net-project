@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebClinic.Data;
 
-namespace WebClinic.Migrations
+namespace WebClinicAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191124164820_FixDateOfBirths")]
-    partial class FixDateOfBirths
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,7 @@ namespace WebClinic.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WebClinic.Models.Appointment", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Appointment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +47,7 @@ namespace WebClinic.Migrations
                     b.ToTable("Appointments");
                 });
 
-            modelBuilder.Entity("WebClinic.Models.Users.AppUser", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Users.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,6 +73,9 @@ namespace WebClinic.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Sex")
                         .HasColumnType("int");
 
@@ -85,9 +86,9 @@ namespace WebClinic.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("AppUser");
                 });
 
-            modelBuilder.Entity("WebClinic.Models.Users.Patient", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Users.Patient", b =>
                 {
-                    b.HasBaseType("WebClinic.Models.Users.AppUser");
+                    b.HasBaseType("WebClinicAPI.Models.Users.AppUser");
 
                     b.Property<string>("IllnessHistory")
                         .HasColumnType("nvarchar(max)");
@@ -106,13 +107,14 @@ namespace WebClinic.Migrations
                             FirstName = "Geralt",
                             LastName = "Z Rivii",
                             Password = "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=",
+                            Role = "Patient",
                             Sex = 0
                         });
                 });
 
-            modelBuilder.Entity("WebClinic.Models.Users.Physician", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Users.Physician", b =>
                 {
-                    b.HasBaseType("WebClinic.Models.Users.AppUser");
+                    b.HasBaseType("WebClinicAPI.Models.Users.AppUser");
 
                     b.Property<int>("Specialization")
                         .HasColumnType("int");
@@ -128,6 +130,7 @@ namespace WebClinic.Migrations
                             FirstName = "Nathan",
                             LastName = "Drake",
                             Password = "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=",
+                            Role = "Physician",
                             Sex = 0,
                             Specialization = 5
                         },
@@ -139,6 +142,7 @@ namespace WebClinic.Migrations
                             FirstName = "Elena",
                             LastName = "Fisher",
                             Password = "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=",
+                            Role = "Physician",
                             Sex = 1,
                             Specialization = 4
                         },
@@ -150,14 +154,15 @@ namespace WebClinic.Migrations
                             FirstName = "Victor",
                             LastName = "Sullivan",
                             Password = "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=",
+                            Role = "Physician",
                             Sex = 0,
                             Specialization = 8
                         });
                 });
 
-            modelBuilder.Entity("WebClinic.Models.Users.Receptionist", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Users.Receptionist", b =>
                 {
-                    b.HasBaseType("WebClinic.Models.Users.AppUser");
+                    b.HasBaseType("WebClinicAPI.Models.Users.AppUser");
 
                     b.HasDiscriminator().HasValue("Receptionist");
 
@@ -170,6 +175,7 @@ namespace WebClinic.Migrations
                             FirstName = "Rajesh",
                             LastName = "Koothrappali",
                             Password = "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=",
+                            Role = "Receptionist",
                             Sex = 0
                         },
                         new
@@ -180,17 +186,18 @@ namespace WebClinic.Migrations
                             FirstName = "Penny",
                             LastName = "Hofstadter",
                             Password = "10/w7o2juYBrGMh32/KbveULW9jk2tejpyUAD+uC6PE=",
+                            Role = "Receptionist",
                             Sex = 1
                         });
                 });
 
-            modelBuilder.Entity("WebClinic.Models.Appointment", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Appointment", b =>
                 {
-                    b.HasOne("WebClinic.Models.Users.Patient", "Patient")
+                    b.HasOne("WebClinicAPI.Models.Users.Patient", "Patient")
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId");
 
-                    b.HasOne("WebClinic.Models.Users.Physician", "Physician")
+                    b.HasOne("WebClinicAPI.Models.Users.Physician", "Physician")
                         .WithMany("Appointments")
                         .HasForeignKey("PhysicianId");
                 });
