@@ -117,19 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back" xml:space="preserve">
-    <value>Back</value>
+  <data name="Female" xml:space="preserve">
+    <value>Białka</value>
   </data>
-  <data name="Edit patient" xml:space="preserve">
-    <value>Edit patient</value>
+  <data name="It's complicated" xml:space="preserve">
+    <value>Nie podało się do ojca ni matki</value>
   </data>
-  <data name="Patient" xml:space="preserve">
-    <value>Patient</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="Select sex" xml:space="preserve">
-    <value>Select sex</value>
+  <data name="Male" xml:space="preserve">
+    <value>Mąż</value>
   </data>
 </root>

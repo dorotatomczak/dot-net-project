@@ -117,19 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back" xml:space="preserve">
-    <value>Back</value>
+  <data name="DateOfBirth" xml:space="preserve">
+    <value>Data urodzenia</value>
   </data>
-  <data name="Edit patient" xml:space="preserve">
-    <value>Edit patient</value>
+  <data name="Female" xml:space="preserve">
+    <value>Kobieta</value>
   </data>
-  <data name="Patient" xml:space="preserve">
-    <value>Patient</value>
+  <data name="FirstName" xml:space="preserve">
+    <value>Imię</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+  <data name="IllnessHistory" xml:space="preserve">
+    <value>Historia choroby</value>
   </data>
-  <data name="Select sex" xml:space="preserve">
-    <value>Select sex</value>
+  <data name="LastName" xml:space="preserve">
+    <value>Nazwisko</value>
+  </data>
+  <data name="It's complicated" xml:space="preserve">
+    <value>To skomplikowane</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Nazwisko</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Mężczyzna</value>
+  </data>
+>>>>>>> patients-list
+  <data name="RecommendedDrugs" xml:space="preserve">
+    <value>Zalecone leki</value>
+  </data>
+  <data name="Sex" xml:space="preserve">
+    <value>Płeć</value>
+  </data>
+  <data name="The '{0}' field is required." xml:space="preserve">
+    <value>Pole '{0}' jest wymagane.</value>
   </data>
 </root>
