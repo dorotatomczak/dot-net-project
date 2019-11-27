@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using WebClinic.Data;
+using Microsoft.OpenApi.Models;
 
 namespace WebClinicAPI
 {
@@ -23,6 +24,20 @@ namespace WebClinicAPI
             services.AddDbContext<ApplicationDbContext>(options =>
               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSwaggerGen(conf =>
+            {
+                conf.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API documentation",
+                    Contact = new OpenApiContact
+                    {
+                        Email = "s165283@student.pg.edu.pl",
+                        Name = "Anna Malizjusz"
+                    }
+                });
+            });
+
             services.AddControllers();
         }
 
@@ -33,6 +48,13 @@ namespace WebClinicAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API documentation");
+                c.RoutePrefix = "swagger";
+            });
 
             app.UseHttpsRedirection();
 
