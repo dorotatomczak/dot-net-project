@@ -120,6 +120,9 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Data urodzenia</value>
   </data>
+  <data name="Female" xml:space="preserve">
+    <value>Kobieta</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>Imię</value>
   </data>
@@ -129,6 +132,16 @@
   <data name="LastName" xml:space="preserve">
     <value>Nazwisko</value>
   </data>
+  <data name="It's complicated" xml:space="preserve">
+    <value>To skomplikowane</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Nazwisko</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Mężczyzna</value>
+  </data>
+>>>>>>> patients-list
   <data name="RecommendedDrugs" xml:space="preserve">
     <value>Zalecone leki</value>
   </data>

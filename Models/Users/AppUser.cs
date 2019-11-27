@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebClinic.Models.Users
 {
-
     public enum Sex
     {
         [Display(Name = "Male")]
@@ -12,10 +11,8 @@ namespace WebClinic.Models.Users
         [Display(Name = "Female")]
         Female,
         [Display(Name = "It's complicated")]
-        ItsComplicatedpublic
+        ItsComplicated
     }
-
-
 
     public class AppUser
     {
@@ -44,6 +41,7 @@ namespace WebClinic.Models.Users
         [EnumDataType(typeof(Sex))]
         [Display(Name = "Sex")]
         public Sex Sex { get; set; }
+
         public string Role { get; set; }
 
         [NotMapped]
