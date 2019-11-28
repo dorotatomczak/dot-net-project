@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using WebClinic.Data;
+using WebClinicGUI.Services;
 
 namespace WebClinic
 {
@@ -90,11 +91,12 @@ namespace WebClinic
                     new AcceptLanguageHeaderRequestCultureProvider() // = use web browser settings otherwise
                 };
             });
-            services.AddHttpClient("API", c =>
+            services.AddHttpClient(INetworkClient.ApiName, c =>
             {
-                c.BaseAddress = new Uri("http://localhost:65145/api/");
+                c.BaseAddress = INetworkClient.ServerUrl;
             });
-            }
+            services.AddScoped<INetworkClient, NetworkClient>();
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

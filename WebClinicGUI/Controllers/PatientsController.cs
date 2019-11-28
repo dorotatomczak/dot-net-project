@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using WebClinic.Data;
 using WebClinic.Models;
 using WebClinic.Models.Users;
+using WebClinicGUI.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,30 +19,25 @@ namespace WebClinic.Controllers
     //[Authorize(Roles = "Receptionist,Physician")]
     public class PatientsController : Controller
     {
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly INetworkClient _client;
 
-        public PatientsController(IHttpClientFactory clientFactory)
+        public PatientsController(INetworkClient client)
         {
-            _clientFactory = clientFactory;
+            _client = client;
         }
 
         [HttpGet]
-
         public async Task<IActionResult> AllPatients()
         {
             var model = new PatientsViewModel();
-            var request = new HttpRequestMessage(HttpMethod.Get, "Patients");
-            var client = _clientFactory.CreateClient("API");
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var responseString = await response.Content.ReadAsStringAsync();
-                model.Patients = JsonConvert.DeserializeObject<List<Patient>>(responseString).ToList();
+                model.Patients = await _client.SendRequestAsync<List<Patient>>(HttpMethod.Get, "Patients");
                 return View(model);
             }
-            else
+            catch (HttpRequestException)
             {
+                //show error
                 model.Patients = new List<Patient>();
                 return View(model);
             }
