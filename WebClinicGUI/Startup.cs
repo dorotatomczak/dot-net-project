@@ -38,8 +38,6 @@ namespace WebClinic
             //services.AddDbContext<ApplicationDbContext>(options =>
             //  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<IUserManager, UserManager>();
-
             services.AddDistributedMemoryCache();
 
             services.AddControllersWithViews();

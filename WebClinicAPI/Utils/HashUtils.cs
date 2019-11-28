@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebClinic.Utils
+namespace WebClinicAPI.Utils
 {
     public static class HashUtils
     {
