@@ -3,28 +3,26 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using WebClinic.Models;
 using WebClinic.Models.Users;
+using WebClinicGUI.Services;
 
 namespace WebClinic.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IStringLocalizer<AccountController> _localizer;
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly INetworkClient _client;
 
 
-        public AccountController(IStringLocalizer<AccountController> localizer, IHttpClientFactory clientFactory)
+        public AccountController(IStringLocalizer<AccountController> localizer, INetworkClient client)
         {
             _localizer = localizer;
-            _clientFactory = clientFactory;
+            _client = client;
         }
 
         [HttpGet]
@@ -52,14 +50,12 @@ namespace WebClinic.Controllers
                     Password = model.Password
                 };
 
-                var client = _clientFactory.CreateClient("API");
-                var response = await client.PostAsJsonAsync("/api/Account/Register", patient);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
+                    await _client.SendRequestWithBodyAsync<Patient>(HttpMethod.Post, "Account/Register", patient);
                     return RedirectToAction("Login");
                 }
-                else
+                catch (HttpRequestException)
                 {
                     ModelState.AddModelError("EmailExist", _localizer["EmailExists"]);
                 }
@@ -87,26 +83,24 @@ namespace WebClinic.Controllers
                     Email = model.Email,
                     Password = model.Password,
                 };
-                var client = _clientFactory.CreateClient("API");
-                var response = await client.PostAsJsonAsync("/api/Account/Authenticate", userDto);
 
-                if (response.IsSuccessStatusCode)
+
+                try
                 {
-                    var responseString = await response.Content.ReadAsStringAsync();
-                    var user = JsonConvert.DeserializeObject<AppUser>(responseString);
-
+                    var user = await _client.SendRequestWithBodyAsync<AppUser>(HttpMethod.Post, "Account/Authenticate", userDto);
                     ClaimsIdentity identity = new ClaimsIdentity(this.GetUserClaims(user), CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/") 
+                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
                         return Redirect(returnUrl);
                     }
                     return RedirectToAction(nameof(HomeController.Index), "Home");
-                } else
+                }
+                catch (HttpRequestException)
                 {
                     ModelState.AddModelError("WrongCredentials", _localizer["WrongCredentials"]);
                 }
