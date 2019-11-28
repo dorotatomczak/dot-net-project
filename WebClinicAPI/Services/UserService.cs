@@ -62,9 +62,6 @@ namespace WebClinicAPI.Services
             _context.SaveChanges();
 
             return patient;
-            //return _context.Patients
-            //    .Where(u => u.Email == patient.Email && u.Password == patient.Password)
-            //    .SingleOrDefault();
         }
     }
 }

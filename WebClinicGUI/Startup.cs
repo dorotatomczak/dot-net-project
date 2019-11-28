@@ -36,9 +36,6 @@ namespace WebClinic
                     options.LogoutPath = "/Account/Logout";
                 });
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddDistributedMemoryCache();
 
             services.AddControllersWithViews();
@@ -90,7 +87,7 @@ namespace WebClinic
             });
             services.AddHttpClient("API", c =>
             {
-                c.BaseAddress = new Uri("http://localhost:65145/api/");
+                c.BaseAddress = new Uri("http://localhost:51210/api/");
             });
             }
 

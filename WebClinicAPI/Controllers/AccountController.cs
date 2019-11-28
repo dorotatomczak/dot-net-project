@@ -18,7 +18,19 @@ namespace WebClinicAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("register")]
+        [HttpPost("Authenticate")]
+        public IActionResult Authenticate([FromBody]AppUser userDto)
+        {
+            var user = _userService.Authenticate(userDto.Email, userDto.Password);
+
+            if (user == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(user);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Register")]
         public IActionResult Register([FromBody]Patient patient)
         {
             try
