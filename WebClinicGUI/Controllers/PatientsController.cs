@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WebClinic.Data;
 using WebClinic.Models;
 using WebClinic.Models.Users;
@@ -17,20 +18,33 @@ namespace WebClinic.Controllers
     //[Authorize(Roles = "Receptionist,Physician")]
     public class PatientsController : Controller
     {
-       // private ApplicationDbContext _context;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public PatientsController()//ApplicationDbContext _context)
+        public PatientsController(IHttpClientFactory clientFactory)
         {
-          //  this._context = _context;
+            _clientFactory = clientFactory;
         }
 
         [HttpGet]
-        public IActionResult AllPatients()
+
+        public async Task<IActionResult> AllPatients()
         {
-            //var model = new PatientsViewModel();
-            //model.Patients = _context.Patients.ToList();
-            //return View(model);
-            return NotFound();
+            var model = new PatientsViewModel();
+            var request = new HttpRequestMessage(HttpMethod.Get, "Patients");
+            var client = _clientFactory.CreateClient("API");
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                model.Patients = JsonConvert.DeserializeObject<List<Patient>>(responseString).ToList();
+                return View(model);
+            }
+            else
+            {
+                model.Patients = new List<Patient>();
+                return View(model);
+            }
         }
 
         [HttpGet("{id}")]
