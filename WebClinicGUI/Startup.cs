@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -89,7 +90,11 @@ namespace WebClinic
                     new AcceptLanguageHeaderRequestCultureProvider() // = use web browser settings otherwise
                 };
             });
-        }
+            services.AddHttpClient("API", c =>
+            {
+                c.BaseAddress = new Uri("http://localhost:65145/api/");
+            });
+            }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
