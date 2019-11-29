@@ -29,7 +29,7 @@ namespace WebClinic.Controllers
             _contextAccessor = accessor;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public IActionResult Index()
         {
