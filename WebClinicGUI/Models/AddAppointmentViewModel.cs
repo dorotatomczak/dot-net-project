@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using WebClinic.Models.Users;
+using WebClinicGUI.Models.Users;
 
-namespace WebClinic.Models
+namespace WebClinicGUI.Models
 {
     public class PhysicianFreeTerm
     {

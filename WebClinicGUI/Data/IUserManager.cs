@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using WebClinic.Models.Users;
+using WebClinicGUI.Models.Users;
 
-namespace WebClinic.Data
+namespace WebClinicGUI.Data
 {
     public interface IUserManager
     {

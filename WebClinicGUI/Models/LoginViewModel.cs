@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebClinic.Models
+namespace WebClinicGUI.Models
 {
     public class LoginViewModel
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace WebClinic.Models.Users
+namespace WebClinicGUI.Models.Users
 {
     public class Patient : AppUser
     {

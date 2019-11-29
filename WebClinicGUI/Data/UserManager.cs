@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Security.Claims;
-using WebClinic.Models.Users;
+using WebClinicGUI.Models.Users;
 
-namespace WebClinic.Data
+namespace WebClinicGUI.Data
 {
     public class UserManager : IUserManager
     {

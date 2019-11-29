@@ -1,18 +1,15 @@
-﻿@using WebClinic.Models.Users;
+﻿@using WebClinicGUI.Models.Users;
+@using WebClinicGUI.Models.Calendar;
 
+@model ReceptionistFiltersViewModel
 @{
-    var availablePatients = ViewBag.Patients as List<Patient>;
-    var selectListPatients = availablePatients
+    var selectListPatients = @Model.Patients
         .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.FullName })
         .ToList();
 
-    var availablePhysicians = ViewBag.Physicians as List<Physician>;
-    var selectListPhysicians = availablePhysicians
+    var selectListPhysicians = @Model.Physicians
         .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.FullName })
         .ToList();
-
-    int selectedPatientId = -1;
-    int selectedPhysicianId = -1;
 }
 
 <div class="panel panel-default">
@@ -20,12 +17,12 @@
     <div class="panel-body">
         <div class="row m-2">
             <select data-live-search="true" class="selectpicker m-1" name="physicians"
-                    asp-for="@selectedPhysicianId" asp-items="@selectListPhysicians">
+                    asp-for="@Model.PhysicianId" asp-items="@selectListPhysicians">
                 <option value="" disabled selected>Choose physician</option>
                 <option class="text-primary">None</option>
             </select>
             <select data-live-search="true" class="selectpicker m-1" name="patients"
-                    asp-for="@selectedPatientId" asp-items="@selectListPatients">
+                    asp-for="@Model.PatientId" asp-items="@selectListPatients">
                 <option value="" disabled selected>Choose patient</option>
                 <option class="text-primary">None</option>
             </select>

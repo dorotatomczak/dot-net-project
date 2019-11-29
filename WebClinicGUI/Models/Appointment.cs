@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using WebClinic.Models.Users;
+using WebClinicGUI.Models.Users;
 
-namespace WebClinic.Models
+namespace WebClinicGUI.Models
 {
     public enum AppointmentType
     {

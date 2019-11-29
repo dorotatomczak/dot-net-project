@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using WebClinic.Models.Users;
+using WebClinicGUI.Controllers;
+using WebClinicGUI.Models.Calendar;
+using WebClinicGUI.Models.Users;
 using WebClinicGUI.Services;
 
 namespace WebClinic.Controllers
@@ -59,10 +61,18 @@ namespace WebClinic.Controllers
         [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> Receptionist()
         {
-            ViewBag.Patients = await GetAllPatientsAsync();
-            ViewBag.Physicians = await GetAllPhysiciansAsync();
+            var patients = await GetAllPatientsAsync();
+            var physicians = await GetAllPhysiciansAsync();
+
+            ReceptionistFiltersViewModel receptionistFiltersVM =
+                new ReceptionistFiltersViewModel { 
+                    Patients = patients,
+                    Physicians = physicians,
+                    PatientId = -1,
+                    PhysicianId = -1};
+
             ViewBag.ViewType = Request.Cookies["ViewType"];
-            return View();
+            return View(receptionistFiltersVM);
         }
 
         [Authorize(Roles = "Patient")]

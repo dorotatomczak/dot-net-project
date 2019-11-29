@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebClinic.Models.Users;
+﻿using System.Collections.Generic;
+using WebClinicGUI.Models.Users;
 
-namespace WebClinic.Models
+namespace WebClinicGUI.Models
 {
     public class PhysiciansViewModel
     {
