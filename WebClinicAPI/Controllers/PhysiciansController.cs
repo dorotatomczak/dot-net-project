@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using WebClinicAPI.Data;
 using WebClinicAPI.Models.Users;
 
-namespace WebClinic.Controllers.Api
+namespace WebClinicAPI.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]

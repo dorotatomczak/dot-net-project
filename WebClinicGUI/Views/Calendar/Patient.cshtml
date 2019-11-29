@@ -1,6 +1,6 @@
 ﻿@using WebClinicGUI.Models.Calendar
 @model EventsViewModel
-
+@* Create calendar *@
 @{
     if (Context.Request.Cookies["ViewType"] == "Day")
     {
@@ -16,3 +16,8 @@
     }
     // TODO: else Error page
 }
+
+@* Load events *@
+<script>
+    loadEvents(@Html.Raw(Json.Serialize(@Model.Events)));
+</script>

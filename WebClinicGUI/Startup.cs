@@ -43,6 +43,8 @@ namespace WebClinicGUI
                 options.ResourcesPath = "Resources";
             });
 
+            services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
+
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
@@ -53,6 +55,12 @@ namespace WebClinicGUI
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddHttpClient(INetworkClient.ApiName, c =>
+            {
+                c.BaseAddress = INetworkClient.ServerUrl;
+            });
+            services.AddScoped<INetworkClient, NetworkClient>();
 
             //services.AddSwaggerGen(conf =>
             //{
@@ -84,11 +92,6 @@ namespace WebClinicGUI
                     new AcceptLanguageHeaderRequestCultureProvider() // = use web browser settings otherwise
                 };
             });
-            services.AddHttpClient(INetworkClient.ApiName, c =>
-            {
-                c.BaseAddress = INetworkClient.ServerUrl;
-            });
-            services.AddScoped<INetworkClient, NetworkClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
