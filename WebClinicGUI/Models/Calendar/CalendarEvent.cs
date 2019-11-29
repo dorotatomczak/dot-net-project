@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebClinic.Models.Calendar
+namespace WebClinicGUI.Models.Calendar
 {
     public class CalendarEvent
     {

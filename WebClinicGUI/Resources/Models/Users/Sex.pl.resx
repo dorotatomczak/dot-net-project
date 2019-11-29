@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Female" xml:space="preserve">
-    <value>Białka</value>
+    <value>Kobieta</value>
   </data>
   <data name="It's complicated" xml:space="preserve">
-    <value>Nie podało się do ojca ni matki</value>
+    <value>To skomplikowane</value>
   </data>
   <data name="Male" xml:space="preserve">
-    <value>Mąż</value>
+    <value>Mężczyzna</value>
   </data>
 </root>

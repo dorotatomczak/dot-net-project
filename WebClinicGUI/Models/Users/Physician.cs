@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace WebClinic.Models.Users
+namespace WebClinicGUI.Models.Users
 {
 
     public enum PhysicianSpecialization

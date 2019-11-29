@@ -129,7 +129,4 @@
   <data name="PhysicianSpecialization" xml:space="preserve">
     <value>Specialization</value>
   </data>
-  <data name="Sex" xml:space="preserve">
-    <value>Sex</value>
-  </data>
 </root>

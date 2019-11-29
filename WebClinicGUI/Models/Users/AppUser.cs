@@ -1,8 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebClinic.Models.Users
+namespace WebClinicGUI.Models.Users
 {
     public enum Sex
     {
