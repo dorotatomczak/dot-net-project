@@ -37,11 +37,6 @@ namespace WebClinic
                     options.LogoutPath = "/Account/Logout";
                 });
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddTransient<IUserManager, UserManager>();
-
             services.AddDistributedMemoryCache();
 
             services.AddControllersWithViews();

@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using WebClinic.Utils;
 using WebClinicAPI.Models;
 using WebClinicAPI.Models.Users;
+using WebClinicAPI.Utils;
 
-namespace WebClinic.Data
+namespace WebClinicAPI.Data
 {
     public class ApplicationDbContext : DbContext
     {

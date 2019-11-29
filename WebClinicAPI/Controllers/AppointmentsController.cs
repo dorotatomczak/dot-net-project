@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using WebClinic.Data;
+using WebClinicAPI.Data;
 using WebClinicAPI.Models;
 using WebClinicAPI.Models.Calendar;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace WebClinicAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppointmentsController : Controller
+    public class AppointmentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 

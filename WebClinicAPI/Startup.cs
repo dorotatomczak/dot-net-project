@@ -4,7 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using WebClinic.Data;
+using WebClinicAPI.Data;
+using WebClinicAPI.Services;
 using Microsoft.OpenApi.Models;
 
 namespace WebClinicAPI
@@ -23,6 +24,8 @@ namespace WebClinicAPI
         {
             services.AddDbContext<ApplicationDbContext>(options =>
               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<IUserService, UserService>();
 
             services.AddSwaggerGen(conf =>
             {
