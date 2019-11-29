@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace WebClinicAPI.Utils
+namespace WebClinicGUI.Utils
 {
     public static class HashUtils
     {

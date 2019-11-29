@@ -1,13 +1,11 @@
-﻿@using WebClinicGUI.Models.Users;
-@using WebClinicGUI.Models.Calendar;
-
-@model ReceptionistFiltersViewModel
+﻿@using WebClinicGUI.Models.Calendar
+@model EventsViewModel
 @{
-    var selectListPatients = @Model.Patients
+    var selectListPatients = @Model.Resources.Patients
         .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.FullName })
         .ToList();
 
-    var selectListPhysicians = @Model.Physicians
+    var selectListPhysicians = @Model.Resources.Physicians
         .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.FullName })
         .ToList();
 }
@@ -15,21 +13,25 @@
 <div class="panel panel-default">
     <div class="panel-heading">Filters</div>
     <div class="panel-body">
-        <div class="row m-2">
-            <select data-live-search="true" class="selectpicker m-1" name="physicians"
-                    asp-for="@Model.PhysicianId" asp-items="@selectListPhysicians">
-                <option value="" disabled selected>Choose physician</option>
-                <option class="text-primary">None</option>
-            </select>
-            <select data-live-search="true" class="selectpicker m-1" name="patients"
-                    asp-for="@Model.PatientId" asp-items="@selectListPatients">
-                <option value="" disabled selected>Choose patient</option>
-                <option class="text-primary">None</option>
-            </select>
-        </div>
+        <form class="form-horizontal" asp-controller="Calendar"
+              asp-action="ApplyFilters" method="post">
+            <div class="form-group">
+                <select data-live-search="true" class="selectpicker m-1" name="physicianId"
+                        asp-items="@selectListPhysicians" onchange="this.form.submit();">
+                    <option value="" disabled selected>Choose physician</option>
+                    <option class="text-primary" value="0">None</option>
+                </select>
+                <select data-live-search="true" class="selectpicker m-1" name="patientId"
+                        asp-items="@selectListPatients" onchange="this.form.submit();">
+                    <option value="" disabled selected>Choose patient</option>
+                    <option class="text-primary" value="0">None</option>
+                </select>
+            </div>
+        </form>
     </div>
 </div>
 
+@* Create calendar *@
 @{
     if (Context.Request.Cookies["ViewType"] == "Day")
     {
@@ -43,5 +45,9 @@
     {
         @await Html.PartialAsync("Calendar/_MonthPartial")
     }
-    // TODO: else Error page
 }
+
+@* Load events *@
+<script>
+    loadEvents(@Html.Raw(Json.Serialize(@Model.Events)));
+</script>

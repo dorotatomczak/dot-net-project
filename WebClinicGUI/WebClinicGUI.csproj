@@ -30,11 +30,11 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\Views\Shared\_SelectLanguagePartial.pl.resx">
-      <CustomToolNamespace>WebClinic.Language</CustomToolNamespace>
+      <CustomToolNamespace>WebClinicGUI.Language</CustomToolNamespace>
       <Generator></Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Shared\_SelectLanguagePartial.en.resx">
-      <CustomToolNamespace>WebClinic.Language</CustomToolNamespace>
+      <CustomToolNamespace>WebClinicGUI.Language</CustomToolNamespace>
       <Generator></Generator>
     </EmbeddedResource>
   </ItemGroup>

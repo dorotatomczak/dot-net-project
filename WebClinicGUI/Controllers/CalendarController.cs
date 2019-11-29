@@ -12,7 +12,7 @@ using WebClinicGUI.Models.Calendar;
 using WebClinicGUI.Models.Users;
 using WebClinicGUI.Services;
 
-namespace WebClinic.Controllers
+namespace WebClinicGUI.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
@@ -61,32 +61,52 @@ namespace WebClinic.Controllers
         [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> Receptionist()
         {
+            var events = await GetEventsAsync();
             var patients = await GetAllPatientsAsync();
             var physicians = await GetAllPhysiciansAsync();
 
-            ReceptionistFiltersViewModel receptionistFiltersVM =
-                new ReceptionistFiltersViewModel { 
+            AvailableResources resources = new AvailableResources
+            { 
                     Patients = patients,
-                    Physicians = physicians,
-                    PatientId = -1,
-                    PhysicianId = -1};
+                    Physicians = physicians
+            };
+
+            EventsViewModel eventsViewModel = new EventsViewModel
+            {
+                Resources = resources,
+                Events = events
+            };
 
             ViewBag.ViewType = Request.Cookies["ViewType"];
-            return View(receptionistFiltersVM);
+            return View(eventsViewModel);
         }
 
         [Authorize(Roles = "Patient")]
-        public IActionResult Patient()
+        public async Task<IActionResult> Patient()
         {
+            var events = await GetEventsAsync();
+            EventsViewModel eventsViewModel = new EventsViewModel
+            {
+                Resources = null,
+                Events = events
+            };
+
             ViewBag.ViewType = Request.Cookies["ViewType"];
-            return View();
+            return View(eventsViewModel);
         }
 
         [Authorize(Roles = "Physician")]
-        public IActionResult Physician()
+        public async Task<IActionResult> Physician()
         {
+            var events = await GetEventsAsync();
+            EventsViewModel eventsViewModel = new EventsViewModel
+            {
+                Resources = null,
+                Events = events
+            };
+
             ViewBag.ViewType = Request.Cookies["ViewType"];
-            return View();
+            return View(eventsViewModel);
         }
 
         [HttpGet]
@@ -149,6 +169,54 @@ namespace WebClinic.Controllers
                 physicians = null;
             }
             return physicians;
+        }
+
+        [HttpPost]
+        public async Task<ViewResult> ApplyFilters([FromForm] int physicianId, [FromForm] int patientId)
+        {
+            // load again
+            var events = await GetEventsAsync(physicianId, patientId);
+            var patients = await GetAllPatientsAsync();
+            var physicians = await GetAllPhysiciansAsync();
+
+            AvailableResources resources = new AvailableResources
+            {
+                Patients = patients,
+                Physicians = physicians
+            };
+
+            EventsViewModel eventsViewModel = new EventsViewModel
+            {
+                Resources = resources,
+                Events = events
+            };
+
+            return View(nameof(Receptionist), eventsViewModel);
+        }
+
+        private async Task<List<CalendarEvent>> GetEventsAsync()
+        {
+            try {
+                return await _client.SendRequestAsync<List<CalendarEvent>>(HttpMethod.Get, "Appointments/Events");
+            }
+            catch (HttpRequestException)
+            {
+                // TODO: error
+                return null;
+            }
+        }
+
+        private async Task<List<CalendarEvent>> GetEventsAsync(int physicianId, int patientId)
+        {
+            try
+            {
+                return await _client.SendRequestAsync<List<CalendarEvent>>(HttpMethod.Get, "Appointments/Events?physicianId=" + physicianId + "&patientId=" + patientId);
+            }
+            catch (HttpRequestException)
+            {
+                // TODO: error
+                return null;
+            }
         }
     }
 }
