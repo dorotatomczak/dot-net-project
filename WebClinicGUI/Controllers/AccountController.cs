@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using WebClinic.Models;
-using WebClinic.Models.Users;
+using WebClinicGUI.Models;
+using WebClinicGUI.Models.Users;
 using WebClinicGUI.Services;
 
-namespace WebClinic.Controllers
+namespace WebClinicGUI.Controllers
 {
     public class AccountController : Controller
     {

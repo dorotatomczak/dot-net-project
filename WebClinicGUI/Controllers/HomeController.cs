@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebClinic.Models;
+using WebClinicGUI.Models;
 using Microsoft.Extensions.Localization;
 
-namespace WebClinic.Controllers
+namespace WebClinicGUI.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]

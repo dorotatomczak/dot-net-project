@@ -3,13 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using WebClinic.Data;
-using WebClinic.Models.Users;
+using WebClinicGUI.Models.Users;
 using Microsoft.EntityFrameworkCore;
-using WebClinic.Models;
+using WebClinicGUI.Models;
 using System.Collections.Generic;
 
-namespace WebClinic.Controllers
+namespace WebClinicGUI.Controllers
 {
     public class AddAppointmentController : Controller
     {

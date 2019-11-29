@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebClinic.Models;
+using WebClinicGUI.Models;
 
 
 namespace WebClinic.Controllers

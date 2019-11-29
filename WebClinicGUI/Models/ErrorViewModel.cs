@@ -1,6 +1,6 @@
 using System;
 
-namespace WebClinic.Models
+namespace WebClinicGUI.Models
 {
     public class ErrorViewModel
     {
