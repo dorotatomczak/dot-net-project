@@ -11,8 +11,8 @@
         .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.FullName })
         .ToList();
 
-    int selectedPatient = -1;
-    int selectedPhysician = -1;
+    int selectedPatientId = -1;
+    int selectedPhysicianId = -1;
 }
 
 <div class="panel panel-default">
@@ -20,12 +20,12 @@
     <div class="panel-body">
         <div class="row m-2">
             <select data-live-search="true" class="selectpicker m-1" name="physicians"
-                    asp-for="@selectedPhysician" asp-items="@selectListPhysicians">
+                    asp-for="@selectedPhysicianId" asp-items="@selectListPhysicians">
                 <option value="" disabled selected>Choose physician</option>
                 <option class="text-primary">None</option>
             </select>
             <select data-live-search="true" class="selectpicker m-1" name="patients"
-                    asp-for="@selectedPatient" asp-items="@selectListPatients">
+                    asp-for="@selectedPatientId" asp-items="@selectListPatients">
                 <option value="" disabled selected>Choose patient</option>
                 <option class="text-primary">None</option>
             </select>

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
-using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using WebClinic.Models.Users;
+using WebClinicGUI.Services;
 
 namespace WebClinic.Controllers
 {
@@ -18,18 +18,18 @@ namespace WebClinic.Controllers
     {
         private readonly IStringLocalizer<CalendarController> _localizer;
         private readonly ILogger<CalendarController> _logger;
-        private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly INetworkClient _client;
 
-        public CalendarController(ILogger<CalendarController> logger, IStringLocalizer<CalendarController> localizer, IHttpContextAccessor accessor)
+        public CalendarController(ILogger<CalendarController> logger, IStringLocalizer<CalendarController> localizer, IHttpContextAccessor accessor, INetworkClient client)
         {
             _localizer = localizer;
             _logger = logger;
-            _httpClient = new HttpClient();
+            _client = client;
             _contextAccessor = accessor;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IActionResult Index()
         {
@@ -40,26 +40,41 @@ namespace WebClinic.Controllers
         {
             if (_contextAccessor.HttpContext.User.IsInRole("Receptionist"))
             {
-                return RedirectToAction("Receptionist");
+                return RedirectToAction(nameof(CalendarController.Receptionist));
             }
             else if (_contextAccessor.HttpContext.User.IsInRole("Physician"))
             {
-                return RedirectToAction("Physician");
+                return RedirectToAction(nameof(CalendarController.Physician));
             }
             else if (_contextAccessor.HttpContext.User.IsInRole("Patient"))
             {
-                return RedirectToAction("Patient");
+                return RedirectToAction(nameof(CalendarController.Patient));
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(HomeController.Index));
             }
         }
 
-        public IActionResult Receptionist()
+        [Authorize(Roles = "Receptionist")]
+        public async Task<IActionResult> Receptionist()
         {
-            ViewBag.Patients = GetAllPatients();
-            ViewBag.Physicians = GetAllPhysicians();
+            ViewBag.Patients = await GetAllPatientsAsync();
+            ViewBag.Physicians = await GetAllPhysiciansAsync();
+            ViewBag.ViewType = Request.Cookies["ViewType"];
+            return View();
+        }
+
+        [Authorize(Roles = "Patient")]
+        public IActionResult Patient()
+        {
+            ViewBag.ViewType = Request.Cookies["ViewType"];
+            return View();
+        }
+
+        [Authorize(Roles = "Physician")]
+        public IActionResult Physician()
+        {
             ViewBag.ViewType = Request.Cookies["ViewType"];
             return View();
         }
@@ -96,45 +111,34 @@ namespace WebClinic.Controllers
             );
         }
 
-        private HttpResponseMessage ApiCallGet(string Url)
+        private async Task<List<Patient>> GetAllPatientsAsync()
         {
-            return _httpClient.GetAsync(Url).Result;
+            List<Patient> patients;
+            try
+            {
+                patients = await _client.SendRequestAsync<List<Patient>>(HttpMethod.Get, "Patients");
+            }
+            catch (HttpRequestException)
+            {
+                // TODO: error
+                patients = null;
+            }
+            return patients;
         }
 
-        private List<Patient> GetAllPatients()
+        private async Task<List<Physician>> GetAllPhysiciansAsync()
         {
-            var response = ApiCallGet("http://localhost:56174/api/patients");
-            if (response.IsSuccessStatusCode)
+            List<Physician> physicians;
+            try
             {
-                var result = response.Content.ReadAsStringAsync().Result;
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-                return JsonSerializer.Deserialize(result, typeof(List<Patient>), options) as List<Patient>;
+                physicians = await _client.SendRequestAsync<List<Physician>>(HttpMethod.Get, "Physicians");
             }
-            else
+            catch (HttpRequestException)
             {
-                return null;    // TODO: error
+                // TODO: error
+                physicians = null;
             }
-        }
-
-        private List<Physician> GetAllPhysicians()
-        {
-            var response = ApiCallGet("http://localhost:56174/api/physicians");
-            if (response.IsSuccessStatusCode)
-            {
-                var result = response.Content.ReadAsStringAsync().Result;
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-                return JsonSerializer.Deserialize(result, typeof(List<Physician>), options) as List<Physician>;
-            }
-            else
-            {
-                return null;    // TODO: error
-            }
+            return physicians;
         }
     }
 }
