@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebClinicGUI.Models;
 using WebClinicGUI.Models.Users;
@@ -11,7 +12,7 @@ using WebClinicGUI.Services;
 namespace WebClinicGUI.Controllers
 {
     [Route("[controller]/[action]")]
-    //[Authorize(Roles = "Receptionist,Physician")]
+    [Authorize(Roles = "Receptionist,Physician")]
     public class PatientsController : Controller
     {
         private readonly INetworkClient _client;
@@ -110,9 +111,16 @@ namespace WebClinicGUI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var patient = await _client.SendRequestAsync<Patient>(HttpMethod.Delete, $"Patients/{id}");
-
-            return RedirectToAction(nameof(PatientsController.AllPatients));
+            try
+            {
+                var patient = await _client.SendRequestAsync<Patient>(HttpMethod.Delete, $"Patients/{id}");
+                return RedirectToAction(nameof(PatientsController.AllPatients));
+            }
+            catch (HttpRequestException)
+            {
+                //show error
+                return View();
+            }
         }
     }
 }
