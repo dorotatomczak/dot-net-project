@@ -44,7 +44,6 @@ namespace WebClinicAPI.Controllers.Api
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        [Consumes("application/json")]
         public async Task<IActionResult> PutPatient(int id, [FromBody] Patient patient)
         {
             if (id != patient.Id)

@@ -123,4 +123,7 @@
   <data name="WrongCredentials" xml:space="preserve">
     <value>Incorrect email or password</value>
   </data>
+  <data name="WrongPassword" xml:space="preserve">
+    <value>Incorrect  password</value>
+  </data>
 </root>
