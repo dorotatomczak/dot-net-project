@@ -5,12 +5,6 @@ using WebClinicGUI.Models.Users;
 
 namespace WebClinicGUI.Models
 {
-    public class PhysicianFreeTerm
-    {
-        public Physician Physician { get; set; }
-        public DateTime FreeTerm { get; set; }
-    }
-
     public class AddAppointmentViewModel
     {
         [Required(ErrorMessage = "The '{0}' field is required.")]
@@ -27,7 +21,6 @@ namespace WebClinicGUI.Models
         [Display(Name = "Type of appointment")]
         [EnumDataType(typeof(AppointmentType))]
         public AppointmentType? AppointmentType { get; set; }
-
-        public List<PhysicianFreeTerm> FreeTerms { get; set; }
+        public List<Appointment> FreeTerms { get; set; }
     }
 }

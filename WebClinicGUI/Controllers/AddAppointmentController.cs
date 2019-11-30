@@ -7,60 +7,84 @@ using WebClinicGUI.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using WebClinicGUI.Models;
 using System.Collections.Generic;
+using WebClinicGUI.Services;
+using System.Net.Http;
+using System.Web;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace WebClinicGUI.Controllers
 {
     public class AddAppointmentController : Controller
     {
         private readonly IStringLocalizer<AddAppointmentController> _localizer;
-        //private readonly ApplicationDbContext _context;
+        private readonly INetworkClient _client;
 
-        public AddAppointmentController(IStringLocalizer<AddAppointmentController> localizer) //, ApplicationDbContext context)
+        public AddAppointmentController(IStringLocalizer<AddAppointmentController> localizer, INetworkClient client)
         {
             _localizer = localizer;
-           // _context = context;
+            _client = client;
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Index(PhysicianSpecialization specialization, DateTime date, AppointmentType appointmentType)
         {
-            var addApointmentVM = new AddAppointmentViewModel
+            var model = new AddAppointmentViewModel
             {
-                FreeTerms = new List<PhysicianFreeTerm>()
+                FreeTerms = new List<Appointment>()
             };
 
             if (date < DateTime.Now)
             {
-                return View(addApointmentVM);
+                return View(model);
             }
 
-            //var physicians = _context.Physicians
-            //    .Where(p => p.Specialization == specialization)
-            //    .ToList();
+            try
+            {
+                var builder = new StringBuilder("Appointments/free/?");
+                var query = HttpUtility.ParseQueryString(string.Empty);
+                query["specialization"] = specialization.ToString();
+                query["date"] = date.ToString();
+                query["type"] = appointmentType.ToString();
+                builder.Append(query.ToString());
+                model.FreeTerms = await _client.SendRequestAsync<List<Appointment>>(HttpMethod.Get, builder.ToString());
+                return View(model);
+            }
+            catch (HttpRequestException)
+            {
+                //show error
+                return View(model);
+            }
+        }
 
-            //int interval = 1; // 1 hour
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Select(int physicianId, DateTime time, AppointmentType type)
+        {
+            var userNameIdentifier = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.NameIdentifier));
 
-            //foreach (var physician in physicians)
-            //{
-            //    DateTime startSpan = new DateTime(date.Year, date.Month, date.Day, 8, 0, 0);
-            //    DateTime endSpan = new DateTime(date.Year, date.Month, date.Day, 16, 0, 0);
+            var userId = Convert.ToInt32(userNameIdentifier.Value.ToString());
 
-            //    while (startSpan < endSpan)
-            //    {
-            //        var result = physician.Appointments?.FirstOrDefault(a => a.Time == startSpan);
-            //        if (result == null)
-            //        {
-            //            addApointmentVM.FreeTerms.Add(new PhysicianFreeTerm
-            //            {
-            //                Physician = physician,
-            //                FreeTerm = startSpan
-            //            });
-            //        }
-            //        startSpan = startSpan.AddHours(interval);
-            //    }
-            //}
+            var appointment = new Appointment
+            {
+                PatientId = userId,
+                PhysicianId = physicianId,
+                Time = time,
+                Type = type,
+            };
 
-            return View(addApointmentVM);
+            try
+            {
+                await _client.SendRequestWithBodyAsync<Appointment>(HttpMethod.Post, "Appointments", appointment);
+                return RedirectToAction("Index", "Calendar");
+            }
+            catch (HttpRequestException)
+            {
+                //show error
+                return View();
+            }
         }
     }
 
