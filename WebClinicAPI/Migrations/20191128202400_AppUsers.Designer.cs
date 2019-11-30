@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebClinic.Data;
+using WebClinicAPI.Data;
 
-namespace WebClinic.Migrations
+namespace WebClinicAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191126210002_Role")]
-    partial class Role
+    [Migration("20191128202400_AppUsers")]
+    partial class AppUsers
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace WebClinic.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WebClinic.Models.Appointment", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Appointment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace WebClinic.Migrations
                     b.ToTable("Appointments");
                 });
 
-            modelBuilder.Entity("WebClinic.Models.Users.AppUser", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Users.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,9 +88,9 @@ namespace WebClinic.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("AppUser");
                 });
 
-            modelBuilder.Entity("WebClinic.Models.Users.Patient", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Users.Patient", b =>
                 {
-                    b.HasBaseType("WebClinic.Models.Users.AppUser");
+                    b.HasBaseType("WebClinicAPI.Models.Users.AppUser");
 
                     b.Property<string>("IllnessHistory")
                         .HasColumnType("nvarchar(max)");
@@ -114,9 +114,9 @@ namespace WebClinic.Migrations
                         });
                 });
 
-            modelBuilder.Entity("WebClinic.Models.Users.Physician", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Users.Physician", b =>
                 {
-                    b.HasBaseType("WebClinic.Models.Users.AppUser");
+                    b.HasBaseType("WebClinicAPI.Models.Users.AppUser");
 
                     b.Property<int>("Specialization")
                         .HasColumnType("int");
@@ -162,9 +162,9 @@ namespace WebClinic.Migrations
                         });
                 });
 
-            modelBuilder.Entity("WebClinic.Models.Users.Receptionist", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Users.Receptionist", b =>
                 {
-                    b.HasBaseType("WebClinic.Models.Users.AppUser");
+                    b.HasBaseType("WebClinicAPI.Models.Users.AppUser");
 
                     b.HasDiscriminator().HasValue("Receptionist");
 
@@ -193,13 +193,13 @@ namespace WebClinic.Migrations
                         });
                 });
 
-            modelBuilder.Entity("WebClinic.Models.Appointment", b =>
+            modelBuilder.Entity("WebClinicAPI.Models.Appointment", b =>
                 {
-                    b.HasOne("WebClinic.Models.Users.Patient", "Patient")
+                    b.HasOne("WebClinicAPI.Models.Users.Patient", "Patient")
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId");
 
-                    b.HasOne("WebClinic.Models.Users.Physician", "Physician")
+                    b.HasOne("WebClinicAPI.Models.Users.Physician", "Physician")
                         .WithMany("Appointments")
                         .HasForeignKey("PhysicianId");
                 });
