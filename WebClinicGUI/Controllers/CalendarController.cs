@@ -199,7 +199,7 @@ namespace WebClinicGUI.Controllers
         {
             try
             {
-                return await _client.SendRequestAsync<List<Appointment>>(HttpMethod.Get, "Appointments");
+                return await _client.SendRequestAsync<List<Appointment>>(HttpMethod.Get, "Appointments?physicianId=" + physicianId + "&patientId=" + patientId);
             }
             catch (HttpRequestException)
             {

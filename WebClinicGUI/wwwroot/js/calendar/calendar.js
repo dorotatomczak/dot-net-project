@@ -4,6 +4,11 @@ function _configureEventsAction() {
     dp.eventMoveHandling = "Disabled";
     dp.eventResizeHandling = "Disabled";
     dp.onEventClicked = function (args) {
+        appointment = args.e.data.appointment;
+        $('#time').text(appointment.time);
+        $('#patient').text(appointment.patient.fullName);
+        $('#physician').text(appointment.physician.fullName);
+        $('#type').text(appointment.type);
         $('#modal-event-show').modal('show');
     };
 }
