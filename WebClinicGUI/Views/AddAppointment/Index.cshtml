@@ -9,6 +9,7 @@
 }
 
 <h2>@Localizer["Create new appointment"]</h2>
+@Html.ValidationMessage("TryAgain", new { @class = "text-danger" })
 
 <p>
     @using (Html.BeginForm("Index", "AddAppointment", FormMethod.Get, "Search"))

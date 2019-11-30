@@ -5,13 +5,13 @@ using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using WebClinicGUI.Models.Users;
 using WebClinicGUI.Models;
-using System.Collections.Generic;
 using WebClinicGUI.Services;
 using System.Net.Http;
 using System.Web;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System.Linq;
 
 namespace WebClinicGUI.Controllers
 {
@@ -53,7 +53,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
+                ModelState.AddModelError("TryAgain", _localizer["TryAgain"]);
                 return View(model);
             }
         }
@@ -81,7 +81,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
+                ModelState.AddModelError("TryAgain", _localizer["TryAgain"]);
                 return View();
             }
         }
