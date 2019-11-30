@@ -1,27 +1,30 @@
 ﻿let dp = null;
 
-function _disableEventsActions() {
+function _configureEventsAction() {
     dp.eventMoveHandling = "Disabled";
     dp.eventResizeHandling = "Disabled";
+    dp.onEventClicked = function (args) {
+        $('#modal-event-show').modal('show');
+    };
 }
 
 function createCalendarWeek() {
     dp = new DayPilot.Calendar("dp");
     dp.viewType = "Week";
-    _disableEventsActions();
+    _configureEventsAction();
     dp.init();
 }
 
 function createCalendarDay() {
     dp = new DayPilot.Calendar("dp");
     dp.viewType = "Day";
-    _disableEventsActions();
+    _configureEventsAction();
     dp.init();
 }
 
 function createCalendarMonth() {
     dp = new DayPilot.Month("dp");
-    _disableEventsActions();
+    _configureEventsAction();
     dp.init();
 }
 

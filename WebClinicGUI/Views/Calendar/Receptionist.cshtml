@@ -35,20 +35,22 @@
     </div>
 </div>
 
+@await Html.PartialAsync("Calendar/_EventModalPartial")
+
 @* Create calendar *@
 @{
-    if (Context.Request.Cookies["ViewType"] == "Day")
-    {
-        @await Html.PartialAsync("Calendar/_DayPartial")
-    }
-    else if (Context.Request.Cookies["ViewType"] == "Week")
-    {
-        @await Html.PartialAsync("Calendar/_WeekPartial")
-    }
-    else if (Context.Request.Cookies["ViewType"] == "Month")
-    {
-        @await Html.PartialAsync("Calendar/_MonthPartial")
-    }
+if (Context.Request.Cookies["ViewType"] == "Day")
+{
+@await Html.PartialAsync("Calendar/_DayPartial")
+}
+else if (Context.Request.Cookies["ViewType"] == "Week")
+{
+@await Html.PartialAsync("Calendar/_WeekPartial")
+}
+else if (Context.Request.Cookies["ViewType"] == "Month")
+{
+@await Html.PartialAsync("Calendar/_MonthPartial")
+}
 }
 
 @* Load events *@

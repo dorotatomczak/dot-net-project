@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using WebClinicGUI.Controllers;
+using WebClinicGUI.Models;
 using WebClinicGUI.Models.Calendar;
 using WebClinicGUI.Models.Users;
 using WebClinicGUI.Services;
@@ -194,10 +195,11 @@ namespace WebClinicGUI.Controllers
             return View(nameof(Receptionist), eventsViewModel);
         }
 
-        private async Task<List<CalendarEvent>> GetEventsAsync()
+        private async Task<List<Appointment>> GetAppointmentsAsync(int physicianId = 0, int patientId = 0)
         {
-            try {
-                return await _client.SendRequestAsync<List<CalendarEvent>>(HttpMethod.Get, "Appointments/Events");
+            try
+            {
+                return await _client.SendRequestAsync<List<Appointment>>(HttpMethod.Get, "Appointments");
             }
             catch (HttpRequestException)
             {
@@ -206,17 +208,15 @@ namespace WebClinicGUI.Controllers
             }
         }
 
-        private async Task<List<CalendarEvent>> GetEventsAsync(int physicianId, int patientId)
+        private async Task<List<CalendarEvent>> GetEventsAsync(int physicianId = 0, int patientId = 0)
         {
-            try
+            var appointments = await GetAppointmentsAsync(physicianId, patientId);
+            List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
+            foreach (Appointment app in appointments)
             {
-                return await _client.SendRequestAsync<List<CalendarEvent>>(HttpMethod.Get, "Appointments/Events?physicianId=" + physicianId + "&patientId=" + patientId);
+                calendarEvents.Add(CalendarEvent.FromAppointment(app));
             }
-            catch (HttpRequestException)
-            {
-                // TODO: error
-                return null;
-            }
+            return calendarEvents;
         }
     }
 }

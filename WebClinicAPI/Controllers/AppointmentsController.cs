@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebClinicAPI.Data;
 using WebClinicAPI.Models;
-using WebClinicAPI.Models.Calendar;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -25,67 +24,39 @@ namespace WebClinicAPI.Controllers
 
         // GET: api/Appointments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments([FromQuery] int physicianId, [FromQuery] int patientId)
         {
-            return await _context.Appointments
-                .Include(a => a.Patient)
-                .Include(a => a.Physician)
-                .ToListAsync();
-        }
-
-
-        // GET: api/Appointments/Events
-        // Get Appointments as CalendarEvents
-        [HttpGet]
-        [Route("events")]
-        public ICollection<CalendarEvent> GetEvents([FromQuery] int physicianId, [FromQuery] int patientId)
-        {
-            List<Appointment> appointments;
             if (physicianId != 0 && patientId != 0)
             {
-                appointments = _context.Appointments
+                return await _context.Appointments
                 .Include(a => a.Patient)
                 .Include(a => a.Physician)
                 .Where(a => a.PhysicianId == physicianId && a.PatientId == patientId)
-                .ToList();
+                .ToListAsync();
             }
             else if (physicianId != 0)
             {
-                appointments = _context.Appointments
+                return await _context.Appointments
                 .Include(a => a.Patient)
                 .Include(a => a.Physician)
                 .Where(a => a.PhysicianId == physicianId)
-                .ToList();
+                .ToListAsync();
             }
             else if (patientId != 0)
             {
-                appointments = _context.Appointments
+                return await _context.Appointments
                 .Include(a => a.Patient)
                 .Include(a => a.Physician)
                 .Where(a => a.PatientId == patientId)
-                .ToList();
+                .ToListAsync();
             }
             else
             {
-                appointments = _context.Appointments
+                return await _context.Appointments
                 .Include(a => a.Patient)
                 .Include(a => a.Physician)
-                .ToList();
+                .ToListAsync();
             }
-
-            ICollection<CalendarEvent> events = new HashSet<CalendarEvent>();
-            foreach (var appointment in appointments)
-            {
-                events.Add(new CalendarEvent
-                {
-                    Start = appointment.Time,
-                    End = appointment.Time + CalendarEvent.DefaultEventTimeSpan,
-                    Text = "Doctor: " + appointment.Physician.ToString() + ", " +
-                           "Patient: " + appointment.Patient.ToString() + ", " +
-                           "Time: " + appointment.Time.ToString()
-                });
-            }
-            return events;
         }
 
         // GET: api/Appointments/5
