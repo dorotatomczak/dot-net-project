@@ -1,4 +1,8 @@
 ﻿@using WebClinicGUI.Models.Calendar
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
 @model EventsViewModel
 @{
     var selectListPatients = @Model.Resources.Patients
@@ -11,20 +15,20 @@
 }
 
 <div class="panel panel-default">
-    <div class="panel-heading">Filters</div>
+    <div class="panel-heading">@Localizer["Filters"]</div>
     <div class="panel-body">
         <form class="form-horizontal" asp-controller="Calendar"
               asp-action="ApplyFilters" method="post">
             <div class="form-group">
                 <select data-live-search="true" class="selectpicker m-1" name="physicianId"
                         asp-items="@selectListPhysicians" onchange="this.form.submit();">
-                    <option value="" disabled selected>Choose physician</option>
-                    <option class="text-primary" value="0">None</option>
+                    <option value="" disabled selected>@Localizer["Choose physician"]</option>
+                    <option class="text-primary" value="0">@Localizer["None"]</option>
                 </select>
                 <select data-live-search="true" class="selectpicker m-1" name="patientId"
                         asp-items="@selectListPatients" onchange="this.form.submit();">
-                    <option value="" disabled selected>Choose patient</option>
-                    <option class="text-primary" value="0">None</option>
+                    <option value="" disabled selected>@Localizer["Choose patient"]</option>
+                    <option class="text-primary" value="0">@Localizer["None"]</option>
                 </select>
             </div>
         </form>
