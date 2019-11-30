@@ -3,15 +3,15 @@
 @{
     var requestCultureFeature = Context.Features.Get<IRequestCultureFeature>();
     var cultureName = requestCultureFeature.RequestCulture.Culture.Name;
+    var user = Context.User;
 }
 
 @await Html.PartialAsync("Calendar/_CalendarPartial")
 
 <script type="text/javascript">
-    createCalendarWeek();
+    createCalendarDay();
     try {
         setLocale("@cultureName");
-        loadEvents();
     }
     catch (err) {
         console.log(err.message);

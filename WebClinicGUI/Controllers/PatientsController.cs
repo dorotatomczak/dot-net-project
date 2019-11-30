@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using WebClinicGUI.Models;
 using WebClinicGUI.Models.Users;
 using WebClinicGUI.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace WebClinic.Controllers
+namespace WebClinicGUI.Controllers
 {
     [Route("[controller]/[action]")]
     //[Authorize(Roles = "Receptionist,Physician")]
