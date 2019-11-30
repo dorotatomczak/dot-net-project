@@ -1,89 +1,104 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using WebClinicGUI.Models;
+using WebClinicGUI.Models.Users;
+using WebClinicGUI.Services;
 
 namespace WebClinicGUI.Controllers
 {
     [Route("[controller]/[action]")]
-    //[Authorize(Roles = "Receptionist,Physician")]
+    [Authorize(Roles = "Receptionist,Physician")]
     public class PhysiciansController : Controller
     {
-        //private ApplicationDbContext _context;
+        private readonly INetworkClient _client;
 
-        public PhysiciansController()//ApplicationDbContext _context)
+        public PhysiciansController(INetworkClient client)
         {
-          //  this._context = _context;
+            _client = client;
         }
 
         [HttpGet]
-        public IActionResult AllPhysicians()
+        public async Task<IActionResult> AllPhysicians()
         {
-            //var model = new PhysiciansViewModel();
-            //model.Physicians = _context.Physicians.ToList();
-            //return View(model);
-            return NotFound();
+            try
+            {
+                var model = new PhysiciansViewModel();
+                model.Physicians = new List<Physician>();
+
+                model.Physicians = await _client.SendRequestAsync<List<Physician>>(HttpMethod.Get, "Physicians");
+                return View(model);
+            }
+            catch (HttpRequestException)
+            {
+                //show error
+                return View();
+            }
         }
 
         [HttpGet("{id}")]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            //var physician = _context.Physicians.Find(id);
+            try
+            {
+                var physician = await _client.SendRequestAsync<Physician>(HttpMethod.Get, $"Physicians/{id}");
 
-            //if (physician == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var model = PhysicianViewModel.GetModel(physician);
-            //return View(model);
-            return NotFound();
+                if (physician == null)
+                {
+                    return NotFound();
+                }
+                var model = PhysicianViewModel.GetModel(physician);
+                return View(model);
+            }
+            catch (HttpRequestException)
+            {
+                //show error
+                return View();
+            }
         }
 
         [HttpGet("{id}")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            //var physician = _context.Physicians.Find(id);
+            try
+            {
+                var physician = await _client.SendRequestAsync<Physician>(HttpMethod.Get, $"Physicians/{id}");
 
-            //if (physician == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var model = PhysicianViewModel.GetModel(physician);
-            //return View(model);
-            return NotFound();
+                if (physician == null)
+                {
+                    return NotFound();
+                }
+                var model = PhysicianViewModel.GetModel(physician);
+                return View(model);
+            }
+            catch (HttpRequestException)
+            {
+                //show error
+                return View();
+            }
         }
 
         [HttpPost("{id}")]
-        public IActionResult Edit(int id, [FromForm] PhysicianViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [FromForm] PhysicianViewModel model)
         {
             if (ModelState.IsValid)
             {
-                //var physician = _context.Physicians.Find(id);
-                //if (id != model.Id)
-                //{
-                //    return BadRequest();
-                //}
-                //model.UpdatePhysician(ref physician);
+                try
+                {
+                    var physician = await _client.SendRequestAsync<Physician>(HttpMethod.Get, $"Physicians/{id}");
+                    model.UpdatePhysician(ref physician);
 
-                //_context.Entry(physician).State = EntityState.Modified;
-
-                //try
-                //{
-                //    _context.SaveChanges();
-                //}
-                //catch (DbUpdateConcurrencyException)
-                //{
-                //    if (!PhysicianExists(id))
-                //    {
-                //        return NotFound();
-                //    }
-                //    else
-                //    {
-                //        throw;
-                //    }
-                //}
-
-                return RedirectToAction(nameof(PhysiciansController.Details), new { id });
+                    await _client.SendRequestWithBodyAsync<Physician>(HttpMethod.Put, $"Physicians/{id}", physician);
+                    return RedirectToAction(nameof(PhysiciansController.Details), new { id });
+                }
+                catch (HttpRequestException)
+                {
+                    //show error
+                    return View();
+                }
             }
             else
             {
@@ -92,24 +107,18 @@ namespace WebClinicGUI.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            //var Physician = _context.Physicians.Find(id);
-            //if (Physician == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //_context.Physicians.Remove(Physician);
-            //_context.SaveChanges();
-
-            return RedirectToAction(nameof(PhysiciansController.AllPhysicians));
-        }
-
-        private bool PhysicianExists(int id)
-        {
-            // return _context.Physicians.Any(e => e.Id == id);
-            return false;
+            try
+            {
+                var physician = await _client.SendRequestAsync<Physician>(HttpMethod.Delete, $"Physicians/{id}");
+                return RedirectToAction(nameof(PhysiciansController.AllPhysicians));
+            }
+            catch (HttpRequestException)
+            {
+                //show error
+                return View();
+            }
         }
     }
 }
