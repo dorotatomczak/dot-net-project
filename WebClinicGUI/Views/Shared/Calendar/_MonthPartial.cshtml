@@ -8,10 +8,9 @@
 @await Html.PartialAsync("Calendar/_CalendarPartial")
 
 <script type="text/javascript">
-    createCalendarDay();
+    createCalendarMonth();
     try {
         setLocale("@cultureName");
-        loadEvents();
     }
     catch (err) {
         console.log(err.message);

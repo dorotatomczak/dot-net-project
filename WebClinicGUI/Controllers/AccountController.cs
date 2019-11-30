@@ -18,7 +18,6 @@ namespace WebClinicGUI.Controllers
         private readonly IStringLocalizer<AccountController> _localizer;
         private readonly INetworkClient _client;
 
-
         public AccountController(IStringLocalizer<AccountController> localizer, INetworkClient client)
         {
             _localizer = localizer;

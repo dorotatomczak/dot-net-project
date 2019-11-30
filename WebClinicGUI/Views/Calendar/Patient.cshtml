@@ -1,0 +1,23 @@
+﻿@using WebClinicGUI.Models.Calendar
+@model EventsViewModel
+@* Create calendar *@
+@{
+    if (Context.Request.Cookies["ViewType"] == "Day")
+    {
+        @await Html.PartialAsync("Calendar/_DayPartial")
+    }
+    else if (Context.Request.Cookies["ViewType"] == "Week")
+    {
+        @await Html.PartialAsync("Calendar/_WeekPartial")
+    }
+    else if (Context.Request.Cookies["ViewType"] == "Month")
+    {
+        @await Html.PartialAsync("Calendar/_MonthPartial")
+    }
+    // TODO: else Error page
+}
+
+@* Load events *@
+<script>
+    loadEvents(@Html.Raw(Json.Serialize(@Model.Events)));
+</script>

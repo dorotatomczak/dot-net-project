@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using WebClinicGUI.Models.Users;
-using Microsoft.EntityFrameworkCore;
-using WebClinicGUI.Models;
 using System.Collections.Generic;
+using WebClinicGUI.Models.Users;
+using WebClinicGUI.Models;
 
 namespace WebClinicGUI.Controllers
 {

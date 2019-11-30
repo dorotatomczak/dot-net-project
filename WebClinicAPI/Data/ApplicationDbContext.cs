@@ -98,6 +98,34 @@ namespace WebClinicAPI.Data
                     Role = Role.Patient
                 });
             #endregion
+
+            #region AppointmentSeed
+            modelBuilder.Entity<Appointment>().HasData(
+                new Appointment
+                {
+                    Id = 1,
+                    PatientId = 6,
+                    PhysicianId = 1,
+                    Time = new DateTime(2019, 11, 29, 11, 30, 0),
+                    Type = AppointmentType.Consultation
+                },
+                new Appointment
+                {
+                    Id = 2,
+                    PatientId = 6,
+                    PhysicianId = 2,
+                    Time = new DateTime(2019, 11, 27, 15, 30, 0),
+                    Type = AppointmentType.Consultation
+                },
+                new Appointment
+                {
+                    Id = 3,
+                    PatientId = 6,
+                    PhysicianId = 3,
+                    Time = new DateTime(2019, 12, 3, 10, 0, 0),
+                    Type = AppointmentType.Consultation
+                });
+            #endregion
         }
     }
 }

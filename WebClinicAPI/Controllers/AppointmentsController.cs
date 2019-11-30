@@ -7,7 +7,7 @@ using WebClinicAPI.Data;
 using WebClinicAPI.Models;
 using WebClinicAPI.Models.Calendar;
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq.Expressions;
 
 namespace WebClinicAPI.Controllers
 {
@@ -38,13 +38,41 @@ namespace WebClinicAPI.Controllers
         // Get Appointments as CalendarEvents
         [HttpGet]
         [Route("events")]
-        public ICollection<CalendarEvent> GetEvents([FromQuery] DateTime start, [FromQuery] DateTime end)
+        public ICollection<CalendarEvent> GetEvents([FromQuery] int physicianId, [FromQuery] int patientId)
         {
-            var appointments = _context.Appointments
+            List<Appointment> appointments;
+            if (physicianId != 0 && patientId != 0)
+            {
+                appointments = _context.Appointments
                 .Include(a => a.Patient)
                 .Include(a => a.Physician)
-                .Where(a => a.Time >= start && a.Time <= end)
+                .Where(a => a.PhysicianId == physicianId && a.PatientId == patientId)
                 .ToList();
+            }
+            else if (physicianId != 0)
+            {
+                appointments = _context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Physician)
+                .Where(a => a.PhysicianId == physicianId)
+                .ToList();
+            }
+            else if (patientId != 0)
+            {
+                appointments = _context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Physician)
+                .Where(a => a.PatientId == patientId)
+                .ToList();
+            }
+            else
+            {
+                appointments = _context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Physician)
+                .ToList();
+            }
+
             ICollection<CalendarEvent> events = new HashSet<CalendarEvent>();
             foreach (var appointment in appointments)
             {

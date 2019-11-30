@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -13,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using WebClinicGUI.Services;
 
-namespace WebClinic
+namespace WebClinicGUI
 {
     public class Startup
     {
