@@ -45,7 +45,7 @@ namespace WebClinicGUI.Controllers
                 var builder = new StringBuilder("Appointments/free/?");
                 var query = HttpUtility.ParseQueryString(string.Empty);
                 query["specialization"] = specialization.ToString();
-                query["startDate"] = startDate.ToString();
+                query["startDate"] = startDate.ToString("MM.dd.yyyy");  // little hack
                 query["type"] = appointmentType.ToString();
                 builder.Append(query.ToString());
 

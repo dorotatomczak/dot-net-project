@@ -63,8 +63,27 @@ namespace WebClinicAPI.Controllers
                 {
                     while (currentDayTime < endDayTime)
                     {
-                        var closestAppointmentTime = appointments.ElementAt(0).Time;
-                        if (closestAppointmentTime - currentDayTime >= defaultAppointmentTimeSpan)
+                        if (appointments.Count > 0)
+                        {
+                            var closestAppointmentTime = appointments.ElementAt(0).Time;
+                            if (closestAppointmentTime - currentDayTime >= defaultAppointmentTimeSpan)
+                            {
+                                freeAppointments.Add(new Appointment
+                                {
+                                    Physician = physician,
+                                    PhysicianId = physician.Id,
+                                    Time = currentDayTime,
+                                    Type = type
+                                });
+                                currentDayTime = currentDayTime.Add(defaultAppointmentTimeSpan);
+                            }
+                            else
+                            {
+                                currentDayTime = closestAppointmentTime.Add(defaultAppointmentTimeSpan);
+                                appointments.RemoveAt(0);
+                            }
+                        }
+                        else
                         {
                             freeAppointments.Add(new Appointment
                             {
@@ -74,11 +93,6 @@ namespace WebClinicAPI.Controllers
                                 Type = type
                             });
                             currentDayTime = currentDayTime.Add(defaultAppointmentTimeSpan);
-                        }
-                        else
-                        {
-                            currentDayTime = closestAppointmentTime + defaultAppointmentTimeSpan;
-                            appointments.RemoveAt(0);
                         }
                     }
                     // Go to next day
