@@ -49,8 +49,6 @@ namespace WebClinicAPI.Controllers
             foreach (var physician in physicians)
             {
                 // TODO: allow setting working hours for each physician separately
-                DateTime currentDayTime = new DateTime(startDate.Year, startDate.Month, startDate.Day, 8, 0, 0); // from 8:00
-                DateTime endDayTime = currentDayTime.AddHours(8);
 
                 // Get physician's appointments sorted by date
                 var appointments = await _context.Appointments
