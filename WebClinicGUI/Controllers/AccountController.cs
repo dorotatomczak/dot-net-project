@@ -59,7 +59,7 @@ namespace WebClinicGUI.Controllers
 
                 try
                 {
-                    await _client.SendRequestWithBodyAsync<Patient>(HttpMethod.Post, "Account/Register", patient);
+                    await _client.SendRequestWithBodyAsync<Patient>(HttpMethod.Post, "Account/RegisterPatient", patient);
                     return RedirectToAction("Login");
                 }
                 catch (HttpRequestException)
@@ -143,6 +143,10 @@ namespace WebClinicGUI.Controllers
         [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> ReceptionistAccount()
         {
+            if (TempData["message"] != null)
+            {
+                ModelState.AddModelError("CredentialChanged", _localizer[TempData["message"].ToString()]);
+            }
             try
             {
                 var id = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -198,6 +202,10 @@ namespace WebClinicGUI.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PhysicianAccount()
         {
+            if (TempData["message"] != null)
+            {
+                ModelState.AddModelError("CredentialChanged", _localizer[TempData["message"].ToString()]);
+            }
             try
             {
                 var id = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -291,6 +299,8 @@ namespace WebClinicGUI.Controllers
                         Password = HashUtils.Hash(model.Password),
                     };
                     await Login(userDto);
+
+                    TempData["message"] = "Your email has been changed.";
 
                     if (_contextAccessor.HttpContext.User.IsInRole("Physician"))
                         return RedirectToAction("PhysicianAccount");

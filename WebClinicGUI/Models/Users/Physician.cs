@@ -23,7 +23,7 @@ namespace WebClinicGUI.Models.Users
         Allergist,
         [Display(Name = "Psychologist")]
         Psychologist,
-        [Display(Name = "Psychologist")]
+        [Display(Name = "Psychiatrist")]
         Psychiatrist
     }
 

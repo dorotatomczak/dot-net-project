@@ -88,7 +88,7 @@ namespace WebClinicAPI.Controllers.Api
         [HttpDelete("{id}")]
         public async Task<ActionResult<Physician>> DeletePhysician(int id)
         {
-            var physician = await _context.Physicians.Include(p => p.Appointments).FirstOrDefaultAsync();
+            var physician = await _context.Physicians.FindAsync(id);
             if (physician == null)
             {
                 return NotFound();
