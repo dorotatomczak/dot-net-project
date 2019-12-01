@@ -7,7 +7,9 @@ namespace WebClinicGUI.Models
 {
     public enum AppointmentType
     {
+        [Display(Name = "Consultation")]
         Consultation,
+        [Display(Name = "Cure")]
         Cure,
         [Display(Name = "Control check")]
         ControlCheck

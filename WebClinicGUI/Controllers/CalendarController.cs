@@ -214,7 +214,11 @@ namespace WebClinicGUI.Controllers
             List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
             foreach (Appointment app in appointments)
             {
-                calendarEvents.Add(CalendarEvent.FromAppointment(app));
+                CalendarEvent calendarEvent = CalendarEvent.FromAppointment(app);
+                calendarEvent.Text = _localizer["Physician"] + ": " + app.Physician.FullName + ", " +
+                                     _localizer["Patient"] + ": " + app.Patient.FullName + ", " +
+                                     app.Time.ToString();
+                calendarEvents.Add(calendarEvent);
             }
             return calendarEvents;
         }
