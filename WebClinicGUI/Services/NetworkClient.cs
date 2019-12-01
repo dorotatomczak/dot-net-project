@@ -23,6 +23,7 @@ namespace WebClinicGUI.Services
             }
             var response = await _httpClient.SendAsync(request);
             var responseString = await response.Content.ReadAsStringAsync();
+
             if (response.IsSuccessStatusCode)
             {
                 return JsonConvert.DeserializeObject<T>(responseString);
