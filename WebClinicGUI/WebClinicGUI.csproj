@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Views\Shared\_SelectLanguagePartial - Copy.pl.resx">
+    <EmbeddedResource Update="Resources\Views\Shared\_SelectLanguagePartial.pl.resx">
       <CustomToolNamespace>WebClinicGUI.Language</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Shared\_AccountPartial.pl.resx">

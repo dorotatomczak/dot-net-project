@@ -15,7 +15,8 @@ namespace WebClinicAPI.Services
         AppUser Authenticate(string email, string password);
         IEnumerable<AppUser> GetAll();
         AppUser GetById(int id);
-        Task<AppUser> Update(string email, string oldPassword, string newPassword);
+        Task<AppUser> UpdatePassword(string email, string oldPassword, string newPassword);
+        Task<AppUser> UpdateEmail(string email, string newEmail, string password);
     }
 
     public class UserService : IUserService
@@ -65,7 +66,7 @@ namespace WebClinicAPI.Services
 
             return patient;
         }
-        public async Task<AppUser> Update(string email, string oldPassword, string newPassword)
+        public async Task<AppUser> UpdatePassword(string email, string oldPassword, string newPassword)
         {
             if (string.IsNullOrWhiteSpace(email))
                 throw new AppException("Email is required");
@@ -80,6 +81,30 @@ namespace WebClinicAPI.Services
                 throw new AppException("Password is incorrect");
 
             user.Password = newPassword;
+
+            _context.Entry(user).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+            return user;
+        }
+        public async Task<AppUser> UpdateEmail(string email, string newEmail, string password)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                throw new AppException("Email is required");
+            if (string.IsNullOrWhiteSpace(newEmail))
+                throw new AppException("Old email is required");
+            if (string.IsNullOrWhiteSpace(password))
+                throw new AppException("Password is required");
+
+            var user = Authenticate(email, password);
+
+            if (user == null)
+                throw new AppException("Password is incorrect");
+
+            if (_context.AppUsers.Any(x => x.Email == newEmail))
+                throw new AppException("Email \"" + newEmail + "\" is already taken");
+
+            user.Email = newEmail;
 
             _context.Entry(user).State = EntityState.Modified;
 
