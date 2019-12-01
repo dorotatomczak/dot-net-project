@@ -8,6 +8,7 @@ using WebClinicAPI.Models;
 using WebClinicAPI.Models.Calendar;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using WebClinicAPI.Models.Users;
 
 namespace WebClinicAPI.Controllers
 {
@@ -33,6 +34,50 @@ namespace WebClinicAPI.Controllers
                 .ToListAsync();
         }
 
+        // GET: api/Appointments/free
+        // Get free terms
+        [HttpGet]
+        [Route("free")]
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetFreeTerms(
+            [FromQuery] PhysicianSpecialization specialization,
+            [FromQuery] DateTime date,
+            [FromQuery] AppointmentType type)
+        {
+            var physicians = await _context.Physicians
+                .Where(p => p.Specialization == specialization)
+                .ToListAsync();
+
+            int interval = 1; // 1 hour
+            var freeAppointments = new List<Appointment>();
+
+            foreach (var physician in physicians)
+            {
+                DateTime startSpan = new DateTime(date.Year, date.Month, date.Day, 8, 0, 0); // from 8:00
+                DateTime endSpan = new DateTime(date.Year, date.Month, date.Day, 16, 0, 0); // to 16:00
+
+                var appointments = await _context.Appointments
+                    .Where(a => a.PhysicianId == physician.Id)
+                    .ToListAsync();
+
+                while (startSpan < endSpan)
+                {
+                    var result = appointments?.FirstOrDefault(a => a.Time == startSpan);
+                    if (result == null)
+                    {
+                        freeAppointments.Add(new Appointment
+                        {
+                            Physician = physician,
+                            PhysicianId = physician.Id,
+                            Time = startSpan,
+                            Type = type
+                        });
+                    }
+                    startSpan = startSpan.AddHours(interval);
+                }
+            }
+
+            return freeAppointments;
+        }
 
         // GET: api/Appointments/Events
         // Get Appointments as CalendarEvents
