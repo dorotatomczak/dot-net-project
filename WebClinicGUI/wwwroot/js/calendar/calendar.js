@@ -1,28 +1,35 @@
-﻿const eventsUri = '/api/appointments/events'
-let dp = null;
-let url = "";
+﻿let dp = null;
 
-function createUrl() {
-    url = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + eventsUri;
+function _configureEventsAction() {
+    dp.eventMoveHandling = "Disabled";
+    dp.eventResizeHandling = "Disabled";
+    dp.onEventClicked = function (args) {
+        appointment = args.e.data.appointment;
+        $('#time').text(appointment.time);
+        $('#patient').text(appointment.patient.fullName);
+        $('#physician').text(appointment.physician.fullName);
+        $('#type').text(appointment.type);
+        $('#modal-event-show').modal('show');
+    };
 }
 
 function createCalendarWeek() {
     dp = new DayPilot.Calendar("dp");
     dp.viewType = "Week";
-    dp.eventMoveHandling = "Disabled";
+    _configureEventsAction();
     dp.init();
 }
 
 function createCalendarDay() {
     dp = new DayPilot.Calendar("dp");
     dp.viewType = "Day";
-    dp.eventMoveHandling = "Disabled";
+    _configureEventsAction();
     dp.init();
 }
 
 function createCalendarMonth() {
     dp = new DayPilot.Month("dp");
-    dp.eventMoveHandling = "Disabled";
+    _configureEventsAction();
     dp.init();
 }
 
@@ -35,36 +42,6 @@ function loadEvents(eventsData) {
         }
     }
 }
-
-// TODO: function accept eventData and only adding events to calendar
-//function loadEvents() {
-//    if (url == "") {
-//        throw new Error("Url not valid.");
-//    }
-//    if (dp instanceof DayPilot.Calendar) {
-//        dp.events.load(url);
-//    }
-//    else if (dp instanceof DayPilot.Month) {
-//        dp.events.list = [];
-//        var date = new Date();
-//        var start = new Date(date.getFullYear(), date.getMonth(), 1);
-//        start.setUTCHours(0, 0, 0, 0)
-//        var end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-//        end.setUTCHours(23, 59, 59, 999);
-//        var urlWithTimeRange = url + "?start=" + start.toISOString() + "&end=" + end.toISOString();
-//        $.get(urlWithTimeRange,
-//            function (data) {
-//                for (var i = 0; i < data.length; i++) {
-//                    var e = new DayPilot.Event(data[i]);
-//                    dp.events.add(e);
-//                }
-//            }
-//        );
-//    }
-//    else {
-//        throw new Error("Calendar object does not have proper type.");
-//    }
-//}
 
 function previous() {
     _modifyStartDate(-1);
