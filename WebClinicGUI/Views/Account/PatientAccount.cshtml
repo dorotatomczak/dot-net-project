@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model WebClinicGUI.Models.PatientAccountViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewBag.Title = @Localizer["Patient account"];
+}
+
+<h2>@Localizer["My account"]</h2>
+<div>
+    <hr />
+    <dl class="row">
+
+        @await Html.PartialAsync("_AccountPartial", Model)
+
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RecommendedDrugs)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RecommendedDrugs)
+        </dd>
+
+    </dl>
+</div>

@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.1" />
@@ -36,7 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Views\Shared\_SelectLanguagePartial.pl.resx">
+    <EmbeddedResource Update="Resources\Views\Shared\_SelectLanguagePartial - Copy.pl.resx">
+      <CustomToolNamespace>WebClinicGUI.Language</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Shared\_AccountPartial.pl.resx">
       <CustomToolNamespace>WebClinicGUI.Language</CustomToolNamespace>
       <Generator></Generator>
     </EmbeddedResource>

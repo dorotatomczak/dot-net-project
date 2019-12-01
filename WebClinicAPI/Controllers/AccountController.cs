@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using WebClinicAPI.Models;
 using WebClinicAPI.Models.Users;
 using WebClinicAPI.Services;
 using WebClinicAPI.Utils;
@@ -55,6 +57,13 @@ namespace WebClinicAPI.Controllers
         public IActionResult GetById(int id)
         {
             var user = _userService.GetById(id);
+            return Ok(user);
+        }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateAsync([FromBody]ChangePasswordModel model)
+        {
+            var user = await _userService.Update(model.Email, model.OldPassword, model.NewPassword);
             return Ok(user);
         }
 

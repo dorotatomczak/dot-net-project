@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebClinicGUI.Models;
 using WebClinicGUI.Models.Users;
@@ -11,7 +12,7 @@ using WebClinicGUI.Services;
 namespace WebClinicGUI.Controllers
 {
     [Route("[controller]/[action]")]
-    //[Authorize(Roles = "Receptionist,Physician")]
+    [Authorize(Roles = "Receptionist,Physician")]
     public class PatientsController : Controller
     {
         private readonly INetworkClient _client;
@@ -24,78 +25,82 @@ namespace WebClinicGUI.Controllers
         [HttpGet]
         public async Task<IActionResult> AllPatients()
         {
-            var model = new PatientsViewModel();
             try
             {
+                var model = new PatientsViewModel();
+                model.Patients = new List<Patient>();
+
                 model.Patients = await _client.SendRequestAsync<List<Patient>>(HttpMethod.Get, "Patients");
                 return View(model);
             }
             catch (HttpRequestException)
             {
                 //show error
-                model.Patients = new List<Patient>();
-                return View(model);
+                return View();
             }
         }
 
         [HttpGet("{id}")]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            //var patient = _context.Patients.Find(id);
-            //if (patient == null)
-            //{
-            //    return NotFound();
-            //}
-            //var model = PatientViewModel.GetModel(patient);
-            //return View(model);
-            return NotFound();
+            try
+            {
+                var patient = await _client.SendRequestAsync<Patient>(HttpMethod.Get, $"Patients/{id}");
+
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+                var model = PatientViewModel.GetModel(patient);
+                return View(model);
+            }
+            catch (HttpRequestException)
+            {
+                //show error
+                return View();
+            }
         }
 
         [HttpGet("{id}")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            //var patient = _context.Patients.Find(id);
-            //if (patient == null)
-            //{
-            //    return NotFound();
-            //}
+            try
+            {
+                var patient = await _client.SendRequestAsync<Patient>(HttpMethod.Get, $"Patients/{id}");
 
-            //var model = PatientViewModel.GetModel(patient);
-            //return View(model);
-            return NotFound();
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+                var model = PatientViewModel.GetModel(patient);
+                return View(model);
+            }
+            catch (HttpRequestException)
+            {
+                //show error
+                return View();
+            }
         }
 
         [HttpPost("{id}")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [FromForm] PatientViewModel model)
+        public async Task<IActionResult> Edit(int id, [FromForm] PatientViewModel model)
         {
             if (ModelState.IsValid)
             {
-                //var patient = _context.Patients.Find(id);
-                //if (id != model.Id)
-                //{
-                //    return BadRequest();
-                //}
-                //model.UpdatePatient(ref patient);
+                try
+                {
+                    var patient = await _client.SendRequestAsync<Patient>(HttpMethod.Get, $"Patients/{id}");
+                    model.UpdatePatient(ref patient);
 
-                //_context.Entry(patient).State = EntityState.Modified;
-
-                //try
-                //{
-                //    _context.SaveChanges();
-                //}
-                //catch (DbUpdateConcurrencyException)
-                //{
-                //    if (!PatientExists(id))
-                //    {
-                //        return NotFound();
-                //    }
-                //    else
-                //    {
-                //        throw;
-                //    }
-                //}
-                return RedirectToAction(nameof(PatientsController.Details), new { id });
+                    await _client.SendRequestWithBodyAsync<Patient>(HttpMethod.Put, $"Patients/{id}", patient);
+                    return RedirectToAction(nameof(PatientsController.Details), new { id });
+                }
+                catch (HttpRequestException)
+                {
+                    //show error
+                    return View();
+                }
             }
             else
             {
@@ -104,24 +109,18 @@ namespace WebClinicGUI.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            //var patient = _context.Patients.Find(id);
-            //if (patient == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //_context.Patients.Remove(patient);
-            //_context.SaveChanges();
-
-            return RedirectToAction(nameof(PatientsController.AllPatients));
-        }
-
-        private bool PatientExists(int id)
-        {
-            //return _context.Patients.Any(e => e.Id == id);
-            return false;
+            try
+            {
+                var patient = await _client.SendRequestAsync<Patient>(HttpMethod.Delete, $"Patients/{id}");
+                return RedirectToAction(nameof(PatientsController.AllPatients));
+            }
+            catch (HttpRequestException)
+            {
+                //show error
+                return View();
+            }
         }
     }
 }

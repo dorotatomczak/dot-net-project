@@ -117,13 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EmailExists" xml:space="preserve">
-    <value>Ten adres email jest już zajęty</value>
+  <data name="Allergist" xml:space="preserve">
+    <value>Alergolog</value>
   </data>
-  <data name="WrongCredentials" xml:space="preserve">
-    <value>Niepoprawny email lub hasło</value>
+  <data name="Cardiologist" xml:space="preserve">
+    <value>Kardiolog</value>
   </data>
-  <data name="WrongPassword" xml:space="preserve">
-    <value>Niepoprawne hasło</value>
+  <data name="Internist" xml:space="preserve">
+    <value>Internista</value>
+  </data>
+  <data name="Laryngologist" xml:space="preserve">
+    <value>Laryngolog</value>
+  </data>
+  <data name="Psychiatrist" xml:space="preserve">
+    <value>Psychiatra</value>
+  </data>
+  <data name="Psychologist" xml:space="preserve">
+    <value>Psycholog</value>
+  </data>
+  <data name="Pulmonologist" xml:space="preserve">
+    <value>Pulmonolog</value>
+  </data>
+  <data name="Surgeon" xml:space="preserve">
+    <value>Chirurg</value>
   </data>
 </root>

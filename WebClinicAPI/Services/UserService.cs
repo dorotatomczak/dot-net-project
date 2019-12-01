@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WebClinicAPI.Data;
 using WebClinicAPI.Models.Users;
 using WebClinicAPI.Utils;
@@ -13,16 +15,16 @@ namespace WebClinicAPI.Services
         AppUser Authenticate(string email, string password);
         IEnumerable<AppUser> GetAll();
         AppUser GetById(int id);
-
+        Task<AppUser> Update(string email, string oldPassword, string newPassword);
     }
 
     public class UserService : IUserService
     {
-       private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public UserService(ApplicationDbContext context)
         {
-           this._context = context;
+            this._context = context;
         }
 
         public AppUser Authenticate(string email, string password)
@@ -32,7 +34,7 @@ namespace WebClinicAPI.Services
 
             var user = _context.AppUsers.SingleOrDefault(x => x.Email == email);
 
-            if (user == null || user.Password != HashUtils.Hash(password))
+            if (user == null || user.Password != password)
                 return null;
 
             return user;
@@ -57,11 +59,32 @@ namespace WebClinicAPI.Services
                 throw new AppException("Email \"" + patient.Email + "\" is already taken");
 
 
-            patient.Password = HashUtils.Hash(password);
+            patient.Password = password;
             _context.AppUsers.Add(patient);
             _context.SaveChanges();
 
             return patient;
+        }
+        public async Task<AppUser> Update(string email, string oldPassword, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                throw new AppException("Email is required");
+            if (string.IsNullOrWhiteSpace(oldPassword))
+                throw new AppException("Old password is required");
+            if (string.IsNullOrWhiteSpace(newPassword))
+                throw new AppException("New password is required");
+
+            var user = Authenticate(email, oldPassword);
+
+            if (user == null)
+                throw new AppException("Password is incorrect");
+
+            user.Password = newPassword;
+
+            _context.Entry(user).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+            return user;
         }
     }
 }

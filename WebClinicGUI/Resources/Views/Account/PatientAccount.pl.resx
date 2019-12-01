@@ -117,13 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EmailExists" xml:space="preserve">
-    <value>Ten adres email jest już zajęty</value>
+  <data name="My account" xml:space="preserve">
+    <value>Moje konto</value>
   </data>
-  <data name="WrongCredentials" xml:space="preserve">
-    <value>Niepoprawny email lub hasło</value>
-  </data>
-  <data name="WrongPassword" xml:space="preserve">
-    <value>Niepoprawne hasło</value>
+  <data name="Patient account" xml:space="preserve">
+    <value>Konto pacjenta</value>
   </data>
 </root>
