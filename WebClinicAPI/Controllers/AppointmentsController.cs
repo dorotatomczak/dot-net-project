@@ -28,42 +28,78 @@ namespace WebClinicAPI.Controllers
         [Route("free")]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetFreeTerms(
             [FromQuery] PhysicianSpecialization specialization,
-            [FromQuery] DateTime date,
+            [FromQuery] DateTime startDate,
             [FromQuery] AppointmentType type)
         {
+            // Get all physicians with the required specialization
             var physicians = await _context.Physicians
                 .Where(p => p.Specialization == specialization)
                 .ToListAsync();
 
-            int interval = 1; // 1 hour
+            // TODO: change this
+            // By default, search for free appointments in the 2 days span from the start date
+            TimeSpan defaultDateSpan = new TimeSpan(2, 0, 0, 0);
+            DateTime endDate = startDate.Add(defaultDateSpan);
+
+            // TODO: allow setting appointment span for each physician separately
+            TimeSpan defaultAppointmentTimeSpan = new TimeSpan(0, 30, 0);
+
             var freeAppointments = new List<Appointment>();
 
             foreach (var physician in physicians)
             {
-                DateTime startSpan = new DateTime(date.Year, date.Month, date.Day, 8, 0, 0); // from 8:00
-                DateTime endSpan = new DateTime(date.Year, date.Month, date.Day, 16, 0, 0); // to 16:00
+                // TODO: allow setting working hours for each physician separately
 
+                // Get physician's appointments sorted by date
                 var appointments = await _context.Appointments
                     .Where(a => a.PhysicianId == physician.Id)
+                    .Where(a => a.Time >= startDate)
+                    .Where(a => a.Time <= endDate)
+                    .OrderBy(a => a.Time)
                     .ToListAsync();
 
-                while (startSpan < endSpan)
+                // iterate ovet days in selected timespan
+                for (DateTime day = startDate; day < endDate; day = day.AddDays(1))
                 {
-                    var result = appointments?.FirstOrDefault(a => a.Time == startSpan);
-                    if (result == null)
+                    // iterate over potential appointment hours in current day
+                    for (DateTime appointmentTime = day.AddHours(8); appointmentTime < day.AddHours(16); appointmentTime += defaultAppointmentTimeSpan)
                     {
-                        freeAppointments.Add(new Appointment
+                        if (appointments.Count == 0)
                         {
-                            Physician = physician,
-                            PhysicianId = physician.Id,
-                            Time = startSpan,
-                            Type = type
-                        });
+                            // current appointmentTime is free
+                            freeAppointments.Add(new Appointment
+                            {
+                                Physician = physician,
+                                PhysicianId = physician.Id,
+                                Time = appointmentTime,
+                                Type = type
+                            });
+                        }
+                        else
+                        {
+                            DateTime closestAppointmentTime = appointments.ElementAt(0).Time;
+                            if (
+                                (appointmentTime < closestAppointmentTime && appointmentTime + defaultAppointmentTimeSpan > closestAppointmentTime) ||
+                                (appointmentTime >= closestAppointmentTime))
+                            {
+                                // current appointmentTime is taken
+                                appointments.RemoveAt(0);
+                            }
+                            else
+                            {
+                                // current appointmentTime is free
+                                freeAppointments.Add(new Appointment
+                                {
+                                    Physician = physician,
+                                    PhysicianId = physician.Id,
+                                    Time = appointmentTime,
+                                    Type = type
+                                });
+                            }
+                        }
                     }
-                    startSpan = startSpan.AddHours(interval);
                 }
             }
-
             return freeAppointments;
         }
 

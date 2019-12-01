@@ -28,14 +28,14 @@ namespace WebClinicGUI.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Index(PhysicianSpecialization specialization, DateTime date, AppointmentType appointmentType)
+        public async Task<IActionResult> Index(PhysicianSpecialization specialization, DateTime startDate, AppointmentType appointmentType)
         {
             var model = new AddAppointmentViewModel
             {
                 FreeTerms = new List<Appointment>()
             };
 
-            if (date < DateTime.Now)
+            if (startDate < DateTime.Now)
             {
                 return View(model);
             }
@@ -45,9 +45,10 @@ namespace WebClinicGUI.Controllers
                 var builder = new StringBuilder("Appointments/free/?");
                 var query = HttpUtility.ParseQueryString(string.Empty);
                 query["specialization"] = specialization.ToString();
-                query["date"] = date.ToString();
+                query["startDate"] = startDate.ToString("MM.dd.yyyy");  // little hack
                 query["type"] = appointmentType.ToString();
                 builder.Append(query.ToString());
+
                 model.FreeTerms = await _client.SendRequestAsync<List<Appointment>>(HttpMethod.Get, builder.ToString());
                 return View(model);
             }

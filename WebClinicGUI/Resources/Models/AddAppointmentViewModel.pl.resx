@@ -120,8 +120,8 @@
   <data name="Appointment type" xml:space="preserve">
     <value>Typ wizyty</value>
   </data>
-  <data name="Day of visit" xml:space="preserve">
-    <value>Data wizyty</value>
+  <data name="Date start" xml:space="preserve">
+    <value>Data wizyty od</value>
   </data>
   <data name="Physician" xml:space="preserve">
     <value>Lekarz</value>
