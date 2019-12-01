@@ -7,8 +7,9 @@
     ViewData["Title"] = @Localizer["Patients"];
 }
 
-<h1>@Localizer["Patients"]</h1>
+@Html.ValidationMessage("info", new { @class = "text-success" })
 
+<h3>@Localizer["Patients"]</h3>
 <table class="table">
     <thead>
         <tr>
@@ -30,26 +31,27 @@
     <tbody>
         @foreach (var item in Model.Patients)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            <td>
-                <!-- not working yet [Ania] -->
-                @Html.ActionLink(@Localizer["Details"].Value, "Details", new { id = item.Id }) |
-                @Html.ActionLink(@Localizer["Edit"].Value, "Edit", new { id = item.Id }) |
-                @Html.ActionLink(@Localizer["Delete"].Value, "Delete", new { id = item.Id })
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                </td>
+                <td>
+                    <!-- not working yet [Ania] -->
+                    @Html.ActionLink(@Localizer["Details"].Value, "Details", new { id = item.Id }) |
+                    @Html.ActionLink(@Localizer["Edit"].Value, "Edit", new { id = item.Id }) |
+                    @Html.ActionLink(@Localizer["Delete"].Value, "Delete", new { id = item.Id })
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+@Html.ActionLink(@Localizer["Add patient"].Value, "AddPatient")

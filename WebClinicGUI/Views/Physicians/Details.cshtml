@@ -3,6 +3,7 @@
 
 @inject IViewLocalizer Localizer
 
+@Html.ValidationMessage("info", new { @class = "text-success" })
 <div>
     <h4>@Localizer["Physician"]</h4>
     <hr />

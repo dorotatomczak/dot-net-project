@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using WebClinicGUI.Models;
 using WebClinicGUI.Models.Users;
 using WebClinicGUI.Services;
+using WebClinicGUI.Utils;
+using Microsoft.Extensions.Localization;
 
 namespace WebClinicGUI.Controllers
 {
@@ -14,15 +16,21 @@ namespace WebClinicGUI.Controllers
     public class PhysiciansController : Controller
     {
         private readonly INetworkClient _client;
+        private readonly IStringLocalizer<PhysiciansController> _localizer;
 
-        public PhysiciansController(INetworkClient client)
+        public PhysiciansController(INetworkClient client, IStringLocalizer<PhysiciansController> localizer)
         {
             _client = client;
+            _localizer = localizer;
         }
 
         [HttpGet]
         public async Task<IActionResult> AllPhysicians()
         {
+            if (TempData["message"] != null)
+            {
+                ModelState.AddModelError("info", _localizer[TempData["message"].ToString()]);
+            }
             try
             {
                 var model = new PhysiciansViewModel();
@@ -41,6 +49,10 @@ namespace WebClinicGUI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Details(int id)
         {
+            if (TempData["message"] != null)
+            {
+                ModelState.AddModelError("info", _localizer[TempData["message"].ToString()]);
+            }
             try
             {
                 var physician = await _client.SendRequestAsync<Physician>(HttpMethod.Get, $"Physicians/{id}");
@@ -71,6 +83,8 @@ namespace WebClinicGUI.Controllers
                     return NotFound();
                 }
                 var model = PhysicianViewModel.GetModel(physician);
+
+                TempData["message"] = "Your changes has been saved.";
                 return View(model);
             }
             catch (HttpRequestException)
@@ -107,11 +121,12 @@ namespace WebClinicGUI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 var physician = await _client.SendRequestAsync<Physician>(HttpMethod.Delete, $"Physicians/{id}");
+                TempData["message"] = "Physician has been deleted.";
                 return RedirectToAction(nameof(PhysiciansController.AllPhysicians));
             }
             catch (HttpRequestException)
@@ -119,6 +134,42 @@ namespace WebClinicGUI.Controllers
                 //show error
                 return View();
             }
+        }
+        [HttpGet]
+        public IActionResult AddPhysician()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddPhysician([FromForm] PhysicianViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var physician = new Physician
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    Sex = model.Sex.GetValueOrDefault(),
+                    DateOfBirth = model.DateOfBirth.GetValueOrDefault(),
+                    Role = Role.Physician,
+                    Password = HashUtils.Hash(model.LastName.ToLower()),
+                    Specialization = model.Specialization.GetValueOrDefault()
+                };
+
+                try
+                {
+                    await _client.SendRequestWithBodyAsync(HttpMethod.Post, "Account/RegisterPhysician", physician);
+                    TempData["message"] = "Physician has been added.";
+                    return RedirectToAction("AllPhysicians");
+                }
+                catch (HttpRequestException)
+                {
+                    ModelState.AddModelError("EmailExist", _localizer["Email is already taken"]);
+                }
+            }
+            return View(model);
         }
     }
 }

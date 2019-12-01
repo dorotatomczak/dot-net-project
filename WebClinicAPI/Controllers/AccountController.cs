@@ -32,12 +32,27 @@ namespace WebClinicAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("Register")]
-        public IActionResult Register([FromBody]Patient patient)
+        [HttpPost("RegisterPatient")]
+        public IActionResult RegisterPatient([FromBody]Patient patient)
         {
             try
             {
                 _userService.Create(patient, patient.Password);
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("RegisterPhysician")]
+        public IActionResult RegisterPhysician([FromBody]Physician physician)
+        {
+            try
+            {
+                _userService.Create(physician, physician.Password);
                 return Ok();
             }
             catch (AppException ex)

@@ -26,7 +26,7 @@ namespace WebClinicGUI.Models
         [Required(ErrorMessage = "The '{0}' field is required.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = false)]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         [EnumDataType(typeof(Sex))]
         [Display(Name = "Sex")]
@@ -42,7 +42,7 @@ namespace WebClinicGUI.Models
         {
             p.FirstName = FirstName;
             p.LastName = LastName;
-            p.DateOfBirth = DateOfBirth;
+            p.DateOfBirth = DateOfBirth.GetValueOrDefault();
             p.Email = Email;
             p.Sex = Sex.GetValueOrDefault();
             p.IllnessHistory = IllnessHistory;

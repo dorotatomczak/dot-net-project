@@ -11,7 +11,7 @@ namespace WebClinicAPI.Services
 
     public interface IUserService
     {
-        Patient Create(Patient patient, string password);
+        AppUser Create(AppUser patient, string password);
         AppUser Authenticate(string email, string password);
         IEnumerable<AppUser> GetAll();
         AppUser GetById(int id);
@@ -51,20 +51,23 @@ namespace WebClinicAPI.Services
             return _context.AppUsers.Find(id);
         }
 
-        public Patient Create(Patient patient, string password)
+        public AppUser Create(AppUser patient, string password)
         {
-            if (string.IsNullOrWhiteSpace(password))
-                throw new AppException("Password is required");
-
-            if (_context.AppUsers.Any(x => x.Email == patient.Email))
-                throw new AppException("Email \"" + patient.Email + "\" is already taken");
-
+            ValidateCreateRequest(patient, password);
 
             patient.Password = password;
             _context.AppUsers.Add(patient);
             _context.SaveChanges();
 
             return patient;
+        }
+        private void ValidateCreateRequest(AppUser user, string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+                throw new AppException("Password is required");
+
+            if (_context.AppUsers.Any(x => x.Email == user.Email))
+                throw new AppException("Email \"" + user.Email + "\" is already taken");
         }
         public async Task<AppUser> UpdatePassword(string email, string oldPassword, string newPassword)
         {

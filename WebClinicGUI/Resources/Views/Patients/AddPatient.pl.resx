@@ -117,37 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add physician" xml:space="preserve">
-    <value>Dodaj lekarza</value>
+  <data name="Add patient" xml:space="preserve">
+    <value>Dodaj pacjenta</value>
   </data>
-  <data name="Appointments" xml:space="preserve">
-    <value>Wizyty</value>
+  <data name="Save" xml:space="preserve">
+    <value>Zapisz</value>
   </data>
-  <data name="Date of birth" xml:space="preserve">
-    <value>Data urodzenia</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Usuń</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Szczegóły</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edytuj</value>
-  </data>
-  <data name="First name" xml:space="preserve">
-    <value>Imię</value>
-  </data>
-  <data name="ID" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="Last name" xml:space="preserve">
-    <value>Nazwisko</value>
-  </data>
-  <data name="Physicians" xml:space="preserve">
-    <value>Lekarze</value>
-  </data>
-  <data name="PhysicianSpecialization" xml:space="preserve">
-    <value>Specjalizacja</value>
+  <data name="Select sex" xml:space="preserve">
+    <value>Wybierz płeć</value>
   </data>
 </root>
