@@ -56,48 +56,50 @@ namespace WebClinicAPI.Controllers
                 var appointments = await _context.Appointments
                     .Where(a => a.PhysicianId == physician.Id)
                     .Where(a => a.Time >= startDate)
+                    .Where(a => a.Time <= endDate)
                     .OrderBy(a => a.Time)
                     .ToListAsync();
 
-                while (currentDayTime < endDate)
+                // iterate ovet days in selected timespan
+                for (DateTime day = startDate; day < endDate; day = day.AddDays(1))
                 {
-                    while (currentDayTime < endDayTime)
+                    // iterate over potential appointment hours in current day
+                    for (DateTime appointmentTime = day.AddHours(8); appointmentTime < day.AddHours(16); appointmentTime += defaultAppointmentTimeSpan)
                     {
-                        if (appointments.Count > 0)
+                        if (appointments.Count == 0)
                         {
-                            var closestAppointmentTime = appointments.ElementAt(0).Time;
-                            if (closestAppointmentTime - currentDayTime >= defaultAppointmentTimeSpan)
-                            {
-                                freeAppointments.Add(new Appointment
-                                {
-                                    Physician = physician,
-                                    PhysicianId = physician.Id,
-                                    Time = currentDayTime,
-                                    Type = type
-                                });
-                                currentDayTime = currentDayTime.Add(defaultAppointmentTimeSpan);
-                            }
-                            else
-                            {
-                                currentDayTime = closestAppointmentTime.Add(defaultAppointmentTimeSpan);
-                                appointments.RemoveAt(0);
-                            }
-                        }
-                        else
-                        {
+                            // current appointmentTime is free
                             freeAppointments.Add(new Appointment
                             {
                                 Physician = physician,
                                 PhysicianId = physician.Id,
-                                Time = currentDayTime,
+                                Time = appointmentTime,
                                 Type = type
                             });
-                            currentDayTime = currentDayTime.Add(defaultAppointmentTimeSpan);
+                        }
+                        else
+                        {
+                            DateTime closestAppointmentTime = appointments.ElementAt(0).Time;
+                            if (
+                                (appointmentTime < closestAppointmentTime && appointmentTime + defaultAppointmentTimeSpan > closestAppointmentTime) ||
+                                (appointmentTime >= closestAppointmentTime))
+                            {
+                                // current appointmentTime is taken
+                                appointments.RemoveAt(0);
+                            }
+                            else
+                            {
+                                // current appointmentTime is free
+                                freeAppointments.Add(new Appointment
+                                {
+                                    Physician = physician,
+                                    PhysicianId = physician.Id,
+                                    Time = appointmentTime,
+                                    Type = type
+                                });
+                            }
                         }
                     }
-                    // Go to next day
-                    currentDayTime.Add(new TimeSpan(24, 0, 0));
-                    endDayTime = currentDayTime.Add(defaultDateSpan);
                 }
             }
             return freeAppointments;
