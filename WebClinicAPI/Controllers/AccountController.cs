@@ -60,10 +60,17 @@ namespace WebClinicAPI.Controllers
             return Ok(user);
         }
 
-        [HttpPut("Update")]
-        public async Task<IActionResult> UpdateAsync([FromBody]ChangePasswordModel model)
+        [HttpPut("UpdatePassword")]
+        public async Task<IActionResult> UpdatePassword([FromBody]ChangePasswordModel model)
         {
-            var user = await _userService.Update(model.Email, model.OldPassword, model.NewPassword);
+            var user = await _userService.UpdatePassword(model.Email, model.OldPassword, model.NewPassword);
+            return Ok(user);
+        }
+
+        [HttpPut("UpdateEmail")]
+        public async Task<IActionResult> UpdateEmail([FromBody]ChangeEmailModel model)
+        {
+            var user = await _userService.UpdateEmail(model.Email, model.NewEmail, model.Password);
             return Ok(user);
         }
 

@@ -91,14 +91,9 @@ namespace WebClinicGUI.Controllers
                     Password = HashUtils.Hash(model.Password),
                 };
 
-
                 try
                 {
-                    var user = await _client.SendRequestWithBodyAsync<AppUser>(HttpMethod.Post, "Account/Authenticate", userDto);
-                    ClaimsIdentity identity = new ClaimsIdentity(this.GetUserClaims(user), CookieAuthenticationDefaults.AuthenticationScheme);
-                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    await Login(userDto);
 
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
@@ -113,6 +108,15 @@ namespace WebClinicGUI.Controllers
                 }
             }
             return View(model);
+        }
+
+        private async Task Login(AppUser userDto)
+        {
+            var user = await _client.SendRequestWithBodyAsync<AppUser>(HttpMethod.Post, "Account/Authenticate", userDto);
+            ClaimsIdentity identity = new ClaimsIdentity(this.GetUserClaims(user), CookieAuthenticationDefaults.AuthenticationScheme);
+            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
 
         private IEnumerable<Claim> GetUserClaims(AppUser user)
@@ -164,6 +168,10 @@ namespace WebClinicGUI.Controllers
         [Authorize(Roles = "Patient")]
         public async Task<IActionResult> PatientAccount()
         {
+            if (TempData["message"] != null)
+            {
+                ModelState.AddModelError("CredentialChanged", _localizer[TempData["message"].ToString()]);
+            }
             try
             {
                 var id = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -233,7 +241,9 @@ namespace WebClinicGUI.Controllers
                         HashUtils.Hash(model.OldPassword),
                         HashUtils.Hash(model.NewPassword));
 
-                    await _client.SendRequestWithBodyAsync(HttpMethod.Put, "Account/Update", credentials);
+                    await _client.SendRequestWithBodyAsync(HttpMethod.Put, "Account/UpdatePassword", credentials);
+
+                    TempData["message"] = "Your password has been changed.";
 
                     if (_contextAccessor.HttpContext.User.IsInRole("Physician"))
                         return RedirectToAction("PhysicianAccount");
@@ -244,7 +254,7 @@ namespace WebClinicGUI.Controllers
                 }
                 catch (HttpRequestException)
                 {
-                    ModelState.AddModelError("WrongPassword", _localizer["WrongPassword"]);
+                    ModelState.AddModelError("WrongCredential", _localizer["Old password is incorrect."]);
                 }
             }
             return View(model);
@@ -255,6 +265,50 @@ namespace WebClinicGUI.Controllers
         public IActionResult ChangeEmail()
         {
             return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var credentials = new ChangeEmailModel(
+                        model.Email,
+                        model.NewEmail,
+                        HashUtils.Hash(model.Password));
+
+                    await _client.SendRequestWithBodyAsync(HttpMethod.Put, "Account/UpdateEmail", credentials);
+
+                    await HttpContext.SignOutAsync();
+
+                    var userDto = new AppUser
+                    {
+                        Email = model.NewEmail,
+                        Password = HashUtils.Hash(model.Password),
+                    };
+                    await Login(userDto);
+
+                    if (_contextAccessor.HttpContext.User.IsInRole("Physician"))
+                        return RedirectToAction("PhysicianAccount");
+                    if (_contextAccessor.HttpContext.User.IsInRole("Receptionist"))
+                        return RedirectToAction("ReceptionistAccount");
+
+                    return RedirectToAction("PatientAccount");
+                }
+                catch (HttpRequestException ex)
+                {
+                    if (ex.Message.Contains("Email \"" + model.NewEmail + "\" is already taken"))
+                        ModelState.AddModelError("WrongCredential", _localizer["EmailExists"]);
+                    else if (ex.Message.Contains("Password is incorrect"))
+                        ModelState.AddModelError("WrongCredential", _localizer["WrongPassword"]);
+                    else ModelState.AddModelError("WrongCredential", _localizer["WrongCredentials"]);
+                }
+            }
+            return View(model);
         }
     }
 }
