@@ -13,9 +13,9 @@ namespace WebClinicGUI.Models
         public PhysicianSpecialization? Specialization { get; set; }
 
         [Required(ErrorMessage = "The '{0}' field is required.")]
-        [Display(Name = "Day of visit")]
+        [Display(Name = "Date start")]
         [DataType(DataType.Date)]
-        public DateTime? Date { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [Required(ErrorMessage = "The '{0}' field is required.")]
         [Display(Name = "Type of appointment")]

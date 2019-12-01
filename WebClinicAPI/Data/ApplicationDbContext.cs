@@ -114,7 +114,7 @@ namespace WebClinicAPI.Data
                     Id = 2,
                     PatientId = 6,
                     PhysicianId = 2,
-                    Time = new DateTime(2019, 11, 27, 15, 30, 0),
+                    Time = new DateTime(2019, 12, 2, 12, 30, 0),
                     Type = AppointmentType.Consultation
                 },
                 new Appointment
@@ -123,6 +123,14 @@ namespace WebClinicAPI.Data
                     PatientId = 6,
                     PhysicianId = 3,
                     Time = new DateTime(2019, 12, 3, 10, 0, 0),
+                    Type = AppointmentType.Consultation
+                },
+                new Appointment
+                {
+                    Id = 4,
+                    PatientId = 6,
+                    PhysicianId = 2,
+                    Time = new DateTime(2019, 11, 27, 12, 30, 0),
                     Type = AppointmentType.Consultation
                 });
             #endregion
