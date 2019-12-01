@@ -117,22 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Close" xml:space="preserve">
-    <value>Zamknij</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Szczegóły wizyty</value>
+  <data name="Appointment" xml:space="preserve">
+    <value>Appointment</value>
   </data>
   <data name="Patient" xml:space="preserve">
-    <value>Pacjent</value>
+    <value>Patient</value>
   </data>
   <data name="Physician" xml:space="preserve">
-    <value>Lekarz</value>
-  </data>
-  <data name="Time" xml:space="preserve">
-    <value>Termin</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Typ</value>
+    <value>Physician</value>
   </data>
 </root>

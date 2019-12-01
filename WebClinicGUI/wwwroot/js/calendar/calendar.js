@@ -5,7 +5,7 @@ function _configureEventsAction() {
     dp.eventResizeHandling = "Disabled";
     dp.onEventClicked = function (args) {
         appointment = args.e.data.appointment;
-        $('#time').text(appointment.time);
+        $('#time').text(appointment.time.replace("T", " "));
         $('#patient').text(appointment.patient.fullName);
         $('#physician').text(appointment.physician.fullName);
         $('#type').text(appointment.type);

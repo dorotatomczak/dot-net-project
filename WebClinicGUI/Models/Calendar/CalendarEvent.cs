@@ -19,7 +19,6 @@ namespace WebClinicGUI.Models.Calendar
             {
                 Start = app.Time,
                 End = app.Time + CalendarEvent.DefaultEventTimeSpan,
-                Text = "Physician " + app.Physician.FullName + ", Patient " + app.Patient.FullName,
                 Appointment = app
             };
         }

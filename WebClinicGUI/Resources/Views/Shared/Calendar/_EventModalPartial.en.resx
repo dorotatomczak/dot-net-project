@@ -130,7 +130,7 @@
     <value>Physician</value>
   </data>
   <data name="Time" xml:space="preserve">
-    <value>Time</value>
+    <value>Date</value>
   </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>
