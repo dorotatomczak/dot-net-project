@@ -1,0 +1,7 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model WebClinicGUI.Models.AppUserViewModel
+
+@inject IViewLocalizer Localizer
+
+<h2>@Localizer["My account"]</h2>
+@Html.ValidationMessage("CredentialChanged", new { @class = "text-success" })

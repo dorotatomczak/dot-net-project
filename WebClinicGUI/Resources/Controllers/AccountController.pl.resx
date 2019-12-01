@@ -120,10 +120,19 @@
   <data name="EmailExists" xml:space="preserve">
     <value>Ten adres email jest już zajęty</value>
   </data>
+  <data name="Old password is incorrect." xml:space="preserve">
+    <value>Stare hasło jest nieprawidłowe.</value>
+  </data>
   <data name="WrongCredentials" xml:space="preserve">
     <value>Niepoprawny email lub hasło</value>
   </data>
   <data name="WrongPassword" xml:space="preserve">
     <value>Niepoprawne hasło</value>
+  </data>
+  <data name="Your email has been changed." xml:space="preserve">
+    <value>Twój email został zmieniony.</value>
+  </data>
+  <data name="Your password has been changed." xml:space="preserve">
+    <value>Twoje hasło zostało zmienione.</value>
   </data>
 </root>

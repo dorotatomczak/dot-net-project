@@ -30,7 +30,7 @@ namespace WebClinicGUI.Services
             }
             else
             {
-                throw new HttpRequestException();
+                throw new HttpRequestException(responseString);
             }
         }
 

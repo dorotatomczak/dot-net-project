@@ -35,7 +35,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value= @Localizer["Login"] />
+                <input type="submit" value=@Localizer["Login"] />
+            </div>
+            <div class="col-md-offset-2 col-md-10">
+                <span> 
+                    @Localizer["Don't have an account?"] <a asp-area="" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
+                </span>
             </div>
         </div>
     </div>

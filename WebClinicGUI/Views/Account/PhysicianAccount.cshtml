@@ -6,7 +6,7 @@
     ViewBag.Title = @Localizer["Physician account"];
 }
 
-<h2>@Localizer["My account"]</h2>
+@await Html.PartialAsync("_AccountHeaderPartial")
 <div>
     <hr />
     <dl class="row">
