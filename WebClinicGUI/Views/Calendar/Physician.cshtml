@@ -1,6 +1,8 @@
 ﻿@using WebClinicGUI.Models.Calendar
 @model EventsViewModel
 
+@await Html.PartialAsync("Calendar/_EventModalPartial")
+
 @* Create calendar *@
 @{
     if (Context.Request.Cookies["ViewType"] == "Day")
