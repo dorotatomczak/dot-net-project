@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using WebClinicGUI.Controllers;
+using WebClinicGUI.Helpers;
 using WebClinicGUI.Models;
 using WebClinicGUI.Models.Calendar;
 using WebClinicGUI.Models.Users;
@@ -151,8 +152,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                // TODO: error
-                patients = null;
+                throw new ServerConnectionException();
             }
             return patients;
         }
@@ -166,8 +166,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                // TODO: error
-                physicians = null;
+                throw new ServerConnectionException();
             }
             return physicians;
         }
@@ -203,8 +202,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                // TODO: error
-                return null;
+                throw new ServerConnectionException();
             }
         }
 

@@ -8,6 +8,7 @@ using WebClinicGUI.Models.Users;
 using WebClinicGUI.Services;
 using WebClinicGUI.Utils;
 using Microsoft.Extensions.Localization;
+using WebClinicGUI.Helpers;
 
 namespace WebClinicGUI.Controllers
 {
@@ -41,8 +42,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return View();
+                throw new ServerConnectionException();
             }
         }
 
@@ -66,8 +66,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return View();
+                throw new ServerConnectionException();
             }
         }
 
@@ -89,8 +88,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return View();
+                throw new ServerConnectionException();
             }
         }
 
@@ -110,8 +108,7 @@ namespace WebClinicGUI.Controllers
                 }
                 catch (HttpRequestException)
                 {
-                    //show error
-                    return View();
+                    throw new ServerConnectionException();
                 }
             }
             else
@@ -131,8 +128,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return View();
+                throw new ServerConnectionException();
             }
         }
         [HttpGet]

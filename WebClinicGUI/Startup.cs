@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using WebClinicGUI.Filters;
 using WebClinicGUI.Services;
 
 namespace WebClinicGUI
@@ -45,7 +46,10 @@ namespace WebClinicGUI
 
             services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
 
-            services.AddMvc()
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(ServerConnectionExceptionFilter));
+            })
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 

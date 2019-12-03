@@ -7,12 +7,16 @@
 }
 
 <h1 class="text-danger">@Localizer["Error"]</h1>
-<h2 class="text-danger">@Localizer["An unknown error occurred while processing your request"]</h2>
+<h2 class="text-danger">
+    @Localizer["REST server isn't responding"]
+</h2>
 
 @if (Model.ShowRequestId)
 {
     <p>
-        <strong>@Localizer["Request ID"]:</strong> <code>@Model.RequestId</code>
+        <strong>
+            @Localizer["Request ID"]:
+        </strong> <code>@Model.RequestId</code>
     </p>
     <p>
         @Localizer["Contact administrator"]: admin@gmail.com
