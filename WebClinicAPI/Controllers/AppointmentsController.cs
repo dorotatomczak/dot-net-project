@@ -8,6 +8,7 @@ using WebClinicAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using WebClinicAPI.Models.Users;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace WebClinicAPI.Controllers
 {
@@ -105,41 +106,64 @@ namespace WebClinicAPI.Controllers
         }
 
         // GET: api/Appointments
-        // Get Appointments as CalendarEvents
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments([FromQuery] int physicianId, [FromQuery] int patientId)
         {
-            if (physicianId != 0 && patientId != 0)
+            if (HttpContext.User.IsInRole("Receptionist"))
             {
-                return await _context.Appointments
-                .Include(a => a.Patient)
-                .Include(a => a.Physician)
-                .Where(a => a.PhysicianId == physicianId && a.PatientId == patientId)
-                .ToListAsync();
-            }
-            else if (physicianId != 0)
-            {
-                return await _context.Appointments
-                .Include(a => a.Patient)
-                .Include(a => a.Physician)
-                .Where(a => a.PhysicianId == physicianId)
-                .ToListAsync();
-            }
-            else if (patientId != 0)
-            {
-                return await _context.Appointments
-                .Include(a => a.Patient)
-                .Include(a => a.Physician)
-                .Where(a => a.PatientId == patientId)
-                .ToListAsync();
+                if (physicianId != 0 && patientId != 0)
+                {
+                    return await _context.Appointments
+                    .Include(a => a.Patient)
+                    .Include(a => a.Physician)
+                    .Where(a => a.PhysicianId == physicianId && a.PatientId == patientId)
+                    .ToListAsync();
+                }
+                else if (physicianId != 0)
+                {
+                    return await _context.Appointments
+                    .Include(a => a.Patient)
+                    .Include(a => a.Physician)
+                    .Where(a => a.PhysicianId == physicianId)
+                    .ToListAsync();
+                }
+                else if (patientId != 0)
+                {
+                    return await _context.Appointments
+                    .Include(a => a.Patient)
+                    .Include(a => a.Physician)
+                    .Where(a => a.PatientId == patientId)
+                    .ToListAsync();
+                }
+                else
+                {
+                    return await _context.Appointments
+                    .Include(a => a.Patient)
+                    .Include(a => a.Physician)
+                    .ToListAsync();
+                }
             }
             else
             {
-                return await _context.Appointments
-                .Include(a => a.Patient)
-                .Include(a => a.Physician)
-                .ToListAsync();
+                var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
+                if (HttpContext.User.IsInRole("Patient"))
+                {
+                    return await _context.Appointments
+                        .Include(a => a.Patient)
+                        .Include(a => a.Physician)
+                        .Where(a => a.PatientId.ToString() == claimsIdentity.Name)
+                        .ToListAsync();
+                }
+                else if (HttpContext.User.IsInRole("Physician"))
+                {
+                    return await _context.Appointments
+                        .Include(a => a.Patient)
+                        .Include(a => a.Physician)
+                        .Where(a => a.PhysicianId.ToString() == claimsIdentity.Name)
+                        .ToListAsync();
+                }
             }
+            return Unauthorized();
         }
 
         // GET: api/Appointments/5
@@ -153,7 +177,18 @@ namespace WebClinicAPI.Controllers
                 return NotFound();
             }
 
-            return appointment;
+            var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (HttpContext.User.IsInRole("Receptionist") ||
+                HttpContext.User.IsInRole("Patient") && appointment.PatientId.ToString() == claimsIdentity.Name ||
+                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId.ToString() == claimsIdentity.Name)
+            {
+                return appointment;
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         // PUT: api/Appointments/5
@@ -162,30 +197,38 @@ namespace WebClinicAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAppointment(int id, Appointment appointment)
         {
-            if (id != appointment.Id)
-            {
-                return BadRequest();
-            }
+            var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
 
-            _context.Entry(appointment).State = EntityState.Modified;
-
-            try
+            if (HttpContext.User.IsInRole("Receptionist") ||
+                HttpContext.User.IsInRole("Patient") && appointment.PatientId.ToString() == claimsIdentity.Name ||
+                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId.ToString() == claimsIdentity.Name)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AppointmentExists(id))
+                if (id != appointment.Id)
                 {
-                    return NotFound();
+                    return BadRequest();
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                _context.Entry(appointment).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AppointmentExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return NoContent();
+            }
+            return Unauthorized();
         }
 
         // POST: api/Appointments
@@ -194,10 +237,21 @@ namespace WebClinicAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Appointment>> PostAppointment(Appointment appointment)
         {
-            _context.Appointments.Add(appointment);
-            await _context.SaveChangesAsync();
+            var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
 
-            return CreatedAtAction("GetAppointment", new { id = appointment.Id }, appointment);
+            if (HttpContext.User.IsInRole("Receptionist") ||
+                HttpContext.User.IsInRole("Patient") && appointment.PatientId.ToString() == claimsIdentity.Name ||
+                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId.ToString() == claimsIdentity.Name)
+            {
+                _context.Appointments.Add(appointment);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetAppointment", new { id = appointment.Id }, appointment);
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         // DELETE: api/Appointments/5
@@ -205,15 +259,27 @@ namespace WebClinicAPI.Controllers
         public async Task<ActionResult<Appointment>> DeleteAppointment(int id)
         {
             var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment == null)
+
+            var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (HttpContext.User.IsInRole("Receptionist") ||
+                HttpContext.User.IsInRole("Patient") && appointment.PatientId.ToString() == claimsIdentity.Name ||
+                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId.ToString() == claimsIdentity.Name)
             {
-                return NotFound();
+                if (appointment == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Appointments.Remove(appointment);
+                await _context.SaveChangesAsync();
+
+                return appointment;
             }
-
-            _context.Appointments.Remove(appointment);
-            await _context.SaveChangesAsync();
-
-            return appointment;
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         private bool AppointmentExists(int id)
