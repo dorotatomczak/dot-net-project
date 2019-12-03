@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebClinicAPI.Data;
 using WebClinicAPI.Models.Users;
-using WebClinicAPI.Utils;
+using WebClinicAPI.Helpers;
 
 namespace WebClinicAPI.Services
 {

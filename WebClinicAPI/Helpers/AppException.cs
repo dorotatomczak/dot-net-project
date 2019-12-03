@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebClinicAPI.Utils
+namespace WebClinicAPI.Helpers
 {
     public class AppException : Exception
     {
