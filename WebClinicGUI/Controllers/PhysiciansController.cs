@@ -17,11 +17,13 @@ namespace WebClinicGUI.Controllers
     {
         private readonly INetworkClient _client;
         private readonly IStringLocalizer<PhysiciansController> _localizer;
+        private readonly ICacheService _cacheService;
 
-        public PhysiciansController(INetworkClient client, IStringLocalizer<PhysiciansController> localizer)
+        public PhysiciansController(INetworkClient client, ICacheService cacheService, IStringLocalizer<PhysiciansController> localizer)
         {
             _client = client;
             _localizer = localizer;
+            _cacheService = cacheService;
         }
 
         [HttpGet]
@@ -34,9 +36,13 @@ namespace WebClinicGUI.Controllers
             try
             {
                 var model = new PhysiciansViewModel();
-                model.Physicians = new List<Physician>();
+                model.Physicians = await _cacheService.GetPhysiciansAsync();
 
-                model.Physicians = await _client.SendRequestAsync<List<Physician>>(HttpMethod.Get, "Physicians");
+                if (model.Physicians == null)
+                {
+                    model.Physicians = await _client.SendRequestAsync<List<Physician>>(HttpMethod.Get, "Physicians");
+                    _cacheService.SetPhysiciansAsync(model.Physicians);
+                }
                 return View(model);
             }
             catch (HttpRequestException)

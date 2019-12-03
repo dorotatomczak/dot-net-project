@@ -2,7 +2,9 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 
 @inject IViewLocalizer Localizer
-
+@{
+    ViewBag.Title = @Localizer["Calendar"];
+}
 @model EventsViewModel
 @{
     var selectListPatients = @Model.Resources.Patients

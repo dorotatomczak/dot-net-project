@@ -19,13 +19,14 @@ namespace WebClinicGUI.Controllers
     {
         private readonly INetworkClient _client;
         private readonly IStringLocalizer<PatientsController> _localizer;
+        private readonly ICacheService _cacheService;
 
-        public PatientsController(INetworkClient client, IStringLocalizer<PatientsController> localizer)
+        public PatientsController(INetworkClient client, ICacheService cacheService, IStringLocalizer<PatientsController> localizer)
         {
             _client = client;
             _localizer = localizer;
+            _cacheService = cacheService;
         }
-
         [HttpGet]
         public async Task<IActionResult> AllPatients()
         {
@@ -36,9 +37,14 @@ namespace WebClinicGUI.Controllers
             try
             {
                 var model = new PatientsViewModel();
-                model.Patients = new List<Patient>();
+                model.Patients = await _cacheService.GetPatientsAsync();
 
-                model.Patients = await _client.SendRequestAsync<List<Patient>>(HttpMethod.Get, "Patients");
+                if (model.Patients == null)
+                {
+                    model.Patients = await _client.SendRequestAsync<List<Patient>>(HttpMethod.Get, "Patients");
+                    _cacheService.SetPatientsAsync(model.Patients);
+                }
+
                 return View(model);
             }
             catch (HttpRequestException)

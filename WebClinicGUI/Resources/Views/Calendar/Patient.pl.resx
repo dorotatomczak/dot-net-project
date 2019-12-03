@@ -120,16 +120,4 @@
   <data name="Calendar" xml:space="preserve">
     <value>Kalendarz</value>
   </data>
-  <data name="Choose patient" xml:space="preserve">
-    <value>Wybierz pacjenta</value>
-  </data>
-  <data name="Choose physician" xml:space="preserve">
-    <value>Wybierz lekarza</value>
-  </data>
-  <data name="Filters" xml:space="preserve">
-    <value>Filtry</value>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>Brak</value>
-  </data>
 </root>

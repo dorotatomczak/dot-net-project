@@ -23,13 +23,16 @@ namespace WebClinicGUI.Controllers
         private readonly ILogger<CalendarController> _logger;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly INetworkClient _client;
+        private readonly ICacheService _cacheService;
 
-        public CalendarController(ILogger<CalendarController> logger, IStringLocalizer<CalendarController> localizer, IHttpContextAccessor accessor, INetworkClient client)
+        public CalendarController(ILogger<CalendarController> logger, IStringLocalizer<CalendarController> localizer,
+            IHttpContextAccessor accessor, INetworkClient client, ICacheService cacheService)
         {
             _localizer = localizer;
             _logger = logger;
             _client = client;
             _contextAccessor = accessor;
+            _cacheService = cacheService;
         }
 
         [Authorize]
@@ -147,7 +150,13 @@ namespace WebClinicGUI.Controllers
             List<Patient> patients;
             try
             {
-                patients = await _client.SendRequestAsync<List<Patient>>(HttpMethod.Get, "Patients");
+                patients = await _cacheService.GetPatientsAsync();
+
+                if (patients == null)
+                {
+                    patients = await _client.SendRequestAsync<List<Patient>>(HttpMethod.Get, "Patients");
+                    _cacheService.SetPatientsAsync(patients);
+                }
             }
             catch (HttpRequestException)
             {
@@ -162,7 +171,13 @@ namespace WebClinicGUI.Controllers
             List<Physician> physicians;
             try
             {
-                physicians = await _client.SendRequestAsync<List<Physician>>(HttpMethod.Get, "Physicians");
+                physicians = await _cacheService.GetPhysiciansAsync();
+
+                if (physicians == null)
+                {
+                    physicians = await _client.SendRequestAsync<List<Physician>>(HttpMethod.Get, "Physicians");
+                    _cacheService.SetPhysiciansAsync(physicians);
+                }
             }
             catch (HttpRequestException)
             {

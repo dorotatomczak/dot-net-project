@@ -1,6 +1,11 @@
 ﻿@using WebClinicGUI.Models.Calendar
-@model EventsViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
 
+@model EventsViewModel
+@inject IViewLocalizer Localizer
+@{
+    ViewBag.Title = @Localizer["Calendar"];
+}
 @await Html.PartialAsync("Calendar/_EventModalPartial")
 
 @* Create calendar *@
