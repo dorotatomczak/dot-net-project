@@ -10,6 +10,18 @@ function _configureEventsAction() {
         $('#physician').text(appointment.physician.fullName);
         $('#type').text(appointment.type);
         $('#modal-event-show').modal('show');
+        $("#cancel-btn").click(function (e) {
+            // Stop the normal navigation
+            e.preventDefault();
+
+            //Build the new URL
+            var url = $(this).attr("href");
+            url = url.replace("dummyId", appointment.id);
+
+            //Navigate to the new URL
+            window.location.href = url;
+
+        });
     };
 }
 
