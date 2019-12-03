@@ -226,16 +226,20 @@ namespace WebClinicGUI.Controllers
         private async Task<List<CalendarEvent>> GetEventsAsync(int physicianId = 0, int patientId = 0)
         {
             var appointments = await GetAppointmentsAsync(physicianId, patientId);
-            List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
-            foreach (Appointment app in appointments)
+            if (appointments != null)
             {
-                CalendarEvent calendarEvent = CalendarEvent.FromAppointment(app);
-                calendarEvent.Text = _localizer["Physician"] + ": " + app.Physician.FullName + ", " +
-                                     _localizer["Patient"] + ": " + app.Patient.FullName + ", " +
-                                     app.Time.ToString();
-                calendarEvents.Add(calendarEvent);
+                List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
+                foreach (Appointment app in appointments)
+                {
+                    CalendarEvent calendarEvent = CalendarEvent.FromAppointment(app);
+                    calendarEvent.Text = _localizer["Physician"] + ": " + app.Physician.FullName + ", " +
+                                         _localizer["Patient"] + ": " + app.Patient.FullName + ", " +
+                                         app.Time.ToString();
+                    calendarEvents.Add(calendarEvent);
+                }
+                return calendarEvents;
             }
-            return calendarEvents;
+            return null;
         }
     }
 }
