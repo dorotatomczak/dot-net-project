@@ -61,6 +61,7 @@ namespace WebClinicGUI
                 c.BaseAddress = INetworkClient.ServerUrl;
             });
             services.AddScoped<INetworkClient, NetworkClient>();
+            services.AddScoped<ICacheService, CacheService>();
 
             //services.AddSwaggerGen(conf =>
             //{
