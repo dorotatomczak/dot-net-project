@@ -8,6 +8,7 @@ using WebClinicAPI.Helpers;
 
 namespace WebClinicAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -16,7 +17,7 @@ namespace WebClinicAPI.Controllers
 
         public AccountController(IUserService userService)
         {
-            this._userService = userService;
+            _userService = userService;
         }
 
         [AllowAnonymous]

@@ -25,6 +25,8 @@ namespace WebClinicGUI.Models.Users
         public Sex Sex { get; set; }
         public string Role { get; set; }
 
+        public string Token { get; set; }
+
         public string FullName {
             get { return ToString(); }
          }
