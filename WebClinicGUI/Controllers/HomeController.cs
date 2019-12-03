@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebClinicGUI.Models;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebClinicGUI.Controllers
 {
-    [ApiController]
     [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
@@ -25,6 +25,7 @@ namespace WebClinicGUI.Controllers
 
         [HttpGet("/")]
         [HttpGet("[controller]/[action]")]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
@@ -37,14 +38,24 @@ namespace WebClinicGUI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult ServerConnectionError()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult SetLanguage([FromForm] string culture, [FromQuery]string returnUrl)
         {
             Response.Cookies.Append(

@@ -37,6 +37,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Views\Shared\ServerConnectionError.pl.resx">
+      <CustomToolNamespace>WebClinicGUI.Language</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Shared\Error.pl.resx">
+      <CustomToolNamespace>WebClinicGUI.Language</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Shared\_SelectLanguagePartial.pl.resx">
       <CustomToolNamespace>WebClinicGUI.Language</CustomToolNamespace>
     </EmbeddedResource>

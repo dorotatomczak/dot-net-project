@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using WebClinicGUI.Helpers;
 using WebClinicGUI.Models;
 using WebClinicGUI.Models.Users;
 using WebClinicGUI.Services;
@@ -49,8 +50,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return View();
+                throw new ServerConnectionException();
             }
         }
 
@@ -74,8 +74,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return View();
+                throw new ServerConnectionException();
             }
         }
 
@@ -95,8 +94,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return View();
+                throw new ServerConnectionException();
             }
         }
 
@@ -117,8 +115,7 @@ namespace WebClinicGUI.Controllers
                 }
                 catch (HttpRequestException)
                 {
-                    //show error
-                    return View();
+                    throw new ServerConnectionException();
                 }
             }
             else
@@ -138,8 +135,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return View();
+                throw new ServerConnectionException();
             }
         }
 
