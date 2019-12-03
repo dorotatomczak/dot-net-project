@@ -2,7 +2,7 @@
 using System;
 using WebClinicAPI.Models;
 using WebClinicAPI.Models.Users;
-using WebClinicAPI.Utils;
+using WebClinicAPI.Helpers;
 
 namespace WebClinicAPI.Data
 {

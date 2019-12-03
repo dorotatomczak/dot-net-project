@@ -4,11 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebClinicAPI.Data;
 using WebClinicAPI.Models.Users;
-using WebClinicAPI.Utils;
+using WebClinicAPI.Helpers;
+using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System;
 
 namespace WebClinicAPI.Services
 {
-
     public interface IUserService
     {
         AppUser Create(AppUser patient, string password);
@@ -22,10 +27,12 @@ namespace WebClinicAPI.Services
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext _context;
+        private readonly AppSettings _appSettings;
 
-        public UserService(ApplicationDbContext context)
+        public UserService(ApplicationDbContext context, IOptions<AppSettings> appSettings)
         {
-            this._context = context;
+            _context = context;
+            _appSettings = appSettings.Value;
         }
 
         public AppUser Authenticate(string email, string password)
@@ -37,6 +44,21 @@ namespace WebClinicAPI.Services
 
             if (user == null || user.Password != password)
                 return null;
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            user.Token = tokenHandler.WriteToken(token);
 
             return user;
         }

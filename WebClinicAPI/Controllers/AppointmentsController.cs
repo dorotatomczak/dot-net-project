@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using WebClinicAPI.Data;
 using WebClinicAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 using WebClinicAPI.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebClinicAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AppointmentsController : ControllerBase

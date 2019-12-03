@@ -28,6 +28,8 @@ namespace WebClinicAPI.Models.Users
         public DateTime DateOfBirth { get; set; }
         public Sex Sex { get; set; }
         public string Role { get; set; }
+        public string Token { get; set; }
+
         [NotMapped]
         public string FullName
         {

@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using WebClinicAPI.Models;
 using WebClinicAPI.Models.Users;
 using WebClinicAPI.Services;
-using WebClinicAPI.Utils;
+using WebClinicAPI.Helpers;
 
 namespace WebClinicAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -16,7 +17,7 @@ namespace WebClinicAPI.Controllers
 
         public AccountController(IUserService userService)
         {
-            this._userService = userService;
+            _userService = userService;
         }
 
         [AllowAnonymous]
@@ -28,7 +29,7 @@ namespace WebClinicAPI.Controllers
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            return Ok(user);
+            return Ok(user.WithoutPassword());
         }
 
         [AllowAnonymous]
@@ -65,28 +66,28 @@ namespace WebClinicAPI.Controllers
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();
-            return Ok(users);
+            return Ok(users.WithoutPasswords());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var user = _userService.GetById(id);
-            return Ok(user);
+            return Ok(user.WithoutPassword());
         }
 
         [HttpPut("UpdatePassword")]
         public async Task<IActionResult> UpdatePassword([FromBody]ChangePasswordModel model)
         {
             var user = await _userService.UpdatePassword(model.Email, model.OldPassword, model.NewPassword);
-            return Ok(user);
+            return Ok(user.WithoutPassword());
         }
 
         [HttpPut("UpdateEmail")]
         public async Task<IActionResult> UpdateEmail([FromBody]ChangeEmailModel model)
         {
             var user = await _userService.UpdateEmail(model.Email, model.NewEmail, model.Password);
-            return Ok(user);
+            return Ok(user.WithoutPassword());
         }
 
     }
