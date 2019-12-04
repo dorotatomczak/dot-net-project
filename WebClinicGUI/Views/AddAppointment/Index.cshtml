@@ -8,90 +8,104 @@
     ViewBag.Title = @Localizer["New appointment"];
 }
 
-<h2>@Localizer["Create new appointment"]</h2>
-@Html.ValidationMessage("TryAgain", new { @class = "text-danger" })
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.Message
+    </div>
+}
+else
+{
+    <h2>@Localizer["Create new appointment"]</h2>
+    @Html.ValidationMessage("TryAgain", new { @class = "text-danger" })
 
-<p>
-    @using (Html.BeginForm("Index", "AddAppointment", FormMethod.Get, "Search"))
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Specialization, htmlAttributes: new { @class = "control-label" })
-                <div class="col-md-10">
-                    @Html.DropDownList("Specialization", Html.GetEnumSelectList<PhysicianSpecialization>(), @Localizer["Select type of specialist"].Value, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Specialization, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.AppointmentType, htmlAttributes: new { @class = "control-label" })
-                <div class="col-md-10">
-                    @Html.DropDownList("AppointmentType", Html.GetEnumSelectList<AppointmentType>(), @Localizer["Select type of appointment"].Value, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.AppointmentType, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value=@Localizer["Search"] />
-                </div>
-            </div>
-        </div>
-    }
-</p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Localizer["Specialization"]
-            </th>
-            <th>
-                @Localizer["Physician"]
-            </th>
-            <th>
-                @Localizer["Hour"]
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.FreeTerms)
+    <p>
+        @using (Html.BeginForm("Index", "AddAppointment", FormMethod.Get, "Search"))
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Physician.Specialization)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Physician.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Time)
-                </td>
-                <td>
-                    @using (Html.BeginForm("Select", "AddAppointment", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="physicianId" value="@item.PhysicianId" />
-                        <input type="hidden" name="time" value="@item.Time" />
-                        <input type="hidden" name="type" value="@item.Type" />
-                        <input type="submit" value=@Localizer["Select"] />
-                    }
-                </td>
-            </tr>
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Specialization, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Specialization", Html.GetEnumSelectList<PhysicianSpecialization>(), @Localizer["Select type of specialist"].Value, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Specialization, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AppointmentType, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("AppointmentType", Html.GetEnumSelectList<AppointmentType>(), @Localizer["Select type of appointment"].Value, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.AppointmentType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value=@Localizer["Search"] />
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Localizer["Specialization"]
+                </th>
+                <th>
+                    @Localizer["Physician"]
+                </th>
+                <th>
+                    @Localizer["Hour"]
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.FreeTerms != null)
+            {
+                @foreach (var item in Model.FreeTerms)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Physician.Specialization)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Physician.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Time)
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("Select", "AddAppointment", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="physicianId" value="@item.PhysicianId" />
+                                <input type="hidden" name="time" value="@item.Time" />
+                                <input type="hidden" name="type" value="@item.Type" />
+                                <input type="submit" value=@Localizer["Select"] />
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+}
+

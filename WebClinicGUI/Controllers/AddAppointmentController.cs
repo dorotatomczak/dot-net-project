@@ -78,12 +78,13 @@ namespace WebClinicGUI.Controllers
             try
             {
                 await _client.SendRequestWithBodyAsync<Appointment>(HttpMethod.Post, "Appointments", appointment);
-                return RedirectToAction("Index", "Calendar");
+                ViewBag.Message = _localizer["AppointmentSelected"];
+                return View("Index");
             }
             catch (HttpRequestException)
             {
                 ModelState.AddModelError("TryAgain", _localizer["TryAgain"]);
-                return View();
+                return View("Index");
             }
         }
     }
