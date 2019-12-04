@@ -107,7 +107,7 @@ namespace WebClinicAPI.Controllers
 
         // GET: api/Appointments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments([FromQuery] int physicianId, [FromQuery] int patientId)
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments([FromQuery] int physicianId = 0, [FromQuery] int patientId = 0)
         {
             if (HttpContext.User.IsInRole("Receptionist"))
             {
@@ -143,7 +143,7 @@ namespace WebClinicAPI.Controllers
                     .ToListAsync();
                 }
             }
-            else
+            else if (HttpContext.User.IsInRole("Patient") || HttpContext.User.IsInRole("Physician"))
             {
                 var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
                 if (HttpContext.User.IsInRole("Patient"))
