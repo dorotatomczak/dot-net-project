@@ -117,34 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add patient" xml:space="preserve">
-    <value>Dodaj pacjenta</value>
+  <data name="Allergist" xml:space="preserve">
+    <value>Alergolog</value>
   </data>
-  <data name="Create report" xml:space="preserve">
-    <value>Wygeneruj raport</value>
+  <data name="Cardiologist" xml:space="preserve">
+    <value>Kardiolog</value>
   </data>
   <data name="Date of birth" xml:space="preserve">
     <value>Data urodzenia</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Usuń</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Szczegóły</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edytuj</value>
+  <data name="Female" xml:space="preserve">
+    <value>Kobieta</value>
   </data>
   <data name="First name" xml:space="preserve">
     <value>Imię</value>
   </data>
-  <data name="ID" xml:space="preserve">
-    <value>ID</value>
+  <data name="Internist" xml:space="preserve">
+    <value>Internista</value>
+  </data>
+  <data name="It's complicated" xml:space="preserve">
+    <value>To skomplikowane</value>
+  </data>
+  <data name="Laryngologist" xml:space="preserve">
+    <value>Laryngolog</value>
   </data>
   <data name="Last name" xml:space="preserve">
     <value>Nazwisko</value>
   </data>
-  <data name="Patients" xml:space="preserve">
-    <value>Pacjenci</value>
+  <data name="Male" xml:space="preserve">
+    <value>Mężczyzna</value>
+  </data>
+  <data name="patients" xml:space="preserve">
+    <value>pacjenci</value>
+  </data>
+  <data name="physicians" xml:space="preserve">
+    <value>lekarze</value>
+  </data>
+  <data name="Psychiatrist" xml:space="preserve">
+    <value>Psychiatra</value>
+  </data>
+  <data name="Psychologist" xml:space="preserve">
+    <value>Psycholog</value>
+  </data>
+  <data name="Pulmonologist" xml:space="preserve">
+    <value>Pulmonolog</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Raport</value>
+  </data>
+  <data name="Sex" xml:space="preserve">
+    <value>Płeć</value>
+  </data>
+  <data name="Specialization" xml:space="preserve">
+    <value>Specjalizacja</value>
+  </data>
+  <data name="Surgeon" xml:space="preserve">
+    <value>Chirurg</value>
   </data>
 </root>

@@ -9,6 +9,7 @@ using WebClinicGUI.Services;
 using WebClinicGUI.Utils;
 using Microsoft.Extensions.Localization;
 using WebClinicGUI.Helpers;
+using System.Linq;
 
 namespace WebClinicGUI.Controllers
 {
@@ -19,12 +20,14 @@ namespace WebClinicGUI.Controllers
         private readonly INetworkClient _client;
         private readonly IStringLocalizer<PhysiciansController> _localizer;
         private readonly ICacheService _cacheService;
+        private readonly IXlsService _xlsService;
 
-        public PhysiciansController(INetworkClient client, ICacheService cacheService, IStringLocalizer<PhysiciansController> localizer)
+        public PhysiciansController(INetworkClient client, ICacheService cacheService, IStringLocalizer<PhysiciansController> localizer, IXlsService xlsService)
         {
             _client = client;
             _localizer = localizer;
             _cacheService = cacheService;
+            _xlsService = xlsService;
         }
 
         [HttpGet]
@@ -174,6 +177,23 @@ namespace WebClinicGUI.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GenerateXls()
+        {
+            try
+            {
+                var physicians = await _client.SendRequestAsync<IEnumerable<Physician>>(HttpMethod.Get, "Physicians");
+                _cacheService.SetPhysiciansAsync(physicians.ToList());
+
+                return _xlsService.CreateXlsList(physicians, "physicians");
+
+            }
+            catch (HttpRequestException)
+            {
+                throw new ServerConnectionException();
+            }
         }
     }
 }

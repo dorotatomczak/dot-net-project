@@ -66,6 +66,7 @@ namespace WebClinicGUI
             });
             services.AddScoped<INetworkClient, NetworkClient>();
             services.AddScoped<ICacheService, CacheService>();
+            services.AddScoped<IXlsService, XlsService>();
 
             //services.AddSwaggerGen(conf =>
             //{
