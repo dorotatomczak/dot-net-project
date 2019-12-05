@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppointmentCanceled" xml:space="preserve">
+    <value>Wizyta została pomyślnie odwołana.</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Powrót</value>
+  </data>
   <data name="Calendar" xml:space="preserve">
     <value>Kalendarz</value>
   </data>
