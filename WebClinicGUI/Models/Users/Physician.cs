@@ -32,5 +32,11 @@ namespace WebClinicGUI.Models.Users
         public PhysicianSpecialization Specialization { get; set; }
         //working hours?
         public ICollection<Appointment> Appointments { get; set; }
+        public override Dictionary<string, string> ToRow()
+        {
+            var dict = base.ToRow();
+            dict.Add("Specialization", Specialization.ToString());
+            return dict;
+        }
     }
 }

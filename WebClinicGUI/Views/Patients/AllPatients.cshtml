@@ -7,6 +7,14 @@
     ViewData["Title"] = @Localizer["Patients"];
 }
 
+@{Html.BeginForm("GenerateXls", "Patients", FormMethod.Get);
+    {
+        <div align="right">
+            <input type="submit" value="@Localizer["Create report"]" style="width:150px;height:27px" />
+        </div>
+    }
+    Html.EndForm();
+}
 @Html.ValidationMessage("info", new { @class = "text-success" })
 
 <h3>@Localizer["Patients"]</h3>
