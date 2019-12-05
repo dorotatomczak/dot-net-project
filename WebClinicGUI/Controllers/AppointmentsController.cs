@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using WebClinicGUI.Helpers;
 using WebClinicGUI.Models;
 using WebClinicGUI.Services;
 
@@ -36,8 +37,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return NotFound();
+                throw new ServerConnectionException();
             }
         }
     }
