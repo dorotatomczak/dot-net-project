@@ -6,7 +6,16 @@
     ViewBag.Title = @Localizer["Calendar"];
 }
 @model EventsViewModel
-@{
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @Localizer[TempData["Message"].ToString()]
+        @Html.ActionLink(@Localizer["Back"].Value, "Receptionist", "Calendar")
+    </div>
+}
+else
+{
     var selectListPatients = @Model.Resources.Patients
         .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.FullName })
         .ToList();
@@ -14,33 +23,31 @@
     var selectListPhysicians = @Model.Resources.Physicians
         .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.FullName })
         .ToList();
-}
 
-<div class="panel panel-default">
-    <div class="panel-heading">@Localizer["Filters"]</div>
-    <div class="panel-body border-bottom">
-        <form class="form-horizontal" asp-controller="Calendar"
-              asp-action="ApplyFilters" method="post">
-            <div class="form-group">
-                <select data-live-search="true" class="selectpicker m-1" name="physicianId"
-                        asp-items="@selectListPhysicians" onchange="this.form.submit();">
-                    <option value="" disabled selected>@Localizer["Choose physician"]</option>
-                    <option class="text-primary" value="0">@Localizer["None"]</option>
-                </select>
-                <select data-live-search="true" class="selectpicker m-1" name="patientId"
-                        asp-items="@selectListPatients" onchange="this.form.submit();">
-                    <option value="" disabled selected>@Localizer["Choose patient"]</option>
-                    <option class="text-primary" value="0">@Localizer["None"]</option>
-                </select>
-            </div>
-        </form>
+    <div class="panel panel-default">
+        <div class="panel-heading">@Localizer["Filters"]</div>
+        <div class="panel-body border-bottom">
+            <form class="form-horizontal" asp-controller="Calendar"
+                  asp-action="ApplyFilters" method="post">
+                <div class="form-group">
+                    <select data-live-search="true" class="selectpicker m-1" name="physicianId"
+                            asp-items="@selectListPhysicians" onchange="this.form.submit();">
+                        <option value="" disabled selected>@Localizer["Choose physician"]</option>
+                        <option class="text-primary" value="0">@Localizer["None"]</option>
+                    </select>
+                    <select data-live-search="true" class="selectpicker m-1" name="patientId"
+                            asp-items="@selectListPatients" onchange="this.form.submit();">
+                        <option value="" disabled selected>@Localizer["Choose patient"]</option>
+                        <option class="text-primary" value="0">@Localizer["None"]</option>
+                    </select>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-@{
-    if (Model.Filters != null)
+    if (Model.Filters != null && (Model.Filters.PhysiciansFilters.Count > 0 || Model.Filters.PatientsFilters.Count > 0))
     {
-        <div class="alert alert-info">
+        <div class="alert alert-info my-1">
             <div class="row">
                 @{
                     if (Model.Filters.PhysiciansFilters.Count != 0)
@@ -67,12 +74,9 @@
             </div>
         </div>
     }
-}
 
-@await Html.PartialAsync("Calendar/_EventModalPartial")
+	@await Html.PartialAsync("Calendar/_EventModalPartial")
 
-@* Create calendar *@
-@{
     if (Context.Request.Cookies["ViewType"] == "Day")
     {
         @await Html.PartialAsync("Calendar/_DayPartial")
@@ -85,9 +89,8 @@
     {
         @await Html.PartialAsync("Calendar/_MonthPartial")
     }
-}
 
-@* Load events *@
-<script>
-    loadEvents(@Html.Raw(Json.Serialize(@Model.Events)));
-</script>
+    <script>
+        loadEvents(@Html.Raw(Json.Serialize(@Model.Events)));
+    </script>
+}

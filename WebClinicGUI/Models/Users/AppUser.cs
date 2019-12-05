@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebClinicGUI.Models.Users
@@ -34,6 +35,19 @@ namespace WebClinicGUI.Models.Users
         public override string ToString()
         {
             return FirstName + " " + LastName;
+        }
+
+        public virtual Dictionary<string, string> ToRow()
+        {
+            var user = new Dictionary<string, string>();
+            user.Add("Id", Id.ToString());
+            user.Add("First name", FirstName);
+            user.Add("Last name", LastName);
+            user.Add("Email", Email);
+            user.Add("Sex", Sex.ToString());
+            user.Add("Date of birth", DateOfBirth.ToShortDateString());
+
+            return user;
         }
     }
 }

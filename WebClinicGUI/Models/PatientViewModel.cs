@@ -6,7 +6,6 @@ namespace WebClinicGUI.Models
 {
     public class PatientViewModel
     {
-
         public int Id { get; set; }
 
         [Display(Name = "Email")]

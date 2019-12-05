@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -21,13 +22,16 @@ namespace WebClinicGUI.Controllers
         private readonly INetworkClient _client;
         private readonly IStringLocalizer<PatientsController> _localizer;
         private readonly ICacheService _cacheService;
+        private readonly IXlsService _xlsService;
 
-        public PatientsController(INetworkClient client, ICacheService cacheService, IStringLocalizer<PatientsController> localizer)
+        public PatientsController(INetworkClient client, ICacheService cacheService, IStringLocalizer<PatientsController> localizer, IXlsService xlsService)
         {
             _client = client;
             _localizer = localizer;
             _cacheService = cacheService;
+            _xlsService = xlsService;
         }
+
         [HttpGet]
         public async Task<IActionResult> AllPatients()
         {
@@ -130,6 +134,7 @@ namespace WebClinicGUI.Controllers
             try
             {
                 var patient = await _client.SendRequestAsync<Patient>(HttpMethod.Delete, $"Patients/{id}");
+                _cacheService.InvalidateCacheAsync();
                 TempData["message"] = "Patient has been deleted.";
                 return RedirectToAction(nameof(PatientsController.AllPatients));
             }
@@ -166,6 +171,7 @@ namespace WebClinicGUI.Controllers
                 try
                 {
                     await _client.SendRequestWithBodyAsync(HttpMethod.Post, "Account/RegisterPatient", patient);
+                    _cacheService.InvalidateCacheAsync();
                     TempData["message"] = "Patient has been added.";
                     return RedirectToAction("AllPatients");
                 }
@@ -175,6 +181,23 @@ namespace WebClinicGUI.Controllers
                 }
             }
             return View(model);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GenerateXls()
+        {
+            try
+            {
+                var patients = await _client.SendRequestAsync<IEnumerable<Patient>>(HttpMethod.Get, "Patients");
+                _cacheService.SetPatientsAsync(patients.ToList());
+
+                return _xlsService.CreateXlsList(patients, "patients");
+
+            }
+            catch (HttpRequestException)
+            {
+                throw new ServerConnectionException();
+            }
         }
     }
 }
