@@ -13,10 +13,12 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.0" />
+	<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WebClinicAPI\WebClinicAPI.csproj" />
+    <ProjectReference Include="..\WebClinicGUI\WebClinicGUI.csproj" />
   </ItemGroup>
 
 </Project>
