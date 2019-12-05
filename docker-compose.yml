@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  webclinicapi:
+    image: ${DOCKER_REGISTRY-}webclinicapi
+    ports:
+    - "51210:80"
+    depends_on:
+    - db
+    build:
+      context: .
+      dockerfile: WebClinicAPI\Dockerfile
+
+  db:
+    image: "microsoft/mssql-server-windows-express"
+    environment:
+      SA_PASSWORD: "sa"
+      ACCEPT_EULA: "Y"
+
+  webclinicgui:
+    image: ${DOCKER_REGISTRY-}webclinicgui
+    ports:
+    - "51207:80"
+    build:
+      context: .
+      dockerfile: WebClinicGUI\Dockerfile
+
