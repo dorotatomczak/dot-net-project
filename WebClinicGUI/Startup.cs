@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WebClinicGUI.Filters;
 using WebClinicGUI.Services;
@@ -43,7 +44,10 @@ namespace WebClinicGUI
             {
                 options.ResourcesPath = "Resources";
             });
-
+            services.AddLogging(options =>
+            {
+                options.AddConsole().AddDebug();
+            });
             services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
 
             services.AddMvc(options =>
@@ -101,7 +105,7 @@ namespace WebClinicGUI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -119,6 +123,8 @@ namespace WebClinicGUI
 
             app.UseStaticFiles();
 
+            var logger = loggerFactory.CreateLogger("Startup");
+            logger.LogWarning("Logger configured!");
             //app.UseSwagger();
             //app.UseSwaggerUI(c =>
             //{
