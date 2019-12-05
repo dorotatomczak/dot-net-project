@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WebClinicGUI.Helpers;
 using WebClinicGUI.Models;
 using WebClinicGUI.Models.Users;
 using WebClinicGUI.Services;
@@ -59,7 +60,9 @@ namespace WebClinicGUI.Controllers
 
                 try
                 {
+                    _logger.Log(LogLevel.Debug, "User tries to register");
                     await _client.SendRequestWithBodyAsync<Patient>(HttpMethod.Post, "Account/RegisterPatient", patient);
+                    _logger.Log(LogLevel.Debug, "User registered succesfully");
                     return RedirectToAction("Login");
                 }
                 catch (HttpRequestException)
@@ -93,7 +96,9 @@ namespace WebClinicGUI.Controllers
 
                 try
                 {
+                    _logger.Log(LogLevel.Debug, "User tries to login");
                     await Login(userDto);
+                    _logger.Log(LogLevel.Debug, "User loggged succesfully");
 
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
@@ -137,6 +142,7 @@ namespace WebClinicGUI.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
+            _logger.Log(LogLevel.Debug, "User logged out succesfully");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -144,6 +150,7 @@ namespace WebClinicGUI.Controllers
         [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> ReceptionistAccount()
         {
+            _logger.Log(LogLevel.Debug, "AccountController::ReceptionistAccount()");
             if (TempData["message"] != null)
             {
                 ModelState.AddModelError("CredentialChanged", _localizer[TempData["message"].ToString()]);
@@ -173,6 +180,7 @@ namespace WebClinicGUI.Controllers
         [Authorize(Roles = "Patient")]
         public async Task<IActionResult> PatientAccount()
         {
+            _logger.Log(LogLevel.Debug, "AccountController::PatientAccount()");
             if (TempData["message"] != null)
             {
                 ModelState.AddModelError("CredentialChanged", _localizer[TempData["message"].ToString()]);
@@ -194,8 +202,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return View();
+                throw new ServerConnectionException();
             }
         }
 
@@ -203,6 +210,7 @@ namespace WebClinicGUI.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PhysicianAccount()
         {
+            _logger.Log(LogLevel.Debug, "AccountController::PhysicianAccount");
             if (TempData["message"] != null)
             {
                 ModelState.AddModelError("CredentialChanged", _localizer[TempData["message"].ToString()]);
@@ -224,8 +232,7 @@ namespace WebClinicGUI.Controllers
             }
             catch (HttpRequestException)
             {
-                //show error
-                return View();
+                throw new ServerConnectionException();
             }
         }
 
@@ -241,6 +248,7 @@ namespace WebClinicGUI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            _logger.Log(LogLevel.Debug, "AccountController::ChangePassword");
             if (ModelState.IsValid)
             {
                 try
@@ -281,6 +289,7 @@ namespace WebClinicGUI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
         {
+            _logger.Log(LogLevel.Debug, "AccountController::ChangeEmail");
             if (ModelState.IsValid)
             {
                 try
