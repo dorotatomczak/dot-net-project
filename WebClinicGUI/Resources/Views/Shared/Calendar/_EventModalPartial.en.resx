@@ -123,6 +123,15 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="Consultation" xml:space="preserve">
+    <value>Consultation</value>
+  </data>
+  <data name="ControlCheck" xml:space="preserve">
+    <value>Control check</value>
+  </data>
+  <data name="Cure" xml:space="preserve">
+    <value>Cure</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Appointment Details</value>
   </data>

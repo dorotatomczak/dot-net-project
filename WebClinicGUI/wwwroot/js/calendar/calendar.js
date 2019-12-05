@@ -8,7 +8,26 @@ function _configureEventsAction() {
         $('#time').text(appointment.time.replace("T", " "));
         $('#patient').text(appointment.patient.fullName);
         $('#physician').text(appointment.physician.fullName);
-        $('#type').text(appointment.type);
+
+        var appointmentTypes = {
+            CONSULTATION: 0,
+            CURE: 1,
+            CONTROL_CHECK: 2,
+        };
+
+        if (appointment.type == appointmentTypes.CONSULTATION) {
+            $('#consultation').removeAttr("hidden");
+        }
+        else if (appointment.type == appointmentTypes.CURE) {
+            $('#cure').removeAttr("hidden");
+        }
+        else if (appointment.type == appointmentTypes.CONTROL_CHECK) {
+            $('#control-check').removeAttr("hidden");
+        }
+        else {
+            throw new Error("Appointment Type does not have valid value.");
+        }
+
         $('#modal-event-show').modal('show');
         $("#cancel-btn").click(function (e) {
             // Stop the normal navigation
