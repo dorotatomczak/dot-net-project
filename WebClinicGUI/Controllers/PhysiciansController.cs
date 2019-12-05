@@ -129,6 +129,7 @@ namespace WebClinicGUI.Controllers
             try
             {
                 var physician = await _client.SendRequestAsync<Physician>(HttpMethod.Delete, $"Physicians/{id}");
+                _cacheService.InvalidateCacheAsync();
                 TempData["message"] = "Physician has been deleted.";
                 return RedirectToAction(nameof(PhysiciansController.AllPhysicians));
             }
@@ -163,6 +164,7 @@ namespace WebClinicGUI.Controllers
                 try
                 {
                     await _client.SendRequestWithBodyAsync(HttpMethod.Post, "Account/RegisterPhysician", physician);
+                    _cacheService.InvalidateCacheAsync();
                     TempData["message"] = "Physician has been added.";
                     return RedirectToAction("AllPhysicians");
                 }

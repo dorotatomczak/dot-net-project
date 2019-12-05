@@ -18,6 +18,7 @@ namespace WebClinicGUI.Services
         public void SetPhysiciansAsync(List<Physician> physicians);
         public Task<List<Patient>> GetPatientsAsync();
         public void SetPatientsAsync(List<Patient> patients);
+        public Task<bool> InvalidateCacheAsync();
     }
     public class CacheService : ICacheService
     {
@@ -45,8 +46,8 @@ namespace WebClinicGUI.Services
         {
             _distributedCache.SetAsync(_physicians, GetBytes(physicians),
                 new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = _cacheTimeout
+                {
+                    AbsoluteExpirationRelativeToNow = _cacheTimeout
                 });
         }
         public async Task<List<Patient>> GetPatientsAsync()
@@ -63,8 +64,8 @@ namespace WebClinicGUI.Services
         {
             _distributedCache.SetAsync(_patients, GetBytes(patients),
                 new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = _cacheTimeout
+                {
+                    AbsoluteExpirationRelativeToNow = _cacheTimeout
                 });
         }
 
@@ -75,6 +76,14 @@ namespace WebClinicGUI.Services
         private T GetObject<T>(byte[] bytes)
         {
             return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(bytes));
+        }
+
+        public async Task<bool> InvalidateCacheAsync()
+        {
+            await _distributedCache.RemoveAsync(_physicians);
+            await _distributedCache.RemoveAsync(_patients);
+
+            return true;
         }
     }
 }
