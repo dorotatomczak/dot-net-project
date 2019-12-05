@@ -22,8 +22,9 @@ namespace Test
             // Arrange
             var clientMock = new Mock<INetworkClient>();
             var cacheServiceMock = new Mock<ICacheService>();
-            var localizerMock = new Mock <IStringLocalizer<PatientsController>> ();
-            var controller = new PatientsController(clientMock.Object, cacheServiceMock.Object, localizerMock.Object);
+            var localizerMock = new Mock<IStringLocalizer<PatientsController>>();
+            var xlsServiceMock = new Mock<IXlsService>();
+            var controller = new PatientsController(clientMock.Object, cacheServiceMock.Object, localizerMock.Object, xlsServiceMock.Object);
 
             // Act
             var result = controller.AddPatient();
