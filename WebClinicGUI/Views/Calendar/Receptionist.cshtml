@@ -18,7 +18,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">@Localizer["Filters"]</div>
-    <div class="panel-body">
+    <div class="panel-body border-bottom">
         <form class="form-horizontal" asp-controller="Calendar"
               asp-action="ApplyFilters" method="post">
             <div class="form-group">
@@ -36,6 +36,38 @@
         </form>
     </div>
 </div>
+
+@{
+    if (Model.Filters != null)
+    {
+        <div class="alert alert-info">
+            <div class="row">
+                @{
+                    if (Model.Filters.PhysiciansFilters.Count != 0)
+                    {
+                        <strong>@Localizer["Physicians"]:</strong>
+                        @for (var i = 0; i < Model.Filters.PhysiciansFilters.Count; i++)
+                        {
+                            <div class="mx-2">
+                                @Model.Filters.PhysiciansFilters.ElementAt(i)
+                            </div>  
+                        }
+                    }
+                    if (Model.Filters.PatientsFilters.Count != 0)
+                    {
+                        <strong>@Localizer["Patients"]:</strong>
+                        @for (var i = 0; i < Model.Filters.PatientsFilters.Count; i++)
+                        {
+                            <div class="mx-2">
+                                @Model.Filters.PatientsFilters.ElementAt(i)
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    }
+}
 
 @await Html.PartialAsync("Calendar/_EventModalPartial")
 

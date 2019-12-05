@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using WebClinicGUI.Controllers;
 using WebClinicGUI.Helpers;
 using WebClinicGUI.Models;
 using WebClinicGUI.Models.Calendar;
@@ -66,20 +65,15 @@ namespace WebClinicGUI.Controllers
         [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> Receptionist()
         {
-            var events = await GetEventsAsync();
-            var patients = await GetAllPatientsAsync();
-            var physicians = await GetAllPhysiciansAsync();
-
-            AvailableResources resources = new AvailableResources
-            { 
-                    Patients = patients,
-                    Physicians = physicians
-            };
-
             EventsViewModel eventsViewModel = new EventsViewModel
             {
-                Resources = resources,
-                Events = events
+                Resources = new AvailableResources
+                {
+                    Patients = await GetAllPatientsAsync(),
+                    Physicians = await GetAllPhysiciansAsync()
+                },
+                Events = await GetEventsAsync(),
+                Filters = null
             };
 
             ViewBag.ViewType = Request.Cookies["ViewType"];
@@ -89,11 +83,11 @@ namespace WebClinicGUI.Controllers
         [Authorize(Roles = "Patient")]
         public async Task<IActionResult> Patient()
         {
-            var events = await GetEventsAsync();
             EventsViewModel eventsViewModel = new EventsViewModel
             {
                 Resources = null,
-                Events = events
+                Events = await GetEventsAsync(),
+                Filters = null
             };
 
             ViewBag.ViewType = Request.Cookies["ViewType"];
@@ -103,11 +97,11 @@ namespace WebClinicGUI.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> Physician()
         {
-            var events = await GetEventsAsync();
             EventsViewModel eventsViewModel = new EventsViewModel
             {
                 Resources = null,
-                Events = events
+                Events = await GetEventsAsync(),
+                Filters = null
             };
 
             ViewBag.ViewType = Request.Cookies["ViewType"];
@@ -189,22 +183,27 @@ namespace WebClinicGUI.Controllers
         [HttpPost]
         public async Task<ViewResult> ApplyFilters([FromForm] int physicianId, [FromForm] int patientId)
         {
-            // load again
-            var events = await GetEventsAsync(physicianId, patientId);
-            var patients = await GetAllPatientsAsync();
-            var physicians = await GetAllPhysiciansAsync();
-
-            AvailableResources resources = new AvailableResources
-            {
-                Patients = patients,
-                Physicians = physicians
-            };
-
             EventsViewModel eventsViewModel = new EventsViewModel
             {
-                Resources = resources,
-                Events = events
+                Resources = new AvailableResources
+                {
+                    Patients = await GetAllPatientsAsync(),
+                    Physicians = await GetAllPhysiciansAsync()
+                },
+                Events = await GetEventsAsync(physicianId, patientId),
+                Filters = new GlobalFilters()
             };
+
+            if (physicianId != 0)
+            {
+                eventsViewModel.Filters.PhysiciansFilters
+                    .Add(GetPhysicianFullNameById(eventsViewModel.Resources.Physicians, physicianId));
+            }
+            if (patientId != 0)
+            {
+                eventsViewModel.Filters.PatientsFilters.
+                    Add(GetPatientFullNameById(eventsViewModel.Resources.Patients, patientId));
+            }
 
             return View(nameof(Receptionist), eventsViewModel);
         }
@@ -236,6 +235,30 @@ namespace WebClinicGUI.Controllers
                     calendarEvents.Add(calendarEvent);
                 }
                 return calendarEvents;
+            }
+            return null;
+        }
+
+        private string GetPatientFullNameById(List<Patient> patients, int id)
+        {
+            foreach(var patient in patients)
+            {
+                if (patient.Id == id)
+                {
+                    return patient.FullName;
+                }
+            }
+            return null;
+        }
+
+        private string GetPhysicianFullNameById(List<Physician> physicians, int id)
+        {
+            foreach (var physician in physicians)
+            {
+                if (physician.Id == id)
+                {
+                    return physician.FullName;
+                }
             }
             return null;
         }
