@@ -46,7 +46,11 @@ namespace Test
             };
 
             var result = new List<ValidationResult>();
+
+            // Act
             var isValid = Validator.TryValidateObject(patientVM, new ValidationContext(patientVM), result);
+
+            // Assert
             Assert.True(isValid);
         }
 
@@ -63,7 +67,11 @@ namespace Test
             };
 
             var result = new List<ValidationResult>();
+
+            // Act
             var isValid = Validator.TryValidateObject(patientVM, new ValidationContext(patientVM), result);
+
+            // Assert
             Assert.False(isValid);
             Assert.Single(result);
             Assert.Contains("'Email' field is required.", result[0].ErrorMessage);
