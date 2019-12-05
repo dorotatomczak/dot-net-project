@@ -11,14 +11,11 @@ using WebClinicAPI.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
 
 namespace Test
 {
     public class AppointmentsControllerTest
     {
-
-        
         private DbContextOptions<ApplicationDbContext> CreateOptions(string name)
         {
             return new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -127,11 +124,6 @@ namespace Test
                 var appointments = Assert.IsType<List<Appointment>>(result.Value);
                 Assert.Equal(2, appointments.Count);
             }
-        }
-
-        [Fact]
-        public void GetFreeTerms_ReturnsFreeTerms()
-        {
         }
     }
 }
