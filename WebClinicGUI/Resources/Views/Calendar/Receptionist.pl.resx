@@ -136,6 +136,12 @@
     <value>Filtry</value>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Brak</value>
+    <value>Wszyscy</value>
+  </data>
+  <data name="Patients" xml:space="preserve">
+    <value>Pacjenci</value>
+  </data>
+  <data name="Physicians" xml:space="preserve">
+    <value>Lekarze</value>
   </data>
 </root>

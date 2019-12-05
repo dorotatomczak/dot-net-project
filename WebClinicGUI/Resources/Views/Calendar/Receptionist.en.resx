@@ -123,6 +123,9 @@
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="Calendar" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
   <data name="Choose patient" xml:space="preserve">
     <value>Choose patient</value>
   </data>
@@ -133,6 +136,12 @@
     <value>Filters</value>
   </data>
   <data name="None" xml:space="preserve">
-    <value>None</value>
+    <value>All</value>
+  </data>
+  <data name="Patients" xml:space="preserve">
+    <value>Patients</value>
+  </data>
+  <data name="Physicians" xml:space="preserve">
+    <value>Physicians</value>
   </data>
 </root>
