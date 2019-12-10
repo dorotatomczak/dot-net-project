@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -101,7 +102,10 @@ namespace WebClinicGUI
                     new CookieRequestCultureProvider(), // use cookie if exists
                     new AcceptLanguageHeaderRequestCultureProvider() // = use web browser settings otherwise
                 };
-            });
+            }); 
+            services.AddDataProtection()
+                .SetApplicationName("fow-customer-portal")
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/var/dpkeys/"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

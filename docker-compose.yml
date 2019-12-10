@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  webclinicapi:
+    image: ${DOCKER_REGISTRY-}webclinicapi
+    networks:
+      - my-network-name
+    ports:
+    - "51210:80"
+    - "51212:443"
+    build:
+      context: WebClinicAPI
+      dockerfile: Dockerfile
+
+  webclinicgui:
+    image: ${DOCKER_REGISTRY-}webclinicgui
+    networks:
+      - my-network-name
+    ports:
+    - "51207:80"
+    depends_on:
+    - webclinicapi
+    build:
+      context: WebClinicGUI
+      dockerfile: Dockerfile
+networks:
+  my-network-name:
+    # Use a custom driver
+    driver: bridge

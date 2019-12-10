@@ -42,7 +42,6 @@ namespace WebClinicGUI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -83,7 +82,6 @@ namespace WebClinicGUI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             if (ModelState.IsValid)
@@ -138,7 +136,6 @@ namespace WebClinicGUI.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
@@ -245,7 +242,6 @@ namespace WebClinicGUI.Controllers
 
         [HttpPost]
         [Authorize]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             _logger.Log(LogLevel.Debug, "AccountController::ChangePassword");
@@ -286,7 +282,6 @@ namespace WebClinicGUI.Controllers
 
         [HttpPost]
         [Authorize]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
         {
             _logger.Log(LogLevel.Debug, "AccountController::ChangeEmail");

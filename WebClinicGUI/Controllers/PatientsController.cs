@@ -103,7 +103,6 @@ namespace WebClinicGUI.Controllers
         }
 
         [HttpPost("{id}")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [FromForm] PatientViewModel model)
         {
             if (ModelState.IsValid)
@@ -150,7 +149,6 @@ namespace WebClinicGUI.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddPatient([FromForm] PatientViewModel model)
         {
             if (ModelState.IsValid)

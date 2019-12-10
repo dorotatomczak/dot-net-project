@@ -1,19 +1,20 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
-COPY ["WebClinicGUI.csproj", ""]
-RUN dotnet restore "WebClinicGUI.csproj"
+COPY ["WebClinicAPI.csproj", ""]
+RUN dotnet restore "WebClinicAPI.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "WebClinicGUI.csproj" -c Release -o /app/build
+RUN dotnet build "WebClinicAPI.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "WebClinicGUI.csproj" -c Release -o /app/publish
+RUN dotnet publish "WebClinicAPI.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "WebClinicGUI.dll"]
+ENTRYPOINT ["dotnet", "WebClinicAPI.dll"]

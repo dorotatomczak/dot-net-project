@@ -11,6 +11,7 @@ using WebClinicAPI.Helpers;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Linq;
 
 namespace WebClinicAPI
 {
@@ -29,7 +30,7 @@ namespace WebClinicAPI
             services.AddCors();
 
             services.AddDbContext<ApplicationDbContext>(options =>
-              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+              options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -75,7 +76,7 @@ namespace WebClinicAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -106,6 +107,10 @@ namespace WebClinicAPI
             {
                 endpoints.MapControllers();
             });
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }
