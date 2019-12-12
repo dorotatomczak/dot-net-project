@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <Reference Include="DayPilot.Web.Mvc">
-      <HintPath>bin\DayPilot.Web.Mvc.dll</HintPath>
+      <HintPath>DayPilot.Web.Mvc.dll</HintPath>
     </Reference>
   </ItemGroup>
 

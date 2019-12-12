@@ -11,8 +11,8 @@
 **/*.*proj.user
 **/*.dbmdl
 **/*.jfm
-**/azds.yaml
 **/bin
+**/azds.yaml
 **/charts
 **/node_modules
 **/npm-debug.log

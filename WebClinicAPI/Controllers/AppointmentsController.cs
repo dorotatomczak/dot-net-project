@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -151,7 +152,7 @@ namespace WebClinicAPI.Controllers
                     return await _context.Appointments
                         .Include(a => a.Patient)
                         .Include(a => a.Physician)
-                        .Where(a => a.PatientId.ToString() == claimsIdentity.Name)
+                        .Where(a => a.PatientId.Value == Int32.Parse(claimsIdentity.Name))
                         .ToListAsync();
                 }
                 else if (HttpContext.User.IsInRole("Physician"))
@@ -159,7 +160,7 @@ namespace WebClinicAPI.Controllers
                     return await _context.Appointments
                         .Include(a => a.Patient)
                         .Include(a => a.Physician)
-                        .Where(a => a.PhysicianId.ToString() == claimsIdentity.Name)
+                        .Where(a => a.PhysicianId == Int32.Parse(claimsIdentity.Name))
                         .ToListAsync();
                 }
             }
@@ -180,8 +181,8 @@ namespace WebClinicAPI.Controllers
             var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
 
             if (HttpContext.User.IsInRole("Receptionist") ||
-                HttpContext.User.IsInRole("Patient") && appointment.PatientId.ToString() == claimsIdentity.Name ||
-                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId.ToString() == claimsIdentity.Name)
+                HttpContext.User.IsInRole("Patient") && appointment.PatientId == Int32.Parse(claimsIdentity.Name) ||
+                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId == Int32.Parse(claimsIdentity.Name))
             {
                 return appointment;
             }
@@ -200,8 +201,8 @@ namespace WebClinicAPI.Controllers
             var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
 
             if (HttpContext.User.IsInRole("Receptionist") ||
-                HttpContext.User.IsInRole("Patient") && appointment.PatientId.ToString() == claimsIdentity.Name ||
-                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId.ToString() == claimsIdentity.Name)
+                HttpContext.User.IsInRole("Patient") && appointment.PatientId == Int32.Parse(claimsIdentity.Name) ||
+                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId == Int32.Parse(claimsIdentity.Name))
             {
                 if (id != appointment.Id)
                 {
@@ -240,8 +241,8 @@ namespace WebClinicAPI.Controllers
             var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
 
             if (HttpContext.User.IsInRole("Receptionist") ||
-                HttpContext.User.IsInRole("Patient") && appointment.PatientId.ToString() == claimsIdentity.Name ||
-                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId.ToString() == claimsIdentity.Name)
+                HttpContext.User.IsInRole("Patient") && appointment.PatientId == Int32.Parse(claimsIdentity.Name) ||
+                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId == Int32.Parse(claimsIdentity.Name))
             {
                 _context.Appointments.Add(appointment);
                 await _context.SaveChangesAsync();
@@ -263,8 +264,8 @@ namespace WebClinicAPI.Controllers
             var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
 
             if (HttpContext.User.IsInRole("Receptionist") ||
-                HttpContext.User.IsInRole("Patient") && appointment.PatientId.ToString() == claimsIdentity.Name ||
-                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId.ToString() == claimsIdentity.Name)
+                HttpContext.User.IsInRole("Patient") && appointment.PatientId == Int32.Parse(claimsIdentity.Name) ||
+                HttpContext.User.IsInRole("Physician") && appointment.PhysicianId == Int32.Parse(claimsIdentity.Name))
             {
                 if (appointment == null)
                 {

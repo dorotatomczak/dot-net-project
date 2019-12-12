@@ -12,6 +12,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace WebClinicAPI
 {
@@ -76,7 +77,7 @@ namespace WebClinicAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -90,6 +91,8 @@ namespace WebClinicAPI
                 c.RoutePrefix = "swagger";
             });
 
+            var logger = loggerFactory.CreateLogger("Startup");
+            logger.LogWarning("Logger configured!");
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
